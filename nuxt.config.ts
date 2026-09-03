@@ -5,6 +5,11 @@ export default defineNuxtConfig({
 
   modules: ['@nuxtjs/tailwindcss', '@nuxtjs/supabase'],
 
+  // Cloudflare Workers 배포용 (wrangler.jsonc + .output/server/index.mjs)
+  nitro: {
+    preset: 'cloudflare_module'
+  },
+
   css: ['~/assets/css/main.css'],
 
   supabase: {

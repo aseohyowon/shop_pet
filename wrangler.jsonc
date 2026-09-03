@@ -1,0 +1,19 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "shop-pet",
+  "main": "./.output/server/index.mjs",
+  "compatibility_date": "2025-07-15",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "binding": "ASSETS",
+    "directory": "./.output/public"
+  },
+  "observability": {
+    "enabled": true
+  }
+  // 환경변수/시크릿은 이 파일에 넣지 말고 Cloudflare 대시보드
+  // (Workers > shop-pet > Settings > Variables and Secrets)에서 등록:
+  //   SUPABASE_URL, SUPABASE_ANON_KEY, SUPABASE_SERVICE_ROLE_KEY,
+  //   TOSS_CLIENT_KEY, TOSS_SECRET_KEY
+  // build/deploy 양쪽 스코프에 모두 있어야 함 (빌드 시 번들에 주입됨)
+}
