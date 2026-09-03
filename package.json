@@ -10,7 +10,9 @@
     "postinstall": "nuxt prepare",
     "deploy": "nuxt build && wrangler deploy",
     "cf-preview": "nuxt build && wrangler dev",
-    "db:migrate": "node scripts/run-migrations.mjs"
+    "db:migrate": "node scripts/run-migrations.mjs",
+    "db:backup": "node scripts/backup-db.mjs",
+    "db:restore": "node scripts/restore-db.mjs"
   },
   "dependencies": {
     "@nuxtjs/supabase": "^2.0.10",

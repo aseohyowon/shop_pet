@@ -25,3 +25,7 @@ logs
 
 # Cloudflare
 .wrangler
+.dev.vars
+
+# DB backups
+backups/

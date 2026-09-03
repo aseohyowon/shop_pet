@@ -4,6 +4,7 @@ definePageMeta({ middleware: 'auth' })
 const { fetchCart } = useCart()
 const { profile, user } = useAuth()
 const { createOrderPayment } = usePayments()
+const { embed: embedPostcode } = usePostcode()
 
 const cartItems = ref<any[]>([])
 const loading = ref(true)
@@ -15,9 +16,46 @@ const submitting = ref(false)
 const shipping = reactive({
   recipientName: '',
   recipientPhone: '',
-  shippingAddress: '',
+  postcode: '',
+  address: '', // 주소 검색으로 채움
+  addressDetail: '', // 수동 입력
   shippingMemo: ''
 })
+
+const addressDetailRef = ref<HTMLInputElement | null>(null)
+const postcodeBox = ref<HTMLElement | null>(null)
+const showPostcode = ref(false)
+
+const fullAddress = computed(() => {
+  if (!shipping.address) return ''
+  const zip = shipping.postcode ? `[${shipping.postcode}] ` : ''
+  return `${zip}${shipping.address} ${shipping.addressDetail}`.trim()
+})
+
+const findAddress = async () => {
+  if (paymentInfo.value) return
+  errorMessage.value = ''
+  showPostcode.value = true
+  await nextTick()
+  if (!postcodeBox.value) return
+  try {
+    await embedPostcode(
+      postcodeBox.value,
+      ({ zonecode, address }) => {
+        shipping.postcode = zonecode
+        shipping.address = address
+        showPostcode.value = false
+        nextTick(() => addressDetailRef.value?.focus())
+      },
+      () => {
+        showPostcode.value = false
+      }
+    )
+  } catch (e: any) {
+    showPostcode.value = false
+    errorMessage.value = e?.message ?? '주소 검색에 실패했습니다.'
+  }
+}
 
 const total = computed(() => cartItems.value.reduce((sum, item) => sum + item.products.price * item.quantity, 0))
 
@@ -42,7 +80,8 @@ const orderName = computed(() =>
 const validateShipping = () => {
   if (!shipping.recipientName.trim()) return '수령인 이름을 입력해주세요.'
   if (!shipping.recipientPhone.trim()) return '수령인 연락처를 입력해주세요.'
-  if (!shipping.shippingAddress.trim()) return '배송지 주소를 입력해주세요.'
+  if (!shipping.address.trim()) return '주소 찾기로 배송지 주소를 선택해주세요.'
+  if (!shipping.addressDetail.trim()) return '상세주소를 입력해주세요.'
   return ''
 }
 
@@ -60,7 +99,12 @@ const handlePay = async () => {
     try {
       const { paymentId, totalAmount } = await createOrderPayment(
         cartItems.value.map((item) => ({ productId: item.products.id, quantity: item.quantity })),
-        { ...shipping }
+        {
+          recipientName: shipping.recipientName,
+          recipientPhone: shipping.recipientPhone,
+          shippingAddress: fullAddress.value,
+          shippingMemo: shipping.shippingMemo
+        }
       )
       paymentInfo.value = { paymentId, amount: totalAmount, orderName: orderName.value }
       await nextTick()
@@ -121,8 +165,45 @@ const handlePay = async () => {
           </div>
         </div>
         <div>
-          <label class="label-field" for="ship-addr">주소</label>
-          <input id="ship-addr" v-model="shipping.shippingAddress" type="text" class="input-field" :disabled="!!paymentInfo" placeholder="도로명 주소 + 상세주소" />
+          <label class="label-field" for="ship-postcode">주소</label>
+          <div class="flex gap-2">
+            <input
+              id="ship-postcode"
+              :value="shipping.postcode"
+              type="text"
+              class="input-field flex-1"
+              placeholder="우편번호"
+              readonly
+            />
+            <button
+              type="button"
+              class="btn-secondary shrink-0 !px-4 !py-2 text-sm"
+              :disabled="!!paymentInfo"
+              @click="findAddress"
+            >
+              주소 찾기
+            </button>
+          </div>
+          <div
+            v-show="showPostcode"
+            ref="postcodeBox"
+            class="mt-2 h-[420px] w-full overflow-hidden rounded-lg border border-gray-200"
+          />
+          <input
+            :value="shipping.address"
+            type="text"
+            class="input-field mt-2"
+            placeholder="도로명/지번 주소 (주소 찾기 버튼으로 선택)"
+            readonly
+          />
+          <input
+            ref="addressDetailRef"
+            v-model="shipping.addressDetail"
+            type="text"
+            class="input-field mt-2"
+            :disabled="!!paymentInfo"
+            placeholder="상세주소 (동/호수 등)"
+          />
         </div>
         <div>
           <label class="label-field" for="ship-memo">배송 메모 (선택)</label>
