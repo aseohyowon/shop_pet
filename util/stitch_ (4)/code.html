@@ -1,0 +1,316 @@
+<!DOCTYPE html><html lang="ko"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>댕이를 부탁해 - Main Landing Page</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600&amp;family=Plus+Jakarta+Sans:wght@600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "background": "#fff8f5",
+                      "secondary-container": "#feb6c4",
+                      "surface-container-low": "#fff1ea",
+                      "on-surface-variant": "#4f453c",
+                      "on-surface": "#221a15",
+                      "tertiary-fixed-dim": "#c9c6c1",
+                      "primary-container": "#5d4024",
+                      "on-tertiary-container": "#b7b4ae",
+                      "secondary-fixed-dim": "#fbb3c1",
+                      "on-error": "#ffffff",
+                      "on-background": "#221a15",
+                      "on-tertiary-fixed-variant": "#484743",
+                      "outline": "#81756b",
+                      "tertiary": "#31302c",
+                      "on-tertiary-fixed": "#1c1c18",
+                      "primary": "#442a10",
+                      "on-secondary-fixed-variant": "#6b3743",
+                      "surface-tint": "#78583a",
+                      "primary-fixed": "#ffdcbf",
+                      "inverse-primary": "#e9bf9a",
+                      "surface": "#fff8f5",
+                      "error-container": "#ffdad6",
+                      "inverse-on-surface": "#feeee5",
+                      "on-primary-fixed": "#2c1601",
+                      "surface-container-highest": "#efdfd7",
+                      "on-error-container": "#93000a",
+                      "inverse-surface": "#382f29",
+                      "surface-container-high": "#f5e5dc",
+                      "on-primary-fixed-variant": "#5e4125",
+                      "tertiary-fixed": "#e6e2dc",
+                      "on-primary-container": "#d5ac89",
+                      "surface-dim": "#e7d7ce",
+                      "on-secondary-container": "#7a4450",
+                      "secondary": "#864e5a",
+                      "error": "#ba1a1a",
+                      "surface-variant": "#efdfd7",
+                      "on-tertiary": "#ffffff",
+                      "primary-fixed-dim": "#e9bf9a",
+                      "on-secondary": "#ffffff",
+                      "on-secondary-fixed": "#360c19",
+                      "tertiary-container": "#474642",
+                      "surface-bright": "#fff8f5",
+                      "secondary-fixed": "#ffd9df",
+                      "on-primary": "#ffffff",
+                      "outline-variant": "#d3c4b9",
+                      "surface-container-lowest": "#ffffff",
+                      "surface-container": "#fbebe2"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "stack-sm": "8px",
+                      "gutter": "24px",
+                      "container-max": "1200px",
+                      "margin-desktop": "40px",
+                      "stack-lg": "32px",
+                      "base": "8px",
+                      "margin-mobile": "16px",
+                      "stack-md": "16px"
+              },
+              "fontFamily": {
+                      "headline-lg-mobile": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "body-lg": [
+                              "Be Vietnam Pro"
+                      ],
+                      "label-md": [
+                              "Be Vietnam Pro"
+                      ],
+                      "label-sm": [
+                              "Be Vietnam Pro"
+                      ],
+                      "headline-md": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "body-md": [
+                              "Be Vietnam Pro"
+                      ],
+                      "headline-xl": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "headline-lg": [
+                              "Plus Jakarta Sans"
+                      ]
+              },
+              "fontSize": {
+                      "headline-lg-mobile": [
+                              "28px",
+                              {
+                                      "lineHeight": "36px",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "label-sm": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-xl": [
+                              "48px",
+                              {
+                                      "lineHeight": "56px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "700"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+        .hover-lift {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .hover-lift:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px -5px rgba(68, 42, 16, 0.1), 0 8px 10px -6px rgba(68, 42, 16, 0.1);
+        }
+      </style>
+</head>
+<body class="bg-background text-on-background font-body-md text-body-md antialiased min-h-screen flex flex-col">
+<!-- TopNavBar -->
+<header class="w-full top-0 sticky shadow-sm dark:bg-surface-container-low bg-background dark:bg-background z-50">
+<div class="flex justify-between items-center h-20 px-margin-desktop max-w-container-max mx-auto md:px-margin-desktop px-margin-mobile">
+<!-- Brand -->
+<div class="flex items-center gap-stack-sm">
+<img alt="댕이를 부탁해 Logo" class="h-10 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC6jTHqyXUzA-qcNUuMRjhqmGqWDEpMvo4fh22R9Gh9OVLUjxA81qeZKtD7JHg3jDTEiUlRdJj2gh1S6Z-gZaID3YaTBfVZMZ4oWv9iGNb3nuLkOOVC_JxgXYtPZgtzjqbzqI7_HcKTzSBadE8kK2trtXZdbegwR2RZDGuDJwurU7gf3RTy484FpPaw4-UoVUJ6E4oFkDrHJv0t82iSG-rgKzKg2c8ySvV4RpDgy_Y-gFjE16NjuwRA4sczIwsgM7REdlY">
+<span class="text-headline-md font-headline-md text-primary dark:text-primary-fixed hidden md:block">댕이를 부탁해</span>
+</div>
+<!-- Navigation Links (Desktop) -->
+<nav class="hidden md:flex gap-gutter items-center"><a class="text-primary font-bold border-b-2 border-primary pb-1 transition-all duration-300 hover:-translate-y-0.5" href="#" style="opacity: 0;">홈</a><a class="text-on-surface-variant font-body-md hover:text-primary hover:bg-surface-container-lowest transition-colors px-2 py-1 rounded transition-all duration-300 hover:-translate-y-0.5" href="#">예약</a><a class="text-on-surface-variant font-body-md hover:text-primary hover:bg-surface-container-lowest transition-colors px-2 py-1 rounded transition-all duration-300 hover:-translate-y-0.5" href="#">쇼핑몰</a><a class="text-on-surface-variant font-body-md hover:text-primary hover:bg-surface-container-lowest transition-colors px-2 py-1 rounded transition-all duration-300 hover:-translate-y-0.5" href="#">마이페이지</a></nav>
+<!-- Actions -->
+<div class="flex items-center gap-stack-md">
+<button class="hidden md:flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+</button>
+<button class="bg-primary text-on-primary font-label-md text-label-md px-6 h-12 rounded-lg hover:bg-primary-container transition-colors flex items-center justify-center min-w-[100px]">Sign In</button>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-grow">
+<!-- Hero Section -->
+<section class="relative w-full overflow-hidden bg-surface-container py-16 md:py-24">
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop grid grid-cols-1 md:grid-cols-2 gap-12 items-center relative z-10">
+<div class="flex flex-col gap-6 max-w-xl">
+<h1 class="font-headline-xl text-headline-lg-mobile md:text-headline-xl text-primary">
+                        사랑하는 우리 아이, <br class="hidden md:block">믿고 맡길 수 있는 <br class="hidden md:block"> <span class="text-secondary">댕이를 부탁해</span>
+</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant">
+                        따뜻하고 안전한 프리미엄 펫케어 서비스. 우리 아이에게 행복한 하루를 선물하세요. 전문 펫시터와 최상의 환경이 기다립니다.
+                    </p>
+<div class="flex flex-wrap gap-4 mt-4">
+<button class="bg-primary text-on-primary font-label-md text-label-md px-8 h-12 rounded-lg hover:bg-primary-container transition-colors flex items-center gap-2 hover-lift">
+<span class="material-symbols-outlined" data-icon="calendar_month">calendar_month</span>
+                            예약하기
+                        </button>
+<button class="bg-secondary-container bg-opacity-20 text-secondary font-label-md text-label-md px-8 h-12 rounded-lg border border-secondary-container hover:bg-opacity-30 transition-colors flex items-center gap-2 hover-lift">
+<span class="material-symbols-outlined" data-icon="info">info</span>
+                            시설 둘러보기
+                        </button>
+</div>
+</div>
+<div class="relative h-[400px] md:h-[500px] w-full rounded-2xl overflow-hidden shadow-lg border-4 border-surface-container-lowest">
+<div class="bg-cover bg-center w-full h-full" data-alt="A joyful golden retriever looking directly at the camera with a wide smile, sitting in a bright, modern, spacious indoor pet daycare facility with warm sunlight streaming through large windows. The environment feels safe, premium, and clean, featuring soft organic materials in light cream and brown tones." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAxROTU8bev9sTlUtDsvD5mbZp8G5Aw9U8Did8tZUGTfQnE83V1gPtKSMCnH2c8hQULsSHS2oIrckueLr26ziR1PnUaH7PExQ6Ed7MIqd6IbQSWlSFGQ8UVlMV_3Fp5WQm8QkzizuZqfhpGHKLtwMxterfmQ0aGX8TRs_aSIVpVSPv76qNSlj2NEPyjNc6nFNmFkgOkSH9VSGSLM69JrIYFNdBDT8lSxfteLBrmoofxcf9xQW-IW7ja-Q')"></div>
+<div class="absolute bottom-6 left-6 bg-surface-container-lowest p-4 rounded-xl shadow-md flex items-center gap-4">
+<div class="w-12 h-12 rounded-full border-2 border-primary overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A small, cute poodle looking happy, set against a soft warm cream background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDNp_XBWiOU6ImWhK4bYc59zaZAtTFo2ljArN9bHfFomZ0gmaPUtmj6_1ky1u0bCWfAvdHWvKyFTLwN7umuQ-84Sqkum-50O60rB6UfVdVzF4M7Z5LMCcehxqt99n2cUiPd_lr5zflivcGkTBurEEKHdwveszRiCrLKlPwDYei2T7vd_1wadC4kpLzvDoPA1dE6v4s_p8F4vDQQa31Du-okxpR_yW53cSpuFTlLBuuMTaTf4x4p7f0EmA">
+</div>
+<div>
+<p class="font-label-md text-label-md text-primary">이달의 우수회원 '코코'</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-secondary text-sm" data-icon="favorite" data-weight="fill" style="font-variation-settings: 'FILL' 1;">favorite</span>
+                                30회 이용
+                            </p>
+</div>
+</div>
+</div>
+</div>
+<!-- Decorative SVG Blob -->
+<div class="absolute top-0 right-0 -mr-32 -mt-32 w-96 h-96 bg-primary-fixed rounded-full mix-blend-multiply filter blur-3xl opacity-50 z-0"></div>
+<div class="absolute bottom-0 left-0 -ml-32 -mb-32 w-96 h-96 bg-secondary-container rounded-full mix-blend-multiply filter blur-3xl opacity-30 z-0"></div>
+</section>
+<!-- Service Overview (Bento Grid) -->
+<section class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-16 md:py-24">
+<div class="text-center mb-12">
+<h2 class="font-headline-md text-headline-lg-mobile md:text-headline-md text-primary mb-4">우리가 제공하는 특별한 서비스</h2>
+<p class="text-on-surface-variant font-body-md max-w-2xl mx-auto">아이들의 성향과 필요에 맞춘 세심한 케어를 약속합니다.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<!-- Hotel -->
+<div class="bg-surface-container-lowest rounded-2xl p-6 shadow-sm border border-surface-container-highest hover-lift flex flex-col items-start gap-4">
+<div class="w-14 h-14 bg-surface-container rounded-xl flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-3xl" data-icon="bed" style="font-variation-settings: 'FILL' 1;">bed</span>
+</div>
+<h3 class="font-headline-md text-xl text-primary">프리미엄 호텔</h3>
+<p class="text-on-surface-variant font-body-md flex-grow">스트레스 없는 아늑한 개인 공간. 24시간 실시간 모니터링으로 안심하고 맡기세요.</p>
+<a class="text-secondary font-label-md flex items-center gap-1 hover:underline mt-2" href="#">
+                        자세히 보기 <span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</a>
+</div>
+<!-- Daycare -->
+<div class="bg-surface-container-lowest rounded-2xl p-6 shadow-sm border border-surface-container-highest hover-lift flex flex-col items-start gap-4">
+<div class="w-14 h-14 bg-primary-fixed rounded-xl flex items-center justify-center text-primary-container">
+<span class="material-symbols-outlined text-3xl" data-icon="playing_cards" style="font-variation-settings: 'FILL' 1;">playing_cards</span>
+</div>
+<h3 class="font-headline-md text-xl text-primary">맞춤형 데이케어</h3>
+<p class="text-on-surface-variant font-body-md flex-grow">전문 훈련사와 함께하는 사회성 훈련 및 신나는 놀이 프로그램. 에너지를 듬뿍 발산해요.</p>
+<a class="text-primary font-label-md flex items-center gap-1 hover:underline mt-2" href="#">
+                        프로그램 보기 <span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</a>
+</div>
+<!-- Shop -->
+<div class="bg-surface-container-lowest rounded-2xl p-6 shadow-sm border border-surface-container-highest hover-lift flex flex-col items-start gap-4">
+<div class="w-14 h-14 bg-secondary-container bg-opacity-30 rounded-xl flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-3xl" data-icon="storefront" style="font-variation-settings: 'FILL' 1;">storefront</span>
+</div>
+<h3 class="font-headline-md text-xl text-primary">유기농 샵</h3>
+<p class="text-on-surface-variant font-body-md flex-grow">수제 간식부터 프리미엄 사료, 안전한 장난감까지. 엄선된 제품만 판매합니다.</p>
+<a class="text-primary font-label-md flex items-center gap-1 hover:underline mt-2" href="#">
+                        쇼핑하기 <span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</a>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full mt-stack-lg bg-surface-container-high dark:bg-surface-container-low text-on-surface-variant font-body-md text-body-md">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter py-stack-lg px-margin-desktop max-w-container-max mx-auto">
+<div class="flex flex-col gap-4">
+<span class="font-headline-md text-headline-md text-primary">댕이를 부탁해</span>
+<p class="text-sm">믿음직한 펫케어 서비스. 우리 아이들의 두 번째 집입니다.</p>
+</div>
+<div class="flex flex-col gap-2">
+<h4 class="font-label-md text-primary mb-2">바로가기</h4>
+<a class="text-primary font-bold hover:text-secondary transition-colors transition-opacity duration-200 hover:opacity-80" href="#">Privacy Policy</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors transition-opacity duration-200 hover:opacity-80" href="#">Terms of Service</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors transition-opacity duration-200 hover:opacity-80" href="#">FAQ</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors transition-opacity duration-200 hover:opacity-80" href="#">Customer Support</a>
+</div>
+<div class="flex flex-col gap-2">
+<h4 class="font-label-md text-primary mb-2">연락처</h4>
+<p class="text-sm">1588-0000</p>
+<p class="text-sm">hello@dang-e.com</p>
+</div>
+<div class="flex flex-col gap-2">
+<h4 class="font-label-md text-primary mb-2">운영시간</h4>
+<p class="text-sm">평일: 08:00 - 20:00</p>
+<p class="text-sm">주말: 09:00 - 18:00</p>
+</div>
+</div>
+<div class="text-center py-4 border-t border-surface-dim">
+<p class="text-sm">© 2024 댕이를 부탁해. All rights reserved.</p>
+</div>
+</footer>
+
+
+</body></html>

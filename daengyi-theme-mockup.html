@@ -1,0 +1,1522 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>댕이를 부탁해 — 새 디자인 테마 미리보기</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "background": "#fff8f5",
+                      "secondary-container": "#feb6c4",
+                      "surface-container-low": "#fff1ea",
+                      "on-surface-variant": "#4f453c",
+                      "on-surface": "#221a15",
+                      "tertiary-fixed-dim": "#c9c6c1",
+                      "primary-container": "#5d4024",
+                      "on-tertiary-container": "#b7b4ae",
+                      "secondary-fixed-dim": "#fbb3c1",
+                      "on-error": "#ffffff",
+                      "on-background": "#221a15",
+                      "on-tertiary-fixed-variant": "#484743",
+                      "outline": "#81756b",
+                      "tertiary": "#31302c",
+                      "on-tertiary-fixed": "#1c1c18",
+                      "primary": "#442a10",
+                      "on-secondary-fixed-variant": "#6b3743",
+                      "surface-tint": "#78583a",
+                      "primary-fixed": "#ffdcbf",
+                      "inverse-primary": "#e9bf9a",
+                      "surface": "#fff8f5",
+                      "error-container": "#ffdad6",
+                      "inverse-on-surface": "#feeee5",
+                      "on-primary-fixed": "#2c1601",
+                      "surface-container-highest": "#efdfd7",
+                      "on-error-container": "#93000a",
+                      "inverse-surface": "#382f29",
+                      "surface-container-high": "#f5e5dc",
+                      "on-primary-fixed-variant": "#5e4125",
+                      "tertiary-fixed": "#e6e2dc",
+                      "on-primary-container": "#d5ac89",
+                      "surface-dim": "#e7d7ce",
+                      "on-secondary-container": "#7a4450",
+                      "secondary": "#864e5a",
+                      "error": "#ba1a1a",
+                      "surface-variant": "#efdfd7",
+                      "on-tertiary": "#ffffff",
+                      "primary-fixed-dim": "#e9bf9a",
+                      "on-secondary": "#ffffff",
+                      "on-secondary-fixed": "#360c19",
+                      "tertiary-container": "#474642",
+                      "surface-bright": "#fff8f5",
+                      "secondary-fixed": "#ffd9df",
+                      "on-primary": "#ffffff",
+                      "outline-variant": "#d3c4b9",
+                      "surface-container-lowest": "#ffffff",
+                      "surface-container": "#fbebe2"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "stack-sm": "8px",
+                      "gutter": "24px",
+                      "container-max": "1200px",
+                      "margin-desktop": "40px",
+                      "stack-lg": "32px",
+                      "base": "8px",
+                      "margin-mobile": "16px",
+                      "stack-md": "16px"
+              },
+              "fontFamily": {
+                      "headline-lg-mobile": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "body-lg": [
+                              "Be Vietnam Pro"
+                      ],
+                      "label-md": [
+                              "Be Vietnam Pro"
+                      ],
+                      "label-sm": [
+                              "Be Vietnam Pro"
+                      ],
+                      "headline-md": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "body-md": [
+                              "Be Vietnam Pro"
+                      ],
+                      "headline-xl": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "headline-lg": [
+                              "Plus Jakarta Sans"
+                      ]
+              },
+              "fontSize": {
+                      "headline-lg-mobile": [
+                              "28px",
+                              {
+                                      "lineHeight": "36px",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "label-sm": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-xl": [
+                              "48px",
+                              {
+                                      "lineHeight": "56px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "700"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+    </script>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:#efe4dc;color:#221a15;font-family:"Be Vietnam Pro","Malgun Gothic","Apple SD Gothic Neo","Segoe UI",sans-serif}
+  .material-symbols-outlined{font-family:"Material Symbols Outlined";font-weight:normal;font-style:normal;line-height:1;letter-spacing:normal;text-transform:none;display:inline-block;white-space:nowrap;direction:ltr;font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24}
+  .tabbar{position:sticky;top:0;z-index:100;background:rgba(68,42,16,.96);backdrop-filter:blur(6px);display:flex;flex-wrap:wrap;gap:4px;padding:10px 16px;justify-content:center}
+  .tabbar a{color:#e9bf9a;font-size:13px;font-weight:600;text-decoration:none;padding:7px 14px;border-radius:999px;transition:.15s}
+  .tabbar a:hover{background:rgba(255,255,255,.12);color:#fff}
+  .wrap{max-width:1320px;margin:0 auto;padding:44px 20px 120px}
+  .intro{text-align:center;margin-bottom:52px}
+  .intro h1{margin:0 0 8px;font-family:"Plus Jakarta Sans",sans-serif;font-size:30px;font-weight:700;color:#442a10}
+  .intro p{margin:0;font-size:14px;color:#6b5d52}
+  .intro .badge{display:inline-block;margin-bottom:14px;background:#feb6c4;color:#7a4450;font-size:12px;font-weight:600;padding:5px 14px;border-radius:999px;letter-spacing:.02em}
+  .screen{margin-bottom:64px;scroll-margin-top:70px}
+  .caption{font-family:"Plus Jakarta Sans",sans-serif;font-size:13px;font-weight:700;color:#864e5a;margin:0 0 10px;letter-spacing:.03em}
+  .window{border-radius:14px;overflow:hidden;box-shadow:0 12px 40px rgba(68,42,16,.14);background:#fff}
+  .chrome{background:#e7d7ce;padding:10px 14px;display:flex;align-items:center;gap:8px}
+  .dot{width:10px;height:10px;border-radius:50%}
+  .url{margin-left:8px;background:#fff8f5;border-radius:6px;padding:4px 12px;font-size:12px;color:#6b5d52;flex:1}
+  .frame{height:760px;overflow-y:auto;overflow-x:hidden;background:#fff8f5}
+  .frame-inner{min-width:1024px}
+  .frame-inner header,.frame-inner nav.bg-surface,.frame-inner nav.bg-background{position:static !important}
+  .glass-card{background:rgba(255,253,251,.72);backdrop-filter:blur(8px);border:1px solid rgba(211,196,185,.55);box-shadow:0 4px 24px rgba(93,64,36,.06)}
+  .outro{text-align:center;color:#6b5d52;font-size:13px;padding-top:8px}
+  @media(max-width:900px){.frame{height:620px}}
+</style>
+</head>
+<body>
+<nav class="tabbar"><a href="#screen-main1">메인 화면 테마 1</a><a href="#screen-main2">메인 화면 테마 2</a><a href="#screen-reserve">예약하기</a><a href="#screen-shop">쇼핑몰</a><a href="#screen-mypage">마이페이지</a><a href="#screen-admin">관리자 페이지</a></nav>
+<div class="wrap">
+  <div class="intro">
+    <span class="badge">DESIGN PREVIEW</span>
+    <h1>댕이를 부탁해 — 새 디자인 테마</h1>
+    <p>관리자 페이지에서 &lsquo;테마 1 / 테마 2&rsquo;로 전환 가능한 새 화면 시안입니다. (Warm Paw Prints)</p>
+  </div>
+
+  <section id="screen-main1" class="screen">
+    <p class="caption">메인 화면 · 테마 1</p>
+    <div class="window">
+      <div class="chrome">
+        <span class="dot" style="background:#f87171"></span>
+        <span class="dot" style="background:#fbbf24"></span>
+        <span class="dot" style="background:#34d399"></span>
+        <span class="url">daengyi.co.kr</span>
+      </div>
+      <div class="frame">
+        <div class="frame-inner">
+<!-- TopNavBar -->
+<header class="w-full top-0 sticky z-50 bg-background shadow-sm">
+<div class="flex justify-between items-center h-20 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+<a class="font-headline-md text-headline-md text-primary flex items-center gap-2 transition-all duration-300 hover:-translate-y-0.5" href="#"><span class="material-symbols-outlined icon-filled text-secondary text-3xl" data-icon="pets">pets</span>
+                댕이를 부탁해</a>
+<!-- Desktop Nav -->
+<nav class="hidden md:flex items-center gap-8"><a class="text-primary font-bold border-b-2 border-primary pb-1 hover:bg-surface-container-lowest transition-colors px-3 rounded-t-lg" href="#">홈</a>
+<a class="text-on-surface-variant font-body-md hover:text-primary hover:bg-surface-container-lowest transition-colors px-3 py-2 rounded-lg" href="#">예약</a>
+<a class="text-on-surface-variant font-body-md hover:text-primary hover:bg-surface-container-lowest transition-colors px-3 py-2 rounded-lg" href="#">쇼핑몰</a>
+<a class="text-on-surface-variant font-body-md hover:text-primary hover:bg-surface-container-lowest transition-colors px-3 py-2 rounded-lg" href="#">마이페이지</a></nav>
+<div class="hidden md:flex items-center gap-4">
+<button class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-surface-container-lowest transition-colors transition-all duration-300 hover:-translate-y-0.5">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+</button>
+<button class="bg-primary text-on-primary font-label-md text-label-md px-6 py-3 rounded-full hover:bg-primary-container transition-colors transition-all duration-300 hover:-translate-y-0.5 min-h-[48px] flex items-center shadow-sm">로­¸인</button>
+</div>
+<!-- Mobile Menu Toggle -->
+<button class="md:hidden w-12 h-12 flex items-center justify-center text-primary bg-surface-container-low rounded-xl">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+</div>
+</header>
+<main>
+<!-- Hero Section -->
+<section class="hero-pattern pt-stack-lg pb-24 px-margin-mobile md:px-margin-desktop relative overflow-hidden">
+<div class="max-w-container-max mx-auto text-center relative z-10">
+<div class="inline-flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-sm mb-6 border border-surface-container-highest">
+<span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">우리 이야기</span>
+</div>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile md:font-headline-xl md:text-headline-xl text-primary mb-6 max-w-3xl mx-auto leading-tight">
+                    우리 아이를 위한 <br class="hidden md:block">가장 안전한 두 번째 집
+                </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto mb-10">
+                    모든 반려동물이 집처럼 편안한 공간에서 사랑과 안전, 전문적인 케어를 받을 자격이 있다고 믿습니다. 댕이를 부탁해는 단순한 애견호텔이 아니라, 반려생활의 든든한 파트너입니다.
+                </p>
+</div>
+<!-- Decorative Elements -->
+<div class="absolute top-20 left-10 md:left-20 opacity-20 w-32 h-32 rounded-full bg-secondary blur-3xl"></div>
+<div class="absolute bottom-10 right-10 md:right-32 opacity-20 w-48 h-48 rounded-full bg-primary blur-3xl"></div>
+</section>
+<!-- Bento Grid Facility Tour -->
+<section class="py-stack-lg px-margin-mobile md:px-margin-desktop bg-surface-container-lowest">
+<div class="max-w-container-max mx-auto">
+<div class="flex flex-col md:flex-row justify-between items-end mb-10 gap-4">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-primary mb-2">프리미엄 환경</h2>
+<p class="text-on-surface-variant font-body-md max-w-xl">모든 크기와 성향의 반려견이 스트레스 없이 편안하게 지낼 수 있도록 설계된 공간입니다.</p>
+</div>
+<button class="flex items-center gap-2 text-secondary font-label-md bg-secondary-container bg-opacity-20 px-5 py-2.5 rounded-full hover:bg-opacity-30 transition-colors min-h-[48px]">
+<span class="material-symbols-outlined" data-icon="360">360</span>
+                        시설 둘러보기
+                    </button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter auto-rows-[300px]">
+<!-- Large Feature Cell -->
+<div class="md:col-span-2 md:row-span-2 rounded-[2rem] overflow-hidden relative group floating-card shadow-sm border border-surface-container-highest">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A spacious, high-end dog daycare playroom flooded with natural sunlight. The floor is covered in premium, soft rubber matting in a warm beige color. Several happy, well-groomed dogs are playing with colorful toys, supervised by a smiling staff member in a professional uniform. The aesthetic is clean, modern, organic, and deeply comforting, reflecting a luxury pet care facility." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAKg4MTE7G5x2f5lIp6yMWMOYzvJpjFODc6dggrlvpwpNXC_jQ3hR46gqjtZ9dMXpmLUwmZLS3vnCd6e4sHyYhIU3e5YY8j-pT3Vti9v-41F_TUzrDhGo3DLe-SCJQ_oeQQrARo5HF0gwUC9HJI5m8iu9djo9fHixhdJe1ZhXEcmvQPem5-6uO8RYymJyfb-RPl8muFVjaLXzO6MYVFFn3d9sax7cAN4S8SnehkZvISroOtEQc6qrULeQ">
+<div class="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent flex flex-col justify-end p-8">
+<span class="bg-white/20 backdrop-blur-md text-white font-label-sm px-3 py-1 rounded-full w-fit mb-3">실내 놀이 공간</span>
+<h3 class="font-headline-md text-headline-md text-white mb-2">냉난방 완비 실내 놀이방</h3>
+<p class="text-white/80 font-body-md line-clamp-2">넓은 실내 공간은 연중 쾌적한 온도를 유지해 날씨와 상관없이 편안한 놀이가 가능합니다.</p>
+</div>
+</div>
+<!-- Small Cells -->
+<div class="rounded-xl overflow-hidden relative group floating-card shadow-sm border border-surface-container-highest bg-white p-6 flex flex-col justify-center items-center text-center">
+<div class="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center text-primary mb-4">
+<span class="material-symbols-outlined text-3xl icon-filled" data-icon="medical_services">medical_services</span>
+</div>
+<h4 class="font-headline-md text-xl text-primary mb-2">24시간 케어</h4>
+<p class="text-sm text-on-surface-variant">수의사 온콜 대기, 24시간 상주 케어 인력.</p>
+</div>
+<div class="rounded-xl overflow-hidden relative group floating-card shadow-sm border border-surface-container-highest">
+<img class="w-full h-full object-cover" data-alt="A close-up shot of a cozy, private suite for a dog in a luxury pet hotel. The walls are a soft tertiary cream color. The suite features a premium orthopedic dog bed with a fluffy blanket, and a soft ambient light casting a warm, comforting glow. It feels more like a boutique hotel room than a kennel, adhering to a modern-organic aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDCNGDkbZ2ZM3spv8Tc0d3W5YLJAttWJtPkO7wYm8wm90nYHhk_yLHd_KeD77Fo36Zc2dCSJw-P8TcbXmNVnw3_pafCql7dWSkBEwLnQ1DRiL4OK_BS8DFwtRRqsSmnEJQ0Kegc8jevOCpGtDyQMfx9Ih-dGnxBHZV5Fa9hP9PE34AkUk4LVbvsDOhtM4WLgNC2lsHKzd6RuW5a-H0kpUCEl51V0hVEv8kLEWPJEyrtZGnTYlxGuKOB7w">
+<div class="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition-colors duration-300"></div>
+<div class="absolute bottom-4 left-4 right-4 text-white">
+<h4 class="font-bold text-lg drop-shadow-md">럭셔리 스위트</h4>
+</div>
+</div>
+<div class="rounded-xl overflow-hidden relative group floating-card shadow-sm border border-surface-container-highest">
+<img class="w-full h-full object-cover" data-alt="An outdoor, securely fenced dog play yard with pristine artificial turf designed specifically for pets. Gentle rolling mounds provide enrichment. The area is shaded by beautiful mature trees, bathed in bright, warm afternoon sunlight. High-quality outdoor play equipment is visible. The scene exudes safety, cleanliness, and premium care." src="https://lh3.googleusercontent.com/aida-public/AB6AXuALjYZsNXZzNF3lX9d8CLPCmeruspXgKwrIJw7SHFXZXlfv7M5zrn5Xwp4wE1qE2-atXrP1E3cSZSbzfJa5WifkfGY3MYz7q8sFzBVYSgGameaB54_T0_c_HfdShIxUfGmw7Yn4AorLIExArWGzJ3OMwJdezBEs8_QeLVeFILrCn23tX_NJYmX6Dymv5i1R_vGNRIjtE3B7De0qOeDu0TXX9k_91NzOp5Sm2DzCcdneo7Z3FIVP8YIC2Q">
+<div class="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition-colors duration-300"></div>
+<div class="absolute bottom-4 left-4 right-4 text-white">
+<h4 class="font-bold text-lg drop-shadow-md">야외 놀이터</h4>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Meet the Team -->
+<section class="py-stack-lg px-margin-mobile md:px-margin-desktop bg-surface">
+<div class="max-w-container-max mx-auto text-center mb-12">
+<h2 class="font-headline-lg text-headline-lg text-primary mb-4">케어 전문가 소개</h2>
+<p class="text-on-surface-variant font-body-lg max-w-2xl mx-auto">자격을 갖춘 훈련사, 숙련된 수의 테크니션, 반려동물을 사랑하는 전문 케어 인력이 함께합니다.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter max-w-container-max mx-auto">
+<!-- Team Member 1 -->
+<div class="bg-white rounded-[1rem] p-6 text-center floating-card shadow-sm border border-surface-container-highest">
+<div class="w-32 h-32 mx-auto rounded-full p-1 border-2 border-primary mb-4 bg-surface-container-low">
+<img class="w-full h-full object-cover rounded-full" data-alt="A professional headshot of a friendly, approachable female pet behaviorist in her 30s. She is smiling warmly at the camera, wearing a clean, branded polo shirt in a soft tertiary cream color. The background is slightly blurred but suggests a bright, modern indoor facility. The lighting is soft and flattering, highlighting her trustworthy and nurturing demeanor." src="https://lh3.googleusercontent.com/aida-public/AB6AXuASzPb9AxBIanuHHfySm1GNHhZlRG5-qFZb2G7djIxw3w30FgwHI9JXaJiDY6SDT6V4gurpx0f3o6B1SJuoT7rD4oPYX5Nm22TNjzMmUrL8EBIji5euskGzt9fQaxMSrCbZ5LmkZ2pecNBhAJ2XzZ5JYJPKryxtrZE_LXanbUfz47VjcsYmeHLh_NiYOq7LC6XW9Eei-Hb-QGV-UBKucnXVPSKdSJvVeC6VhQBGqr1mgTezDWqetkPuBg">
+</div>
+<h3 class="font-headline-md text-lg text-primary">Dr. Sarah Jenkins</h3>
+<p class="text-secondary font-label-sm mb-3">수석 행동전문가</p>
+<p class="text-sm text-on-surface-variant mb-4">반려견 행동 교정 자격 보유, 10년 경력.</p>
+<div class="flex justify-center gap-2">
+<span class="inline-block px-2 py-1 bg-surface-container rounded-md text-xs text-on-surface-variant border border-outline-variant">행동교정 자격</span>
+</div>
+</div>
+<!-- Team Member 2 -->
+<div class="bg-white rounded-[1rem] p-6 text-center floating-card shadow-sm border border-surface-container-highest">
+<div class="w-32 h-32 mx-auto rounded-full p-1 border-2 border-primary mb-4 bg-surface-container-low">
+<img class="w-full h-full object-cover rounded-full" data-alt="A professional headshot of a kind, dependable male veterinary technician in his 40s. He has a gentle smile and is wearing neat, professional scrubs in a muted, warm tone. He is holding a small, happy dog. The background is a clean, well-lit, modern pet care environment. The overall feel is highly professional, safe, and nurturing." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBJeyeTNSgFmrOev-bpWtBxJI-6a3TUFUGYkv5mEWanfOofUw0dHmaiCNfrp5Up3iXcKLfX-iSGWHu3w3Ukrse59y-rrOBf0-JMZcS7nmN2eI7YjsvFdfIJHVtYduahl-AqSsSA3U8JvmNh4PiemJydrMzkalyk5WknI2CQay6tTt9M50b7KGNtxItDA3kTs1eoKLzwmXWOG8bD2JnvIcrPQ1pYXDrfV3hLuVu2RVolXmgOltM1Rxqndw">
+</div>
+<h3 class="font-headline-md text-lg text-primary">Michael Chang</h3>
+<p class="text-secondary font-label-sm mb-3">시니어 케어테이커</p>
+<p class="text-sm text-on-surface-variant mb-4">수의 테크니션 출신으로 건강·식이 관리를 꼼꼼히 챙깁니다.</p>
+<div class="flex justify-center gap-2">
+<span class="inline-block px-2 py-1 bg-surface-container rounded-md text-xs text-on-surface-variant border border-outline-variant">반려동물 CPR</span>
+</div>
+</div>
+<!-- Team Member 3 -->
+<div class="bg-white rounded-[1rem] p-6 text-center floating-card shadow-sm border border-surface-container-highest">
+<div class="w-32 h-32 mx-auto rounded-full p-1 border-2 border-primary mb-4 bg-surface-container-low">
+<img class="w-full h-full object-cover rounded-full" data-alt="A professional headshot of a cheerful, energetic young woman in her 20s. She is an enrichment specialist for dogs, wearing a comfortable but professional outdoor-friendly uniform. She is outdoors with a blurred background of a sunny dog park. Her expression is bright and enthusiastic, reflecting the playful yet secure brand identity of a premium pet care service." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAw3IZrhaGX49wVRl3X1eEvnMbXLPVtMf8FhhjKEObzW-B70irTsnH4Bn3iBg_o9IsKiYMcRSZ1p7RTF9XkaurKYP287RwdE4zJDnKXoZ1RlM-8smprjfjChfnEWsTMVZjBDHYlzEK_njfEO3vba4eig_kEWHm7tX_SoVng2GpSGNxqSW5pyaeG2aa7HeUKsXT3OvC0Od6ZRChIvoyvR9OvWiV5QuQK9DbaGOXIIDXGdjkRR5ttGniUtg">
+</div>
+<h3 class="font-headline-md text-lg text-primary">Emily Rodriguez</h3>
+<p class="text-secondary font-label-sm mb-3">놀이 프로그램 전문가</p>
+<p class="text-sm text-on-surface-variant mb-4">아이별 맞춤 놀이 세션을 설계해 두뇌 자극을 돕습니다.</p>
+<div class="flex justify-center gap-2">
+<span class="inline-block px-2 py-1 bg-surface-container rounded-md text-xs text-on-surface-variant border border-outline-variant">어질리티 전문</span>
+</div>
+</div>
+<!-- Join Team -->
+<div class="bg-surface-container-low rounded-[1rem] p-6 text-center flex flex-col justify-center items-center border border-dashed border-outline-variant hover:border-primary transition-colors cursor-pointer group">
+<div class="w-16 h-16 rounded-full bg-white flex items-center justify-center text-primary mb-4 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+</div>
+<h3 class="font-headline-md text-lg text-primary">함께할 분을 찾습니다</h3>
+<p class="text-sm text-on-surface-variant mt-2">반려동물을 사랑하는 전문가를 언제나 환영합니다.</p>
+</div>
+</div>
+</section>
+<!-- Location & Contact -->
+<section class="py-stack-lg px-margin-mobile md:px-margin-desktop bg-surface-container-lowest">
+<div class="max-w-container-max mx-auto bg-white rounded-2xl shadow-sm border border-surface-container-highest overflow-hidden flex flex-col md:flex-row">
+<!-- Map Area -->
+<div class="md:w-1/2 h-[300px] md:h-auto relative bg-surface-container-low">
+<!-- Placeholder for Map, using image -->
+<img class="w-full h-full object-cover" data-alt="A clean, highly stylized digital map showing the location of a premium pet hotel in Seoul, South Korea. The map aesthetic matches the 'safe haven' brand identity, using soft creams, warm browns, and subtle pink accents. A prominent, stylized map pin with a paw print icon marks the specific location. The design is modern, uncluttered, and professional." data-location="Seoul, South Korea" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAAPGLGYc043jl0Xul6FAFt_JNh0sB9lo3LU0q2urkVyvwV9SMRDL5UZ3dNYoAryvxB2rBHTyiIy-uQlvlm8unAChFWVJp49jiy3fuyj5dzjPRiKfTi1-5ddd_WkMncxD8Hbt7c1Zfoiar3jguAtbR4QTL2xMePCoS4wfpgn2-Km7qyfqKSV8g8BdnGS2U5igXjGDne702gkGh0-oFnXVTSK6XhcgL89xGKt8LXX1-FInXKcxMJa3dlBw">
+</div>
+<!-- Contact Info -->
+<div class="md:w-1/2 p-8 md:p-12">
+<h2 class="font-headline-lg text-headline-lg text-primary mb-6">오시는 길</h2>
+<ul class="space-y-6">
+<li class="flex items-start gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined" data-icon="location_on">location_on</span>
+</div>
+<div>
+<h4 class="font-label-md text-primary mb-1">주소</h4>
+<p class="text-on-surface-variant font-body-md">서울특별시 ○○구 ○○로 123<br>댕이를 부탁해</p>
+</div>
+</li>
+<li class="flex items-start gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined" data-icon="call">call</span>
+</div>
+<div>
+<h4 class="font-label-md text-primary mb-1">전화</h4>
+<p class="text-on-surface-variant font-body-md">02-000-0000</p>
+</div>
+</li>
+<li class="flex items-start gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined" data-icon="schedule">schedule</span>
+</div>
+<div>
+<h4 class="font-label-md text-primary mb-1">운영 시간</h4>
+<p class="text-on-surface-variant font-body-md">매일 09:00 - 19:00 (연중무휴)</p>
+</div>
+</li>
+</ul>
+<div class="mt-8 pt-8 border-t border-surface-container-highest">
+<h4 class="font-label-md text-primary mb-4">소셜 채널</h4>
+<div class="flex gap-4">
+<button class="w-12 h-12 rounded-full bg-surface flex items-center justify-center text-primary border border-outline-variant hover:border-primary hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined" data-icon="share">share</span>
+</button>
+<button class="w-12 h-12 rounded-full bg-surface flex items-center justify-center text-primary border border-outline-variant hover:border-primary hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined" data-icon="mail">mail</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full mt-stack-lg bg-surface-container-high dark:bg-surface-container-low">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter py-stack-lg px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+<div class="col-span-1 md:col-span-1 mb-6 md:mb-0">
+<a class="font-headline-md text-headline-md text-primary flex items-center gap-2 mb-4 transition-opacity duration-200 hover:opacity-80" href="#">
+<span class="material-symbols-outlined icon-filled text-secondary" data-icon="pets">pets</span>
+                    댕이를 부탁해
+                </a>
+<p class="text-on-surface-variant font-body-md text-sm">
+                    © 2026 댕이를 부탁해. All rights reserved.
+                </p>
+</div>
+<div class="col-span-1">
+<h4 class="font-label-md text-primary mb-4 uppercase tracking-wider">회사</h4>
+<ul class="space-y-3">
+<li class=""><a class="text-on-surface-variant font-body-md hover:text-secondary transition-colors transition-opacity duration-200 hover:opacity-80" href="#">개인정보처리방침</a></li>
+<li class=""><a class="text-on-surface-variant font-body-md hover:text-secondary transition-colors transition-opacity duration-200 hover:opacity-80" href="#">이용약관</a></li>
+</ul>
+</div>
+<div class="col-span-1">
+<h4 class="font-label-md text-primary mb-4 uppercase tracking-wider">고객지원</h4>
+<ul class="space-y-3">
+<li class=""><a class="text-on-surface-variant font-body-md hover:text-secondary transition-colors transition-opacity duration-200 hover:opacity-80" href="#">FAQ</a></li>
+<li class=""><a class="text-on-surface-variant font-body-md hover:text-secondary transition-colors transition-opacity duration-200 hover:opacity-80" href="#">고객센터</a></li>
+</ul>
+</div>
+<div class="col-span-1">
+<h4 class="font-label-md text-primary mb-4 uppercase tracking-wider">뉴스레터</h4>
+<div class="flex gap-2">
+<input class="w-full bg-white border border-outline-variant rounded-lg px-4 py-2 focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary text-sm text-on-surface" placeholder="이메일 입력" type="email">
+<button class="bg-primary text-on-primary p-2 rounded-lg hover:bg-primary-container transition-colors">
+<span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</footer>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="screen-main2" class="screen">
+    <p class="caption">메인 화면 · 테마 2</p>
+    <div class="window">
+      <div class="chrome">
+        <span class="dot" style="background:#f87171"></span>
+        <span class="dot" style="background:#fbbf24"></span>
+        <span class="dot" style="background:#34d399"></span>
+        <span class="url">daengyi.co.kr</span>
+      </div>
+      <div class="frame">
+        <div class="frame-inner">
+<!-- TopNavBar -->
+<header class="w-full top-0 sticky shadow-sm dark:bg-surface-container-low bg-background dark:bg-background z-50">
+<div class="flex justify-between items-center h-20 px-margin-desktop max-w-container-max mx-auto md:px-margin-desktop px-margin-mobile">
+<!-- Brand -->
+<div class="flex items-center gap-stack-sm">
+<img alt="댕이를 부탁해 Logo" class="h-10 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC6jTHqyXUzA-qcNUuMRjhqmGqWDEpMvo4fh22R9Gh9OVLUjxA81qeZKtD7JHg3jDTEiUlRdJj2gh1S6Z-gZaID3YaTBfVZMZ4oWv9iGNb3nuLkOOVC_JxgXYtPZgtzjqbzqI7_HcKTzSBadE8kK2trtXZdbegwR2RZDGuDJwurU7gf3RTy484FpPaw4-UoVUJ6E4oFkDrHJv0t82iSG-rgKzKg2c8ySvV4RpDgy_Y-gFjE16NjuwRA4sczIwsgM7REdlY">
+<span class="text-headline-md font-headline-md text-primary dark:text-primary-fixed hidden md:block">댕이를 부탁해</span>
+</div>
+<!-- Navigation Links (Desktop) -->
+<nav class="hidden md:flex gap-gutter items-center"><a class="text-primary font-bold border-b-2 border-primary pb-1 transition-all duration-300 hover:-translate-y-0.5" href="#" style="opacity: 0;">홈</a><a class="text-on-surface-variant font-body-md hover:text-primary hover:bg-surface-container-lowest transition-colors px-2 py-1 rounded transition-all duration-300 hover:-translate-y-0.5" href="#">예약</a><a class="text-on-surface-variant font-body-md hover:text-primary hover:bg-surface-container-lowest transition-colors px-2 py-1 rounded transition-all duration-300 hover:-translate-y-0.5" href="#">쇼핑몰</a><a class="text-on-surface-variant font-body-md hover:text-primary hover:bg-surface-container-lowest transition-colors px-2 py-1 rounded transition-all duration-300 hover:-translate-y-0.5" href="#">마이페이지</a></nav>
+<!-- Actions -->
+<div class="flex items-center gap-stack-md">
+<button class="hidden md:flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+</button>
+<button class="bg-primary text-on-primary font-label-md text-label-md px-6 h-12 rounded-lg hover:bg-primary-container transition-colors flex items-center justify-center min-w-[100px]">Sign In</button>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-grow">
+<!-- Hero Section -->
+<section class="relative w-full overflow-hidden bg-surface-container py-16 md:py-24">
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop grid grid-cols-1 md:grid-cols-2 gap-12 items-center relative z-10">
+<div class="flex flex-col gap-6 max-w-xl">
+<h1 class="font-headline-xl text-headline-lg-mobile md:text-headline-xl text-primary">
+                        사랑하는 우리 아이, <br class="hidden md:block">믿고 맡길 수 있는 <br class="hidden md:block"> <span class="text-secondary">댕이를 부탁해</span>
+</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant">
+                        따뜻하고 안전한 프리미엄 펫케어 서비스. 우리 아이에게 행복한 하루를 선물하세요. 전문 펫시터와 최상의 환경이 기다립니다.
+                    </p>
+<div class="flex flex-wrap gap-4 mt-4">
+<button class="bg-primary text-on-primary font-label-md text-label-md px-8 h-12 rounded-lg hover:bg-primary-container transition-colors flex items-center gap-2 hover-lift">
+<span class="material-symbols-outlined" data-icon="calendar_month">calendar_month</span>
+                            예약하기
+                        </button>
+<button class="bg-secondary-container bg-opacity-20 text-secondary font-label-md text-label-md px-8 h-12 rounded-lg border border-secondary-container hover:bg-opacity-30 transition-colors flex items-center gap-2 hover-lift">
+<span class="material-symbols-outlined" data-icon="info">info</span>
+                            시설 둘러보기
+                        </button>
+</div>
+</div>
+<div class="relative h-[400px] md:h-[500px] w-full rounded-2xl overflow-hidden shadow-lg border-4 border-surface-container-lowest">
+<div class="bg-cover bg-center w-full h-full" data-alt="A joyful golden retriever looking directly at the camera with a wide smile, sitting in a bright, modern, spacious indoor pet daycare facility with warm sunlight streaming through large windows. The environment feels safe, premium, and clean, featuring soft organic materials in light cream and brown tones." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAxROTU8bev9sTlUtDsvD5mbZp8G5Aw9U8Did8tZUGTfQnE83V1gPtKSMCnH2c8hQULsSHS2oIrckueLr26ziR1PnUaH7PExQ6Ed7MIqd6IbQSWlSFGQ8UVlMV_3Fp5WQm8QkzizuZqfhpGHKLtwMxterfmQ0aGX8TRs_aSIVpVSPv76qNSlj2NEPyjNc6nFNmFkgOkSH9VSGSLM69JrIYFNdBDT8lSxfteLBrmoofxcf9xQW-IW7ja-Q')"></div>
+<div class="absolute bottom-6 left-6 bg-surface-container-lowest p-4 rounded-xl shadow-md flex items-center gap-4">
+<div class="w-12 h-12 rounded-full border-2 border-primary overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A small, cute poodle looking happy, set against a soft warm cream background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDNp_XBWiOU6ImWhK4bYc59zaZAtTFo2ljArN9bHfFomZ0gmaPUtmj6_1ky1u0bCWfAvdHWvKyFTLwN7umuQ-84Sqkum-50O60rB6UfVdVzF4M7Z5LMCcehxqt99n2cUiPd_lr5zflivcGkTBurEEKHdwveszRiCrLKlPwDYei2T7vd_1wadC4kpLzvDoPA1dE6v4s_p8F4vDQQa31Du-okxpR_yW53cSpuFTlLBuuMTaTf4x4p7f0EmA">
+</div>
+<div>
+<p class="font-label-md text-label-md text-primary">이달의 우수회원 '코코'</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-secondary text-sm" data-icon="favorite" data-weight="fill" style="font-variation-settings: 'FILL' 1;">favorite</span>
+                                30회 이용
+                            </p>
+</div>
+</div>
+</div>
+</div>
+<!-- Decorative SVG Blob -->
+<div class="absolute top-0 right-0 -mr-32 -mt-32 w-96 h-96 bg-primary-fixed rounded-full mix-blend-multiply filter blur-3xl opacity-50 z-0"></div>
+<div class="absolute bottom-0 left-0 -ml-32 -mb-32 w-96 h-96 bg-secondary-container rounded-full mix-blend-multiply filter blur-3xl opacity-30 z-0"></div>
+</section>
+<!-- Service Overview (Bento Grid) -->
+<section class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-16 md:py-24">
+<div class="text-center mb-12">
+<h2 class="font-headline-md text-headline-lg-mobile md:text-headline-md text-primary mb-4">우리가 제공하는 특별한 서비스</h2>
+<p class="text-on-surface-variant font-body-md max-w-2xl mx-auto">아이들의 성향과 필요에 맞춘 세심한 케어를 약속합니다.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<!-- Hotel -->
+<div class="bg-surface-container-lowest rounded-2xl p-6 shadow-sm border border-surface-container-highest hover-lift flex flex-col items-start gap-4">
+<div class="w-14 h-14 bg-surface-container rounded-xl flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-3xl" data-icon="bed" style="font-variation-settings: 'FILL' 1;">bed</span>
+</div>
+<h3 class="font-headline-md text-xl text-primary">프리미엄 호텔</h3>
+<p class="text-on-surface-variant font-body-md flex-grow">스트레스 없는 아늑한 개인 공간. 24시간 실시간 모니터링으로 안심하고 맡기세요.</p>
+<a class="text-secondary font-label-md flex items-center gap-1 hover:underline mt-2" href="#">
+                        자세히 보기 <span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</a>
+</div>
+<!-- Daycare -->
+<div class="bg-surface-container-lowest rounded-2xl p-6 shadow-sm border border-surface-container-highest hover-lift flex flex-col items-start gap-4">
+<div class="w-14 h-14 bg-primary-fixed rounded-xl flex items-center justify-center text-primary-container">
+<span class="material-symbols-outlined text-3xl" data-icon="playing_cards" style="font-variation-settings: 'FILL' 1;">playing_cards</span>
+</div>
+<h3 class="font-headline-md text-xl text-primary">맞춤형 데이케어</h3>
+<p class="text-on-surface-variant font-body-md flex-grow">전문 훈련사와 함께하는 사회성 훈련 및 신나는 놀이 프로그램. 에너지를 듬뿍 발산해요.</p>
+<a class="text-primary font-label-md flex items-center gap-1 hover:underline mt-2" href="#">
+                        프로그램 보기 <span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</a>
+</div>
+<!-- Shop -->
+<div class="bg-surface-container-lowest rounded-2xl p-6 shadow-sm border border-surface-container-highest hover-lift flex flex-col items-start gap-4">
+<div class="w-14 h-14 bg-secondary-container bg-opacity-30 rounded-xl flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-3xl" data-icon="storefront" style="font-variation-settings: 'FILL' 1;">storefront</span>
+</div>
+<h3 class="font-headline-md text-xl text-primary">유기농 샵</h3>
+<p class="text-on-surface-variant font-body-md flex-grow">수제 간식부터 프리미엄 사료, 안전한 장난감까지. 엄선된 제품만 판매합니다.</p>
+<a class="text-primary font-label-md flex items-center gap-1 hover:underline mt-2" href="#">
+                        쇼핑하기 <span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</a>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full mt-stack-lg bg-surface-container-high dark:bg-surface-container-low text-on-surface-variant font-body-md text-body-md">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter py-stack-lg px-margin-desktop max-w-container-max mx-auto">
+<div class="flex flex-col gap-4">
+<span class="font-headline-md text-headline-md text-primary">댕이를 부탁해</span>
+<p class="text-sm">믿음직한 펫케어 서비스. 우리 아이들의 두 번째 집입니다.</p>
+</div>
+<div class="flex flex-col gap-2">
+<h4 class="font-label-md text-primary mb-2">바로가기</h4>
+<a class="text-primary font-bold hover:text-secondary transition-colors transition-opacity duration-200 hover:opacity-80" href="#">Privacy Policy</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors transition-opacity duration-200 hover:opacity-80" href="#">Terms of Service</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors transition-opacity duration-200 hover:opacity-80" href="#">FAQ</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors transition-opacity duration-200 hover:opacity-80" href="#">Customer Support</a>
+</div>
+<div class="flex flex-col gap-2">
+<h4 class="font-label-md text-primary mb-2">연락처</h4>
+<p class="text-sm">1588-0000</p>
+<p class="text-sm">hello@dang-e.com</p>
+</div>
+<div class="flex flex-col gap-2">
+<h4 class="font-label-md text-primary mb-2">운영시간</h4>
+<p class="text-sm">평일: 08:00 - 20:00</p>
+<p class="text-sm">주말: 09:00 - 18:00</p>
+</div>
+</div>
+<div class="text-center py-4 border-t border-surface-dim">
+<p class="text-sm">© 2024 댕이를 부탁해. All rights reserved.</p>
+</div>
+</footer>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="screen-reserve" class="screen">
+    <p class="caption">예약하기</p>
+    <div class="window">
+      <div class="chrome">
+        <span class="dot" style="background:#f87171"></span>
+        <span class="dot" style="background:#fbbf24"></span>
+        <span class="dot" style="background:#34d399"></span>
+        <span class="url">daengyi.co.kr/reservation</span>
+      </div>
+      <div class="frame">
+        <div class="frame-inner">
+<!-- TopNavBar -->
+<header class="w-full top-0 sticky bg-surface shadow-sm shadow-primary/5 z-50 transition-all duration-300">
+<div class="flex justify-between items-center h-20 px-margin-desktop max-w-container-max mx-auto">
+<a class="font-headline-md text-headline-md font-bold text-primary flex items-center gap-2" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">pets</span>
+                댕이를 부탁해
+            </a>
+<!-- Desktop Nav -->
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-on-surface-variant font-medium hover:text-secondary hover:-translate-y-1 transition-all duration-300" href="#">홈</a>
+<a class="text-primary font-bold border-b-2 border-primary pb-1 -translate-y-1 transition-transform duration-300" href="#">예약</a>
+<a class="text-on-surface-variant font-medium hover:text-secondary hover:-translate-y-1 transition-all duration-300" href="#">쇼핑몰</a>
+<a class="text-on-surface-variant font-medium hover:text-secondary hover:-translate-y-1 transition-all duration-300" href="#">마이페이지</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="hidden md:flex items-center justify-center w-10 h-10 rounded-full hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined">search</span>
+</button>
+<a class="hidden md:block font-label-md text-label-md px-6 py-3 rounded-full bg-primary-container text-on-primary hover:bg-primary-fixed-variant transition-colors shadow-sm" href="#">
+                    로그인
+                </a>
+<!-- Mobile Menu Button -->
+<button class="md:hidden p-2 text-primary">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+</div>
+</header>
+<main class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-12">
+<div class="mb-12">
+<h1 class="font-headline-xl text-headline-xl md:text-[48px] text-[36px] text-primary mb-4">예약하기</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant">이용하실 서비스를 선택하고 날짜와 반려동물 정보를 입력해주세요.</p>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Main Form Area -->
+<div class="lg:col-span-8 space-y-12">
+<!-- Service Selection -->
+<section class="bg-surface-container-lowest p-8 rounded-xl shadow-[0_4px_24px_rgba(93,64,36,0.06)] border border-outline-variant/30">
+<h2 class="font-headline-md text-headline-md text-primary mb-6 flex items-center gap-3">
+<span class="material-symbols-outlined bg-secondary-container text-secondary p-2 rounded-full">hotel</span>
+                        서비스 선택
+                    </h2>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<label class="cursor-pointer group relative">
+<input checked="" class="peer sr-only" name="service_type" type="radio" value="hotel"/>
+<div class="p-6 rounded-xl border-2 border-surface-container-high bg-surface-container-lowest peer-checked:border-secondary peer-checked:bg-secondary-fixed/30 hover:border-secondary/50 transition-all shadow-sm hover:shadow-md hover:-translate-y-1 h-full flex flex-col items-center justify-center gap-3">
+<span class="material-symbols-outlined text-4xl text-on-surface-variant peer-checked:text-secondary group-hover:text-secondary transition-colors">bed</span>
+<span class="font-label-md text-label-md text-on-surface font-bold peer-checked:text-secondary">🏨 호텔 숙박</span>
+</div>
+<div class="absolute top-4 right-4 hidden peer-checked:block text-secondary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+</label>
+<label class="cursor-pointer group relative">
+<input class="peer sr-only" name="service_type" type="radio" value="daycare"/>
+<div class="p-6 rounded-xl border-2 border-surface-container-high bg-surface-container-lowest peer-checked:border-secondary peer-checked:bg-secondary-fixed/30 hover:border-secondary/50 transition-all shadow-sm hover:shadow-md hover:-translate-y-1 h-full flex flex-col items-center justify-center gap-3">
+<span class="material-symbols-outlined text-4xl text-on-surface-variant peer-checked:text-secondary group-hover:text-secondary transition-colors">wb_sunny</span>
+<span class="font-label-md text-label-md text-on-surface font-bold peer-checked:text-secondary">☀️ 데이케어</span>
+</div>
+<div class="absolute top-4 right-4 hidden peer-checked:block text-secondary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+</label>
+</div>
+</section>
+<!-- Date & Time Selection -->
+<section class="bg-surface-container-lowest p-8 rounded-xl shadow-[0_4px_24px_rgba(93,64,36,0.06)] border border-outline-variant/30">
+<h2 class="font-headline-md text-headline-md text-primary mb-6 flex items-center gap-3">
+<span class="material-symbols-outlined bg-secondary-container text-secondary p-2 rounded-full">calendar_month</span>
+                        일정 선택
+                    </h2>
+<div class="bg-surface-container-low rounded-lg p-4 mb-6">
+<p class="font-body-md text-body-md text-on-surface-variant flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-sm">info</span>
+                            체크인 날짜를 먼저 선택하고, 체크아웃 날짜를 다시 클릭해주세요.
+                        </p>
+</div>
+<!-- Calendar Mockup (Simplified for UI representation) -->
+<div class="mb-8 border border-outline-variant/50 rounded-xl overflow-hidden bg-surface">
+<div class="flex justify-between items-center p-4 border-b border-outline-variant/50 bg-surface-container">
+<button class="p-2 hover:bg-surface-container-high rounded-full transition-colors text-on-surface-variant"><span class="material-symbols-outlined">chevron_left</span></button>
+<span class="font-label-md text-label-md font-bold text-primary">2026년 9월</span>
+<button class="p-2 hover:bg-surface-container-high rounded-full transition-colors text-on-surface-variant"><span class="material-symbols-outlined">chevron_right</span></button>
+</div>
+<div class="grid grid-cols-7 gap-px bg-outline-variant/30 text-center">
+<!-- Days Header -->
+<div class="bg-surface p-3 font-label-sm text-error">일</div>
+<div class="bg-surface p-3 font-label-sm text-on-surface-variant">월</div>
+<div class="bg-surface p-3 font-label-sm text-on-surface-variant">화</div>
+<div class="bg-surface p-3 font-label-sm text-on-surface-variant">수</div>
+<div class="bg-surface p-3 font-label-sm text-on-surface-variant">목</div>
+<div class="bg-surface p-3 font-label-sm text-on-surface-variant">금</div>
+<div class="bg-surface p-3 font-label-sm text-primary">토</div>
+<!-- Dummy Calendar Grid -->
+<div class="bg-surface p-4 text-on-surface-variant/30 min-h-[80px]"></div>
+<div class="bg-surface p-4 text-on-surface-variant/30 min-h-[80px]"></div>
+<div class="bg-surface p-4 text-on-surface hover:bg-surface-container-high cursor-pointer transition-colors min-h-[80px] flex flex-col items-center gap-1">1<span class="text-[10px] text-secondary bg-secondary-fixed/50 px-2 py-0.5 rounded-full">여유</span></div>
+<div class="bg-surface p-4 text-on-surface hover:bg-surface-container-high cursor-pointer transition-colors min-h-[80px] flex flex-col items-center gap-1">2<span class="text-[10px] text-secondary bg-secondary-fixed/50 px-2 py-0.5 rounded-full">여유</span></div>
+<div class="bg-surface p-4 text-on-surface hover:bg-surface-container-high cursor-pointer transition-colors min-h-[80px] flex flex-col items-center gap-1">3<span class="text-[10px] text-secondary bg-secondary-fixed/50 px-2 py-0.5 rounded-full">여유</span></div>
+<div class="bg-surface p-4 text-on-surface hover:bg-surface-container-high cursor-pointer transition-colors min-h-[80px] flex flex-col items-center gap-1">4<span class="text-[10px] text-secondary bg-secondary-fixed/50 px-2 py-0.5 rounded-full">여유</span></div>
+<div class="bg-surface p-4 text-on-surface hover:bg-surface-container-high cursor-pointer transition-colors min-h-[80px] flex flex-col items-center gap-1">5<span class="text-[10px] text-error bg-error-container/50 px-2 py-0.5 rounded-full">마감</span></div>
+<!-- More days would follow... showing just one row for brevity -->
+</div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+<div class="space-y-2">
+<label class="font-label-md text-label-md text-on-surface-variant">체크인 시간</label>
+<select class="w-full h-12 px-4 rounded-lg border border-outline-variant bg-surface focus:border-secondary focus:ring-2 focus:ring-secondary/20 transition-all font-body-md text-on-surface">
+<option>09:00</option>
+<option>09:30</option>
+<option>10:00</option>
+<!-- More options -->
+</select>
+</div>
+<div class="space-y-2">
+<label class="font-label-md text-label-md text-on-surface-variant">체크아웃 시간</label>
+<select class="w-full h-12 px-4 rounded-lg border border-outline-variant bg-surface focus:border-secondary focus:ring-2 focus:ring-secondary/20 transition-all font-body-md text-on-surface">
+<option>21:00</option>
+<option>20:30</option>
+<option>20:00</option>
+<!-- More options -->
+</select>
+</div>
+</div>
+<p class="font-label-sm text-label-sm text-outline mt-3 flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">schedule</span> 운영 시간은 09:00 ~ 21:00 입니다.
+                    </p>
+</section>
+<!-- Pet Information -->
+<section class="bg-surface-container-lowest p-8 rounded-xl shadow-[0_4px_24px_rgba(93,64,36,0.06)] border border-outline-variant/30">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4">
+<h2 class="font-headline-md text-headline-md text-primary flex items-center gap-3">
+<span class="material-symbols-outlined bg-secondary-container text-secondary p-2 rounded-full">pets</span>
+                            반려동물 정보
+                        </h2>
+<button class="font-label-md text-label-md px-4 py-2 bg-secondary-container/30 text-secondary hover:bg-secondary-container/50 rounded-full transition-colors flex items-center justify-center gap-2 border border-secondary/20">
+<span class="material-symbols-outlined text-sm">add</span> 새 반려동물 등록
+                        </button>
+</div>
+<div class="space-y-6">
+<div class="space-y-2">
+<label class="font-label-md text-label-md text-on-surface-variant">등록된 반려동물 선택</label>
+<select class="w-full h-12 px-4 rounded-lg border border-outline-variant bg-surface focus:border-secondary focus:ring-2 focus:ring-secondary/20 transition-all font-body-md text-on-surface">
+<option>선택해주세요</option>
+<option>123 (123)</option>
+</select>
+</div>
+<div class="p-6 border border-outline-variant/50 rounded-xl bg-surface-container-lowest space-y-4">
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<div class="space-y-2">
+<label class="font-label-md text-label-md text-on-surface-variant">이름</label>
+<input class="w-full h-12 px-4 rounded-lg border border-outline-variant bg-surface focus:border-secondary focus:ring-2 focus:ring-secondary/20 transition-all font-body-md text-on-surface" placeholder="이름 입력" type="text"/>
+</div>
+<div class="space-y-2">
+<label class="font-label-md text-label-md text-on-surface-variant">견종</label>
+<input class="w-full h-12 px-4 rounded-lg border border-outline-variant bg-surface focus:border-secondary focus:ring-2 focus:ring-secondary/20 transition-all font-body-md text-on-surface" placeholder="견종 입력" type="text"/>
+</div>
+<div class="space-y-2">
+<label class="font-label-md text-label-md text-on-surface-variant">나이</label>
+<input class="w-full h-12 px-4 rounded-lg border border-outline-variant bg-surface focus:border-secondary focus:ring-2 focus:ring-secondary/20 transition-all font-body-md text-on-surface" placeholder="나이 입력" type="number"/>
+</div>
+<div class="space-y-2">
+<label class="font-label-md text-label-md text-on-surface-variant">체중 (kg)</label>
+<input class="w-full h-12 px-4 rounded-lg border border-outline-variant bg-surface focus:border-secondary focus:ring-2 focus:ring-secondary/20 transition-all font-body-md text-on-surface" placeholder="체중 입력" step="0.1" type="number"/>
+</div>
+</div>
+<div class="space-y-2 pt-2">
+<label class="font-label-md text-label-md text-on-surface-variant block mb-2">백신 접종 여부</label>
+<div class="flex gap-4">
+<label class="flex items-center gap-2 cursor-pointer">
+<input checked="" class="text-secondary focus:ring-secondary" name="vaccine" type="radio"/>
+<span class="font-body-md text-on-surface">접종 완료</span>
+</label>
+<label class="flex items-center gap-2 cursor-pointer">
+<input class="text-secondary focus:ring-secondary" name="vaccine" type="radio"/>
+<span class="font-body-md text-on-surface">미접종</span>
+</label>
+</div>
+</div>
+<div class="space-y-2 pt-2">
+<label class="font-label-md text-label-md text-on-surface-variant">특이사항 및 요청사항</label>
+<textarea class="w-full p-4 rounded-lg border border-outline-variant bg-surface focus:border-secondary focus:ring-2 focus:ring-secondary/20 transition-all font-body-md text-on-surface resize-none" placeholder="알러지, 복용 중인 약, 주의해야 할 행동 등 특이사항이나 요청사항을 적어주세요." rows="3"></textarea>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Sidebar Summary -->
+<div class="lg:col-span-4">
+<div class="sticky top-28 bg-surface-container-lowest p-6 rounded-xl shadow-[0_8px_32px_rgba(93,64,36,0.08)] border border-outline-variant/20">
+<h3 class="font-headline-md text-headline-md text-primary mb-6 pb-4 border-b border-outline-variant/30">예약 요약</h3>
+<ul class="space-y-4 mb-8">
+<li class="flex justify-between items-start">
+<span class="font-label-md text-label-md text-on-surface-variant">서비스</span>
+<span class="font-body-md font-semibold text-on-surface text-right">호텔 숙박</span>
+</li>
+<li class="flex justify-between items-start">
+<span class="font-label-md text-label-md text-on-surface-variant">날짜</span>
+<span class="font-body-md font-semibold text-outline text-right">선택 전</span>
+</li>
+<li class="flex justify-between items-start">
+<span class="font-label-md text-label-md text-on-surface-variant">시간</span>
+<span class="font-body-md font-semibold text-on-surface text-right">09:00 ~ 21:00</span>
+</li>
+<li class="flex justify-between items-start">
+<span class="font-label-md text-label-md text-on-surface-variant">반려동물</span>
+<span class="font-body-md font-semibold text-outline text-right">입력 전</span>
+</li>
+</ul>
+<div class="space-y-3">
+<button class="w-full h-14 bg-primary-container text-on-primary font-headline-md text-headline-md text-[18px] rounded-xl hover:bg-primary-fixed-variant transition-all hover:-translate-y-1 shadow-md hover:shadow-lg flex items-center justify-center gap-2">
+                            예약 신청하기
+                        </button>
+<a class="block text-center font-label-md text-label-md text-secondary hover:text-secondary-fixed-variant py-2 transition-colors" href="#">
+                            내 예약 내역 보기 →
+                        </a>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full mt-stack-lg bg-tertiary-fixed dark:bg-tertiary-container text-on-tertiary-fixed dark:text-on-tertiary-container font-body-md text-body-md">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter py-stack-lg px-margin-desktop max-w-container-max mx-auto">
+<div class="space-y-4">
+<div class="font-headline-md text-headline-md text-primary dark:text-primary-fixed-dim font-bold flex items-center gap-2">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">pets</span> 댕이를 부탁해
+                </div>
+<p class="text-on-tertiary-fixed-variant text-sm mt-2">반려동물을 위한 가장 안전하고 따뜻한 공간.</p>
+<div class="font-label-sm text-label-sm text-on-tertiary-fixed-variant mt-4">
+                    © 2024 댕이를 부탁해. All rights reserved.
+                </div>
+</div>
+<div class="space-y-4">
+<h4 class="font-bold text-on-tertiary-fixed mb-4">바로가기</h4>
+<nav class="flex flex-col gap-2">
+<a class="text-on-tertiary-fixed-variant hover:text-primary transition-colors w-fit" href="#">회사소개</a>
+<a class="text-on-tertiary-fixed-variant hover:text-primary transition-colors w-fit" href="#">이용약관</a>
+<a class="text-on-tertiary-fixed-variant hover:text-primary transition-colors w-fit" href="#">개인정보처리방침</a>
+<a class="text-on-tertiary-fixed-variant hover:text-primary transition-colors w-fit" href="#">고객센터</a>
+</nav>
+</div>
+<div class="space-y-4">
+<h4 class="font-bold text-on-tertiary-fixed mb-4">고객센터</h4>
+<div class="text-on-tertiary-fixed-variant space-y-1">
+<p>평일 09:00 - 18:00</p>
+<p>점심 12:00 - 13:00</p>
+<p>주말/공휴일 휴무</p>
+<p class="mt-4 font-bold text-primary">1588-0000</p>
+</div>
+</div>
+</div>
+</footer>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="screen-shop" class="screen">
+    <p class="caption">쇼핑몰</p>
+    <div class="window">
+      <div class="chrome">
+        <span class="dot" style="background:#f87171"></span>
+        <span class="dot" style="background:#fbbf24"></span>
+        <span class="dot" style="background:#34d399"></span>
+        <span class="url">daengyi.co.kr/shop</span>
+      </div>
+      <div class="frame">
+        <div class="frame-inner">
+<!-- TopNavBar -->
+<nav class="bg-background dark:bg-background shadow-sm dark:bg-surface-container-low w-full top-0 sticky z-50">
+<div class="flex justify-between items-center h-20 px-margin-desktop max-w-container-max mx-auto">
+<div class="text-headline-md font-headline-md text-primary dark:text-primary-fixed">댕이를 부탁해</div>
+<div class="hidden md:flex gap-gutter items-center"><a class="text-on-surface-variant font-medium hover:text-secondary hover:transition-colors duration-200 px-3 py-2 rounded-lg" href="#">홈</a><a class="text-on-surface-variant font-medium hover:text-secondary hover:transition-colors duration-200 px-3 py-2 rounded-lg" href="#">예약</a><a class="text-primary font-bold border-b-2 border-primary pb-1 px-3 py-2" href="#">쇼핑몰</a><a class="text-on-surface-variant font-medium hover:text-secondary hover:transition-colors duration-200 px-3 py-2 rounded-lg" href="#">마이페이지</a></div>
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">search</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors relative">
+<span class="material-symbols-outlined">shopping_cart</span>
+<span class="absolute -top-1 -right-1 bg-secondary text-on-secondary text-xs rounded-full h-4 w-4 flex items-center justify-center font-label-sm">3</span>
+</button>
+<button class="hidden md:flex bg-primary text-on-primary font-label-md px-6 py-3 rounded-xl hover:opacity-90 transition-opacity">로그인</button>
+<button class="md:hidden text-on-surface-variant">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+</div>
+</nav>
+<main class="flex-grow max-w-container-max mx-auto w-full px-margin-mobile md:px-margin-desktop py-stack-lg">
+<!-- Promotional Banner -->
+<div class="relative w-full h-[300px] md:h-[400px] rounded-xl overflow-hidden mb-stack-lg group">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" data-alt="A warm, inviting lifestyle shot of a happy golden retriever playing with a high-quality squeaky toy in a sunlit, modern living room. The scene is brightly lit with a soft, comforting aesthetic. The colors feature warm earthy browns and cream tones, evoking a premium, safe, and nurturing environment for pets." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAK85tGMBkvDs1OEQUOO06yNrFM99lwVvRLBWF5tvyszy5q1_A8fcF-AnbrzL4q3gRD5APA02199xx161DGkHNoOr7DDP8w1oVhhW1dlu6PoQb2lsOVVE3RXmQTZmQ79tLXIjXZ7iZA2KCjCes4tckdO7nP2t7fcty91XsEFONFt9dE7sy9h5JNmfhcFguRRVWrb9fsvSWhi3Hk-lGdmQNsoGAUNUZGpowWC92q4E_axJ0JD3W29oVJOw')"></div>
+<div class="absolute inset-0 bg-gradient-to-r from-primary-container/80 to-transparent"></div>
+<div class="absolute inset-0 flex flex-col justify-center p-8 md:p-12 max-w-2xl">
+<span class="bg-secondary-container text-on-secondary-container font-label-sm px-3 py-1 rounded-full w-max mb-4">Special Offer</span>
+<h1 class="font-headline-xl text-headline-xl text-on-primary mb-4">Spring Refresh Sale</h1>
+<p class="font-body-lg text-body-lg text-surface-container-low mb-8 max-w-md">Get up to 30% off on premium treats, durable toys, and cozy accessories for your furry friend.</p>
+<button class="bg-primary-fixed text-on-primary-fixed font-label-md px-8 py-4 rounded-xl w-max hover:bg-surface-container-highest transition-colors shadow-sm">
+                    Shop the Sale
+                </button>
+</div>
+</div>
+<div class="flex flex-col md:flex-row gap-gutter">
+<!-- Sidebar / Filters -->
+<aside class="w-full md:w-64 shrink-0 mb-stack-lg md:mb-0">
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-surface-container shadow-sm sticky top-28">
+<h3 class="font-headline-md text-headline-md text-primary mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined">filter_list</span> Filters
+                    </h3>
+<div class="mb-8">
+<h4 class="font-label-md text-label-md text-on-surface mb-3">Categories</h4>
+<div class="space-y-2">
+<label class="flex items-center gap-3 cursor-pointer group">
+<input checked="" class="form-checkbox h-5 w-5 text-primary border-outline rounded focus:ring-primary focus:ring-offset-0 bg-transparent transition-all" type="checkbox">
+<span class="font-body-md text-on-surface-variant group-hover:text-primary transition-colors">Food</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input checked="" class="form-checkbox h-5 w-5 text-primary border-outline rounded focus:ring-primary focus:ring-offset-0 bg-transparent transition-all" type="checkbox">
+<span class="font-body-md text-on-surface-variant group-hover:text-primary transition-colors">Treats</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="form-checkbox h-5 w-5 text-primary border-outline rounded focus:ring-primary focus:ring-offset-0 bg-transparent transition-all" type="checkbox">
+<span class="font-body-md text-on-surface-variant group-hover:text-primary transition-colors">Toys</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="form-checkbox h-5 w-5 text-primary border-outline rounded focus:ring-primary focus:ring-offset-0 bg-transparent transition-all" type="checkbox">
+<span class="font-body-md text-on-surface-variant group-hover:text-primary transition-colors">Accessories</span>
+</label>
+</div>
+</div>
+<div>
+<h4 class="font-label-md text-label-md text-on-surface mb-3">Dog Size</h4>
+<div class="flex flex-wrap gap-2">
+<button class="px-4 py-2 rounded-full border border-primary text-primary font-label-sm bg-surface-container-low hover:bg-surface-dim transition-colors">Small</button>
+<button class="px-4 py-2 rounded-full border border-outline text-on-surface-variant font-label-sm hover:border-primary hover:text-primary transition-colors">Medium</button>
+<button class="px-4 py-2 rounded-full border border-outline text-on-surface-variant font-label-sm hover:border-primary hover:text-primary transition-colors">Large</button>
+</div>
+</div>
+</div>
+</aside>
+<!-- Product Grid -->
+<div class="flex-grow">
+<div class="flex justify-between items-center mb-6">
+<p class="font-body-md text-on-surface-variant">Showing 24 products</p>
+<select class="form-select bg-surface-container-lowest border-outline text-on-surface-variant font-body-md rounded-lg focus:ring-primary focus:border-primary">
+<option>Recommended</option>
+<option>Price: Low to High</option>
+<option>Price: High to Low</option>
+<option>Newest Arrivals</option>
+</select>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-gutter">
+<!-- Product Card 1 -->
+<div class="product-card bg-surface-container-lowest rounded-xl p-4 flex flex-col transition-all duration-300 border border-surface-container relative">
+<div class="absolute top-6 left-6 z-10 bg-secondary-container text-on-secondary-container font-label-sm px-3 py-1 rounded-full shadow-sm">Bestseller</div>
+<div class="aspect-square rounded-lg overflow-hidden mb-4 relative bg-surface-container-low">
+<img class="w-full h-full object-cover mix-blend-multiply" data-alt="A close-up studio shot of premium, organic dog kibble in a minimalist ceramic bowl. The lighting is soft and natural, emphasizing the texture and wholesome quality of the food. The background is a clean, warm cream color consistent with a high-end pet brand aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZzlLPSBK3oDsqkEi-7ljFvBqM61a7Xi5M9cNsHdLeohCVsmbOjDp2LhFV5G9tRrQCu_PshUzGKCUQWXVRW_NEo7f7Byq-rJsfKwxGXbzPfozLsfc04SDBpOwKLj0xVZFEPWPd8hFo6vpanRZt1MkNJoeFWJNTGHRuB5Le5ZyuEy1p60BrAcwyP1REmpQ7I3Xqj9gwCqb8RdSan1oi8HaCiRiUeY1ON6qcxOiOSdGtu6-cM9LJ6nAnpQ">
+</div>
+<div class="flex-grow">
+<div class="flex items-center gap-1 mb-2">
+<span class="material-symbols-outlined text-[16px] text-secondary" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px] text-secondary" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px] text-secondary" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px] text-secondary" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px] text-surface-dim" style="font-variation-settings: 'FILL' 1;">star_half</span>
+<span class="font-label-sm text-on-surface-variant ml-1">(128)</span>
+</div>
+<h3 class="font-label-md text-label-md text-on-surface mb-1">Premium Organic Beef Kibble</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-4">Adult Dogs • 5kg</p>
+</div>
+<div class="flex items-center justify-between mt-auto">
+<span class="font-headline-md text-headline-md text-primary">₩45,000</span>
+<button class="w-12 h-12 rounded-full bg-surface-container-high text-primary flex items-center justify-center hover:bg-primary hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined">add_shopping_cart</span>
+</button>
+</div>
+</div>
+<!-- Product Card 2 -->
+<div class="product-card bg-surface-container-lowest rounded-xl p-4 flex flex-col transition-all duration-300 border border-surface-container">
+<div class="aspect-square rounded-lg overflow-hidden mb-4 relative bg-surface-container-low">
+<img class="w-full h-full object-cover mix-blend-multiply" data-alt="A macro shot of natural sweet potato dog chews neatly arranged on a light wooden cutting board. Soft, warm directional lighting highlights the chewy texture. The setting feels rustic yet clean and premium, fitting a boutique pet food aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAaeIOquKORtXdcJiNMgQ5JP5YXg4gJw0_gtpzy76EhWEJybXhfZSFPIFh8fM_2bbzK5yK_cDWuM9fXxVdDGjnnY7s1jBRfitDvMNleBIRCq8wwF9uTrPUOnAiOqR9V0JO7ETpuFf_2kqH3JokUIVf0pgQlpjGx_PqbcV5htd4nMWwtBbxE7UVkA3uQ58Ha4tut-ZlM0sZVAZH2nxglp0nnDpyYLSomm9GVAVP7dmvxoIW84VKNtlsaXw">
+</div>
+<div class="flex-grow">
+<div class="flex items-center gap-1 mb-2">
+<span class="material-symbols-outlined text-[16px] text-secondary" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px] text-secondary" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px] text-secondary" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px] text-secondary" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px] text-secondary" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-label-sm text-on-surface-variant ml-1">(84)</span>
+</div>
+<h3 class="font-label-md text-label-md text-on-surface mb-1">Chewy Sweet Potato Sticks</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-4">All Ages • 200g</p>
+</div>
+<div class="flex items-center justify-between mt-auto">
+<span class="font-headline-md text-headline-md text-primary">₩12,000</span>
+<button class="w-12 h-12 rounded-full bg-surface-container-high text-primary flex items-center justify-center hover:bg-primary hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined">add_shopping_cart</span>
+</button>
+</div>
+</div>
+<!-- Product Card 3 -->
+<div class="product-card bg-surface-container-lowest rounded-xl p-4 flex flex-col transition-all duration-300 border border-surface-container">
+<div class="absolute top-6 left-6 z-10 bg-primary text-on-primary font-label-sm px-3 py-1 rounded-full shadow-sm">New</div>
+<div class="aspect-square rounded-lg overflow-hidden mb-4 relative bg-surface-container-low">
+<img class="w-full h-full object-cover mix-blend-multiply" data-alt="A stylized product shot of a durable, earth-toned rope toy for dogs. It is placed on a smooth, cream-colored surface with a soft, diffused shadow. The image exudes a modern, minimalist vibe, emphasizing safe and eco-friendly pet play." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAKwKald4g9WcXDeC8zAZ0EqkpfIQppp2_jCJGYB1NsM5lz1OdYCg2_yhOhRmPkVo0F0Uc6fLs9DcRtYb1OTiQq2Cq2UFyzOJACNCY2Q6xsCR_xMNplbO4KGeQdOVWCEcwbPLU0bFVMzEmBvKJE_TRO36u2gzTOKz6GQ9IUoJ-P1sTlBrEZuOrjQJZCrtLh1RYdL_jwGriw0TV1ARcQ1BX8DXju-9kfzs4U_Ft8j_i4k5r0G_fdbny5rw">
+</div>
+<div class="flex-grow">
+<div class="flex items-center gap-1 mb-2">
+<span class="material-symbols-outlined text-[16px] text-secondary" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px] text-secondary" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px] text-secondary" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px] text-secondary" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px] text-surface-container-highest" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-label-sm text-on-surface-variant ml-1">(12)</span>
+</div>
+<h3 class="font-label-md text-label-md text-on-surface mb-1">Eco-Tough Rope Tug</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-4">Medium/Large Dogs</p>
+</div>
+<div class="flex items-center justify-between mt-auto">
+<span class="font-headline-md text-headline-md text-primary">₩18,500</span>
+<button class="w-12 h-12 rounded-full bg-surface-container-high text-primary flex items-center justify-center hover:bg-primary hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined">add_shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+<div class="mt-12 flex justify-center">
+<button class="px-8 py-3 rounded-xl border-2 border-primary text-primary font-label-md hover:bg-primary hover:text-on-primary transition-colors">
+                        Load More Products
+                    </button>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-high dark:bg-surface-container-low w-full mt-stack-lg flat no shadows">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter py-stack-lg px-margin-desktop max-w-container-max mx-auto">
+<div class="flex flex-col gap-4">
+<div class="font-headline-md text-headline-md text-primary">
+                    댕이를 부탁해
+                </div>
+<p class="font-body-md text-on-surface-variant max-w-xs">Premium care and curated goods for your beloved companions.</p>
+</div>
+<div class="flex flex-col gap-3">
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-body-md" href="#">Privacy Policy</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-body-md" href="#">Terms of Service</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-body-md" href="#">FAQ</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-body-md" href="#">Customer Support</a>
+</div>
+<div class="flex flex-col gap-3 md:col-span-2 md:items-end justify-end">
+<p class="font-body-md text-on-surface-variant">© 2024 댕이를 부탁해. All rights reserved.</p>
+</div>
+</div>
+</footer>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="screen-mypage" class="screen">
+    <p class="caption">마이페이지</p>
+    <div class="window">
+      <div class="chrome">
+        <span class="dot" style="background:#f87171"></span>
+        <span class="dot" style="background:#fbbf24"></span>
+        <span class="dot" style="background:#34d399"></span>
+        <span class="url">daengyi.co.kr/mypage</span>
+      </div>
+      <div class="frame">
+        <div class="frame-inner">
+<!-- TopNavBar -->
+<nav class="bg-surface shadow-sm shadow-primary/5 w-full top-0 sticky z-50">
+<div class="flex justify-between items-center h-20 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+<a class="font-headline-md text-headline-md font-bold text-primary" href="#">댕이를 부탁해</a>
+<div class="hidden md:flex items-center gap-8">
+<a class="text-on-surface-variant font-medium hover:text-secondary hover:transition-colors duration-200" href="#">홈</a>
+<a class="text-on-surface-variant font-medium hover:text-secondary hover:transition-colors duration-200" href="#">예약</a>
+<a class="text-on-surface-variant font-medium hover:text-secondary hover:transition-colors duration-200" href="#">쇼핑몰</a>
+<a class="text-primary font-bold border-b-2 border-primary pb-1 -translate-y-1 transition-transform duration-300" href="#">마이페이지</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">search</span>
+</button>
+<a class="font-label-md text-label-md text-primary bg-primary-fixed/20 px-4 py-2 rounded-full hover:bg-primary-fixed/40 transition-colors" href="#">로그아웃</a>
+</div>
+</div>
+</nav>
+<!-- Main Content -->
+<main class="flex-grow max-w-container-max mx-auto w-full px-margin-mobile md:px-margin-desktop py-stack-lg flex flex-col md:flex-row gap-gutter">
+<!-- Sidebar Navigation -->
+<aside class="w-full md:w-64 shrink-0 mb-stack-lg md:mb-0">
+<div class="glass-card rounded-2xl p-6 sticky top-28">
+<nav class="flex flex-col gap-2">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg bg-surface-container-high text-primary font-bold transition-colors" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">person</span>
+                        내 정보
+                    </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-primary transition-colors font-medium" href="#">
+<span class="material-symbols-outlined">pets</span>
+                        나의 반려동물
+                    </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-primary transition-colors font-medium" href="#">
+<span class="material-symbols-outlined">calendar_today</span>
+                        예약 내역
+                    </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-primary transition-colors font-medium" href="#">
+<span class="material-symbols-outlined">shopping_bag</span>
+                        주문 내역
+                    </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-primary transition-colors font-medium" href="#">
+<span class="material-symbols-outlined">support_agent</span>
+                        고객 센터
+                    </a>
+</nav>
+</div>
+</aside>
+<!-- Dashboard Content -->
+<div class="flex-grow flex flex-col gap-stack-lg w-full overflow-hidden">
+<!-- User Profile Summary Bento -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<!-- User Info -->
+<div class="glass-card rounded-2xl p-6 md:col-span-2 flex flex-col sm:flex-row items-center sm:items-start gap-6 relative overflow-hidden">
+<div class="absolute -right-10 -top-10 w-40 h-40 bg-secondary-fixed/30 rounded-full blur-2xl"></div>
+<img alt="User Profile" class="w-24 h-24 rounded-full object-cover border-4 border-surface shadow-sm z-10" data-alt="A bright, high-quality portrait photo of a smiling young woman with short brown hair, wearing a casual pastel sweater. The background is a soft, out-of-focus modern living room interior. The lighting is warm and natural, fitting a welcoming, high-end pet care brand aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCkksISp6_15dau8ZLZYsRKTk1sY8pKJm-gIhAaz0uq6TfZ--nf072ORfXvjLALy5hwm5KpAtc81SWYXpo7gsyffrbzZgniZRfq1dWS-OMwZQjAU53yi0NBAQxXG1E29vEdDNfiMpJTMjWcDEbzVH1Ky7-t2wSFb2Kkz2uIrcTauDvD0wXkBLxWxsz-i5BEy3sT_UjW3lI9IInDqCHMBslYuOkCCu1HbQUNLWNN4BqJRYAzB5_IVOLFcA"/>
+<div class="flex-grow text-center sm:text-left z-10">
+<h1 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-1">안녕하세요, 김지수님!</h1>
+<p class="font-body-md text-body-md text-on-surface-variant mb-4">오늘도 코코와 함께 행복한 하루 보내세요.</p>
+<div class="flex flex-wrap justify-center sm:justify-start gap-3">
+<button class="bg-primary text-on-primary font-label-md text-label-md px-5 py-2.5 rounded-lg hover:bg-surface-tint transition-colors shadow-sm shadow-primary/20">프로필 수정</button>
+<button class="bg-surface-container-high text-on-surface font-label-md text-label-md px-5 py-2.5 rounded-lg hover:bg-surface-container-highest transition-colors border border-outline-variant">멤버십 혜택</button>
+</div>
+</div>
+</div>
+<!-- Pet Profile & Points -->
+<div class="flex flex-col gap-gutter h-full">
+<div class="glass-card rounded-2xl p-5 flex items-center gap-4 flex-grow relative overflow-hidden group">
+<div class="w-16 h-16 rounded-full border-2 border-primary p-1 shrink-0">
+<img alt="Pet Profile" class="w-full h-full rounded-full object-cover" data-alt="A cute, high-resolution photo of a small, fluffy brown Toy Poodle dog looking directly at the camera with a happy expression. The dog has a tiny pink bow on its collar. The background is a soft, neutral cream color, complementing a modern-organic pet care UI style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAsujZjrf7N6EYOQeVvW8JY5kxcefYS_26DkeMGZO5YsDrc7z6ywMkLoZeEmyllUPhBG5IynwkTURmQWC_gM9uAqzF9t23FvIduZ6NfrHtwi-dPQi7tlXfDnykOqHLZ98Tna5Xq22hNsugu79rSa2b780d4tDlvoY46RIbrPgmYvMjaymqvTUxX0UtJ0ulbPidiUwjChZSBWYyvxr22XktNHx3vWpOtdwO-QAeiZjPZr2-8hJ0aGMnubA"/>
+</div>
+<div class="flex-grow">
+<h3 class="font-headline-md text-headline-md text-on-surface text-lg">코코</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant">토이 푸들 · 3살</p>
+</div>
+<button class="text-primary hover:bg-primary-fixed/30 p-2 rounded-full transition-colors">
+<span class="material-symbols-outlined">edit</span>
+</button>
+</div>
+<div class="glass-card rounded-2xl p-5 flex-grow bg-gradient-to-br from-surface to-surface-container-low border-l-4 border-l-secondary">
+<h3 class="font-label-sm text-label-sm text-on-surface-variant mb-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">stars</span>
+                            보유 포인트
+                        </h3>
+<div class="flex items-baseline gap-1">
+<span class="font-headline-lg text-headline-lg text-secondary font-bold">12,500</span>
+<span class="font-body-md text-body-md text-on-surface-variant">P</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Reservation Status Section -->
+<section class="glass-card rounded-2xl p-6 md:p-8">
+<div class="flex justify-between items-end mb-6">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface">예약 현황</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1 text-sm">최근 예약 및 이용 내역을 확인하세요.</p>
+</div>
+<a class="font-label-md text-label-md text-primary hover:text-surface-tint flex items-center" href="#">전체보기 <span class="material-symbols-outlined text-[18px]">chevron_right</span></a>
+</div>
+<div class="grid grid-cols-1 gap-4">
+<!-- Reservation Card 1 (Active) -->
+<div class="bg-surface-container-lowest rounded-xl p-5 border border-outline-variant/50 flex flex-col sm:flex-row sm:items-center gap-4 hover:border-primary/30 transition-colors shadow-sm">
+<div class="w-12 h-12 rounded-full bg-primary-fixed flex items-center justify-center shrink-0 text-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">hotel</span>
+</div>
+<div class="flex-grow">
+<div class="flex items-center gap-2 mb-1">
+<span class="bg-primary text-on-primary font-label-sm text-[10px] px-2 py-0.5 rounded-full uppercase tracking-wider">확정됨</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">예약번호: HT-2405-1A8</span>
+</div>
+<h3 class="font-label-md text-label-md text-on-surface text-base">프리미엄 펫 호텔 (스위트룸)</h3>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm mt-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">calendar_month</span>
+                                2024.05.20 - 2024.05.22 (2박 3일)
+                            </p>
+</div>
+<div class="shrink-0 mt-3 sm:mt-0">
+<button class="w-full sm:w-auto bg-surface-container text-primary font-label-md text-label-md px-4 py-2 rounded-lg hover:bg-surface-container-highest transition-colors border border-outline-variant/30">상세보기</button>
+</div>
+</div>
+<!-- Reservation Card 2 (Past) -->
+<div class="bg-surface-container-lowest rounded-xl p-5 border border-outline-variant/50 flex flex-col sm:flex-row sm:items-center gap-4 hover:border-primary/30 transition-colors shadow-sm opacity-80">
+<div class="w-12 h-12 rounded-full bg-surface-container-highest flex items-center justify-center shrink-0 text-on-surface-variant">
+<span class="material-symbols-outlined">sunny</span>
+</div>
+<div class="flex-grow">
+<div class="flex items-center gap-2 mb-1">
+<span class="bg-tertiary-fixed text-on-tertiary-fixed-variant font-label-sm text-[10px] px-2 py-0.5 rounded-full uppercase tracking-wider">이용완료</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">예약번호: DC-2404-9B2</span>
+</div>
+<h3 class="font-label-md text-label-md text-on-surface text-base">데이케어 종일반</h3>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm mt-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">calendar_month</span>
+                                2024.04.15 (1일)
+                            </p>
+</div>
+<div class="shrink-0 mt-3 sm:mt-0">
+<button class="w-full sm:w-auto bg-surface-bright text-on-surface font-label-md text-label-md px-4 py-2 rounded-lg hover:bg-surface-container transition-colors border border-outline-variant/30">다시 예약</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Shopping History Section -->
+<section class="glass-card rounded-2xl p-6 md:p-8">
+<div class="flex justify-between items-end mb-6">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface">쇼핑 내역</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1 text-sm">최근 구매하신 상품의 배송 상태입니다.</p>
+</div>
+<a class="font-label-md text-label-md text-primary hover:text-surface-tint flex items-center" href="#">전체보기 <span class="material-symbols-outlined text-[18px]">chevron_right</span></a>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<!-- Order Card 1 -->
+<div class="bg-surface-container-lowest rounded-xl p-4 border border-outline-variant/50 flex gap-4 hover:shadow-md transition-shadow">
+<div class="w-24 h-24 shrink-0 rounded-lg overflow-hidden border border-outline-variant/20 bg-surface">
+<img alt="Product Image" class="w-full h-full object-cover" data-alt="A high-quality product shot of a premium, organic dog food bag next to a small bowl filled with kibble. The packaging has a clean, natural design with earthy tones. The background is a soft, studio-lit white seamlessly fading into a pale warm beige, fitting a high-end pet care e-commerce style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAhSsFsWyCL9TaU5tCdi_bIHZxaBHigTq9VmQk6iV9uKgd29FFazSHA65k6iiTgV32JH6ixp4Ina77p07oxK9Aia_-9SZzHoZ2ziqBGpEsGDZHxRsi1AVVS-QQ2rsb6fClU4CeF8Ia6lVRLsJQxNkQ5SFs0AiglFE7HqaT6HTEd0q383ZuBD87tigpExoUaIiO8f1NWzvwQi4pkh3kvoJe9JK-m-ewOFjfJ7g1JIsWokOUhGTBISqtEgQ"/>
+</div>
+<div class="flex flex-col justify-between flex-grow">
+<div>
+<div class="flex justify-between items-start mb-1">
+<span class="font-label-sm text-label-sm text-secondary font-medium">배송중</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant text-[11px]">24.05.18 결제</span>
+</div>
+<h3 class="font-label-md text-label-md text-on-surface leading-tight line-clamp-2">오가닉 칠면조 &amp; 고구마 사료 2kg (소형견용)</h3>
+</div>
+<div class="flex justify-between items-end mt-2">
+<span class="font-headline-md text-headline-md text-on-surface text-base">32,000원</span>
+<button class="text-primary border border-primary/20 rounded-md px-3 py-1 font-label-sm text-label-sm hover:bg-primary-fixed/20 transition-colors">배송조회</button>
+</div>
+</div>
+</div>
+<!-- Order Card 2 -->
+<div class="bg-surface-container-lowest rounded-xl p-4 border border-outline-variant/50 flex gap-4 hover:shadow-md transition-shadow">
+<div class="w-24 h-24 shrink-0 rounded-lg overflow-hidden border border-outline-variant/20 bg-surface">
+<img alt="Product Image" class="w-full h-full object-cover" data-alt="A charming product photo of a soft, squishy plush dog toy shaped like a bone, colored in pastel pink and cream. The toy is resting on a clean, light wood surface. The lighting is soft and inviting, emphasizing the comforting and high-quality nature of the pet product." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCcbyIR2Plbo7B-iZ6NAlVjigtV5p7u4eFS8_rdH6wQtlnlqW6abeB7SyUP4Vit3pJrLrpRBde14CdsFHAHPJRQ253FPlhjP98toieFrDbM6pdykHbEaPdnFEiTvN3BCblMFF4zxzT3BZW-aH8Pw7xwDtZHodnELXoMZVLHiJMUth9JT_n-pdkG9tiW6qaZ6Kmymf_Lemsa5dU2khLIGOh3V51XI3uc1qG4pvbL5aheIEt0jFj3S8z2qg"/>
+</div>
+<div class="flex flex-col justify-between flex-grow">
+<div>
+<div class="flex justify-between items-start mb-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant font-medium">배송완료</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant text-[11px]">24.05.02 결제</span>
+</div>
+<h3 class="font-label-md text-label-md text-on-surface leading-tight line-clamp-2">마약 꿀잠 쿠션 장난감 (딸기우유)</h3>
+</div>
+<div class="flex justify-between items-end mt-2">
+<span class="font-headline-md text-headline-md text-on-surface text-base">15,500원</span>
+<button class="text-on-surface-variant border border-outline-variant rounded-md px-3 py-1 font-label-sm text-label-sm hover:bg-surface-container transition-colors">리뷰작성</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-tertiary-fixed w-full mt-stack-lg">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter py-stack-lg px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+<div class="flex flex-col gap-4">
+<span class="font-headline-md text-headline-md text-primary font-bold">댕이를 부탁해</span>
+<p class="font-body-md text-body-md text-on-tertiary-fixed-variant text-sm max-w-xs">반려동물과 보호자 모두가 안심할 수 있는 프리미엄 펫 케어 서비스입니다.</p>
+</div>
+<div class="flex flex-col gap-3 md:col-span-2 md:items-end justify-center">
+<nav class="flex flex-wrap gap-6 font-label-sm text-label-sm text-on-tertiary-fixed-variant">
+<a class="hover:text-primary transition-colors" href="#">회사소개</a>
+<a class="hover:text-primary transition-colors" href="#">이용약관</a>
+<a class="hover:text-primary transition-colors" href="#">개인정보처리방침</a>
+<a class="hover:text-primary transition-colors" href="#">고객센터</a>
+</nav>
+<p class="font-body-md text-body-md text-on-tertiary-fixed-variant text-xs opacity-70">
+                    © 2024 댕이를 부탁해. All rights reserved.
+                </p>
+</div>
+</div>
+</footer>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section id="screen-admin" class="screen">
+    <p class="caption">관리자 페이지 · 대시보드</p>
+    <div class="window">
+      <div class="chrome">
+        <span class="dot" style="background:#f87171"></span>
+        <span class="dot" style="background:#fbbf24"></span>
+        <span class="dot" style="background:#34d399"></span>
+        <span class="url">admin.daengyi.co.kr</span>
+      </div>
+      <div class="frame">
+        <div class="frame-inner">
+<!-- Admin TopNavBar -->
+<header class="w-full top-0 sticky bg-surface shadow-sm shadow-primary/5 z-50">
+<div class="flex justify-between items-center h-20 px-margin-desktop max-w-container-max mx-auto">
+<a class="font-headline-md text-headline-md font-bold text-primary flex items-center gap-2" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">pets</span>
+                댕이를 부탁해
+<span class="font-label-sm text-label-sm bg-secondary-container text-on-secondary-container px-2.5 py-0.5 rounded-full ml-1">관리자</span>
+</a>
+<div class="flex items-center gap-4">
+<button class="hidden md:flex items-center justify-center w-10 h-10 rounded-full hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant">notifications</span>
+</button>
+<a class="font-label-md text-label-md px-5 py-2.5 rounded-full bg-primary-fixed/20 text-primary hover:bg-primary-fixed/40 transition-colors flex items-center gap-2" href="#">
+<span class="material-symbols-outlined text-[18px]">open_in_new</span>사이트 보기
+</a>
+<div class="w-9 h-9 rounded-full border-2 border-primary p-0.5">
+<div class="w-full h-full rounded-full bg-secondary-fixed flex items-center justify-center text-secondary text-sm font-bold">사</div>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-grow max-w-container-max mx-auto w-full px-margin-mobile md:px-margin-desktop py-stack-lg flex flex-col md:flex-row gap-gutter">
+<!-- Sidebar Navigation -->
+<aside class="w-full md:w-64 shrink-0">
+<div class="glass-card rounded-2xl p-6 sticky top-28">
+<nav class="flex flex-col gap-2">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg bg-surface-container-high text-primary font-bold transition-colors" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>대시보드
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-primary transition-colors font-medium" href="#">
+<span class="material-symbols-outlined">calendar_month</span>예약 관리
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-primary transition-colors font-medium" href="#">
+<span class="material-symbols-outlined">inventory_2</span>상품 관리
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-primary transition-colors font-medium" href="#">
+<span class="material-symbols-outlined">local_shipping</span>주문 · 배송
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-primary transition-colors font-medium" href="#">
+<span class="material-symbols-outlined">group</span>회원 관리
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-primary transition-colors font-medium" href="#">
+<span class="material-symbols-outlined">chat_bubble</span>1:1 문의
+<span class="ml-auto bg-secondary text-on-secondary text-[10px] font-bold rounded-full px-1.5 py-0.5">3</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-primary transition-colors font-medium" href="#">
+<span class="material-symbols-outlined">palette</span>디자인 테마
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-primary transition-colors font-medium" href="#">
+<span class="material-symbols-outlined">settings</span>기본 설정
+</a>
+</nav>
+</div>
+</aside>
+<!-- Dashboard Content -->
+<div class="flex-grow flex flex-col gap-stack-lg w-full overflow-hidden">
+<div>
+<h1 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-1">대시보드</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">2026. 09. 03 (수) · 오늘의 현황을 확인하세요.</p>
+</div>
+<!-- Stat Bento -->
+<section class="grid grid-cols-2 lg:grid-cols-4 gap-gutter">
+<div class="glass-card rounded-2xl p-5 relative overflow-hidden">
+<div class="absolute -right-8 -top-8 w-24 h-24 bg-primary-fixed/40 rounded-full blur-2xl"></div>
+<span class="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center text-primary mb-3 relative z-10"><span class="material-symbols-outlined">login</span></span>
+<p class="font-headline-lg text-headline-lg text-on-surface relative z-10">4<span class="font-body-md text-body-md text-on-surface-variant"> 건</span></p>
+<p class="font-label-sm text-label-sm text-on-surface-variant relative z-10">오늘 체크인</p>
+</div>
+<div class="glass-card rounded-2xl p-5 relative overflow-hidden">
+<div class="absolute -right-8 -top-8 w-24 h-24 bg-secondary-fixed/40 rounded-full blur-2xl"></div>
+<span class="w-10 h-10 rounded-full bg-secondary-fixed flex items-center justify-center text-secondary mb-3 relative z-10"><span class="material-symbols-outlined">logout</span></span>
+<p class="font-headline-lg text-headline-lg text-on-surface relative z-10">2<span class="font-body-md text-body-md text-on-surface-variant"> 건</span></p>
+<p class="font-label-sm text-label-sm text-on-surface-variant relative z-10">오늘 체크아웃</p>
+</div>
+<div class="glass-card rounded-2xl p-5 relative overflow-hidden">
+<div class="absolute -right-8 -top-8 w-24 h-24 bg-primary-fixed/40 rounded-full blur-2xl"></div>
+<span class="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center text-primary mb-3 relative z-10"><span class="material-symbols-outlined">shopping_bag</span></span>
+<p class="font-headline-lg text-headline-lg text-on-surface relative z-10">7<span class="font-body-md text-body-md text-on-surface-variant"> 건</span></p>
+<p class="font-label-sm text-label-sm text-on-surface-variant relative z-10">미처리 주문</p>
+</div>
+<div class="glass-card rounded-2xl p-5 relative overflow-hidden border-l-4 border-l-secondary">
+<span class="w-10 h-10 rounded-full bg-secondary-container/40 flex items-center justify-center text-secondary mb-3"><span class="material-symbols-outlined">mark_chat_unread</span></span>
+<p class="font-headline-lg text-headline-lg text-secondary">3<span class="font-body-md text-body-md text-on-surface-variant"> 건</span></p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">미답변 1:1 문의</p>
+</div>
+</section>
+<!-- Design Theme card -->
+<section class="glass-card rounded-2xl p-6 md:p-8 relative overflow-hidden">
+<div class="absolute -left-12 -bottom-12 w-48 h-48 bg-secondary-fixed/25 rounded-full blur-3xl"></div>
+<div class="flex justify-between items-end mb-6 relative z-10">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface flex items-center gap-2"><span class="material-symbols-outlined text-secondary">palette</span>디자인 테마</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1 text-sm">메인 화면과 사이트 전체 분위기를 한 번에 전환합니다. 저장 즉시 반영돼요.</p>
+</div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-gutter relative z-10">
+<label class="cursor-pointer group">
+<input checked class="peer sr-only" name="admin_theme" type="radio"/>
+<div class="rounded-xl border-2 border-secondary bg-secondary-fixed/25 p-4 transition-all shadow-sm">
+<div class="rounded-lg overflow-hidden border border-outline-variant/40 mb-3 aspect-[16/10] bg-gradient-to-br from-surface-container-low via-primary-fixed/30 to-secondary-fixed/40 flex items-center justify-center">
+<span class="material-symbols-outlined text-4xl text-primary/40" style="font-variation-settings:'FILL' 1;">pets</span>
+</div>
+<div class="flex items-center justify-between">
+<div>
+<p class="font-label-md text-label-md text-secondary font-bold">테마 1 · Warm Paw Prints</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">따뜻한 브라운 &amp; 핑크, 곡선 위주</p>
+</div>
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings:'FILL' 1;">check_circle</span>
+</div>
+</div>
+</label>
+<label class="cursor-pointer group">
+<input class="peer sr-only" name="admin_theme" type="radio"/>
+<div class="rounded-xl border-2 border-surface-container-high bg-surface-container-lowest p-4 hover:border-secondary/50 transition-all shadow-sm">
+<div class="rounded-lg overflow-hidden border border-outline-variant/40 mb-3 aspect-[16/10] bg-gradient-to-br from-surface via-surface-container to-tertiary-fixed/60 flex items-center justify-center">
+<span class="material-symbols-outlined text-4xl text-primary/30" style="font-variation-settings:'FILL' 1;">image</span>
+</div>
+<div class="flex items-center justify-between">
+<div>
+<p class="font-label-md text-label-md text-on-surface font-bold">테마 2 · Clean Split</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">이미지 중심 2단 레이아웃, 정돈된 느낌</p>
+</div>
+<span class="material-symbols-outlined text-outline">radio_button_unchecked</span>
+</div>
+</div>
+</label>
+</div>
+<div class="flex justify-end mt-6 relative z-10">
+<button class="bg-primary text-on-primary font-label-md text-label-md px-6 py-2.5 rounded-lg hover:bg-surface-tint transition-colors shadow-sm shadow-primary/20">테마 저장</button>
+</div>
+</section>
+<!-- Recent reservations -->
+<section class="glass-card rounded-2xl p-6 md:p-8">
+<div class="flex justify-between items-end mb-6">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface">최근 예약</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1 text-sm">호텔 · 데이케어 신규 예약 내역입니다.</p>
+</div>
+<a class="font-label-md text-label-md text-primary hover:text-surface-tint flex items-center" href="#">예약 관리 <span class="material-symbols-outlined text-[18px]">chevron_right</span></a>
+</div>
+<div class="grid grid-cols-1 gap-3">
+<div class="bg-surface-container-lowest rounded-xl p-4 border border-outline-variant/50 flex flex-col sm:flex-row sm:items-center gap-4 shadow-sm">
+<div class="w-11 h-11 rounded-full bg-primary-fixed flex items-center justify-center shrink-0 text-primary"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">hotel</span></div>
+<div class="flex-grow">
+<div class="flex items-center gap-2 mb-1"><span class="bg-primary text-on-primary text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">확정</span><span class="font-label-sm text-label-sm text-on-surface-variant">김지현 · 몽이(푸들)</span></div>
+<p class="font-label-md text-label-md text-on-surface text-sm">호텔 숙박 · 09.03 – 09.05 (2박 3일)</p>
+</div>
+<button class="w-full sm:w-auto bg-surface-container text-primary font-label-md text-label-md px-4 py-2 rounded-lg hover:bg-surface-container-highest transition-colors border border-outline-variant/30 shrink-0">상세보기</button>
+</div>
+<div class="bg-surface-container-lowest rounded-xl p-4 border border-outline-variant/50 flex flex-col sm:flex-row sm:items-center gap-4 shadow-sm">
+<div class="w-11 h-11 rounded-full bg-secondary-fixed flex items-center justify-center shrink-0 text-secondary"><span class="material-symbols-outlined">sunny</span></div>
+<div class="flex-grow">
+<div class="flex items-center gap-2 mb-1"><span class="bg-primary text-on-primary text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">확정</span><span class="font-label-sm text-label-sm text-on-surface-variant">이서준 · 초코(말티즈)</span></div>
+<p class="font-label-md text-label-md text-on-surface text-sm">데이케어 종일반 · 09.04</p>
+</div>
+<button class="w-full sm:w-auto bg-surface-container text-primary font-label-md text-label-md px-4 py-2 rounded-lg hover:bg-surface-container-highest transition-colors border border-outline-variant/30 shrink-0">상세보기</button>
+</div>
+<div class="bg-surface-container-lowest rounded-xl p-4 border border-outline-variant/50 flex flex-col sm:flex-row sm:items-center gap-4 shadow-sm opacity-90">
+<div class="w-11 h-11 rounded-full bg-surface-container-highest flex items-center justify-center shrink-0 text-on-surface-variant"><span class="material-symbols-outlined">hotel</span></div>
+<div class="flex-grow">
+<div class="flex items-center gap-2 mb-1"><span class="bg-secondary-fixed text-secondary text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">입금대기</span><span class="font-label-sm text-label-sm text-on-surface-variant">박민서 · 보리(진돗개)</span></div>
+<p class="font-label-md text-label-md text-on-surface text-sm">호텔 숙박 · 09.06 – 09.08 (2박 3일)</p>
+</div>
+<button class="w-full sm:w-auto bg-surface-container text-primary font-label-md text-label-md px-4 py-2 rounded-lg hover:bg-surface-container-highest transition-colors border border-outline-variant/30 shrink-0">입금 확인</button>
+</div>
+</div>
+</section>
+<!-- Orders / shipping -->
+<section class="glass-card rounded-2xl p-6 md:p-8">
+<div class="flex justify-between items-end mb-6">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface">주문 · 배송</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1 text-sm">쇼핑몰 주문의 결제·배송 상태입니다.</p>
+</div>
+<a class="font-label-md text-label-md text-primary hover:text-surface-tint flex items-center" href="#">주문 관리 <span class="material-symbols-outlined text-[18px]">chevron_right</span></a>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="bg-surface-container-lowest rounded-xl p-4 border border-outline-variant/50 shadow-sm">
+<div class="flex justify-between items-start mb-1"><span class="font-label-sm text-label-sm text-secondary font-medium">배송 준비</span><span class="font-label-sm text-label-sm text-on-surface-variant text-[11px]">주문 20260903-01</span></div>
+<h3 class="font-label-md text-label-md text-on-surface leading-tight line-clamp-2">강아지 유산균 30포 외 1건</h3>
+<div class="flex justify-between items-end mt-3"><span class="font-headline-md text-headline-md text-on-surface text-base">28,500원</span><button class="bg-primary text-on-primary text-[11px] font-bold px-3 py-1.5 rounded-md hover:bg-surface-tint transition-colors">송장등록</button></div>
+</div>
+<div class="bg-surface-container-lowest rounded-xl p-4 border border-outline-variant/50 shadow-sm">
+<div class="flex justify-between items-start mb-1"><span class="font-label-sm text-label-sm text-primary font-medium">배송중</span><span class="font-label-sm text-label-sm text-on-surface-variant text-[11px]">주문 20260902-11</span></div>
+<h3 class="font-label-md text-label-md text-on-surface leading-tight line-clamp-2">노즈워크 스니핑 담요 L</h3>
+<div class="flex justify-between items-end mt-3"><span class="font-headline-md text-headline-md text-on-surface text-base">19,900원</span><button class="text-primary border border-primary/20 rounded-md px-3 py-1.5 font-label-sm text-label-sm hover:bg-primary-fixed/20 transition-colors">송장수정</button></div>
+</div>
+<div class="bg-surface-container-lowest rounded-xl p-4 border border-outline-variant/50 shadow-sm opacity-90">
+<div class="flex justify-between items-start mb-1"><span class="font-label-sm text-label-sm text-on-surface-variant font-medium">배송완료</span><span class="font-label-sm text-label-sm text-on-surface-variant text-[11px]">주문 20260902-08</span></div>
+<h3 class="font-label-md text-label-md text-on-surface leading-tight line-clamp-2">실내 배변패드 100매</h3>
+<div class="flex justify-between items-end mt-3"><span class="font-headline-md text-headline-md text-on-surface text-base">15,900원</span><span class="text-tertiary-fixed-dim font-label-sm text-label-sm">배송조회</span></div>
+</div>
+</div>
+</section>
+</div>
+</main>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <p class="outro">© 2026 댕이를 부탁해 · 내부 검토용 목업</p>
+</div>
+</body>
+</html>

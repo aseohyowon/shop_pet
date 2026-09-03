@@ -1,0 +1,290 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>댕이를 부탁해 - Shop</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700&amp;family=Be+Vietnam+Pro:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "background": "#fff8f5",
+                        "secondary-container": "#feb6c4",
+                        "surface-container-low": "#fff1ea",
+                        "on-surface-variant": "#4f453c",
+                        "on-surface": "#221a15",
+                        "tertiary-fixed-dim": "#c9c6c1",
+                        "primary-container": "#5d4024",
+                        "on-tertiary-container": "#b7b4ae",
+                        "secondary-fixed-dim": "#fbb3c1",
+                        "on-error": "#ffffff",
+                        "on-background": "#221a15",
+                        "on-tertiary-fixed-variant": "#484743",
+                        "outline": "#81756b",
+                        "tertiary": "#31302c",
+                        "on-tertiary-fixed": "#1c1c18",
+                        "primary": "#442a10",
+                        "on-secondary-fixed-variant": "#6b3743",
+                        "surface-tint": "#78583a",
+                        "primary-fixed": "#ffdcbf",
+                        "inverse-primary": "#e9bf9a",
+                        "surface": "#fff8f5",
+                        "error-container": "#ffdad6",
+                        "inverse-on-surface": "#feeee5",
+                        "on-primary-fixed": "#2c1601",
+                        "surface-container-highest": "#efdfd7",
+                        "on-error-container": "#93000a",
+                        "inverse-surface": "#382f29",
+                        "surface-container-high": "#f5e5dc",
+                        "on-primary-fixed-variant": "#5e4125",
+                        "tertiary-fixed": "#e6e2dc",
+                        "on-primary-container": "#d5ac89",
+                        "surface-dim": "#e7d7ce",
+                        "on-secondary-container": "#7a4450",
+                        "secondary": "#864e5a",
+                        "error": "#ba1a1a",
+                        "surface-variant": "#efdfd7",
+                        "on-tertiary": "#ffffff",
+                        "primary-fixed-dim": "#e9bf9a",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-fixed": "#360c19",
+                        "tertiary-container": "#474642",
+                        "surface-bright": "#fff8f5",
+                        "secondary-fixed": "#ffd9df",
+                        "on-primary": "#ffffff",
+                        "outline-variant": "#d3c4b9",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container": "#fbebe2"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-sm": "8px",
+                        "gutter": "24px",
+                        "container-max": "1200px",
+                        "margin-desktop": "40px",
+                        "stack-lg": "32px",
+                        "base": "8px",
+                        "margin-mobile": "16px",
+                        "stack-md": "16px"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["Plus Jakarta Sans"],
+                        "body-lg": ["Be Vietnam Pro"],
+                        "label-md": ["Be Vietnam Pro"],
+                        "label-sm": ["Be Vietnam Pro"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "body-md": ["Be Vietnam Pro"],
+                        "headline-xl": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Plus Jakarta Sans"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(68, 42, 16, 0.05), 0 4px 6px -2px rgba(68, 42, 16, 0.025);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col font-body-md">
+<!-- TopNavBar -->
+<nav class="bg-background dark:bg-background shadow-sm dark:bg-surface-container-low w-full top-0 sticky z-50">
+<div class="flex justify-between items-center h-20 px-margin-desktop max-w-container-max mx-auto">
+<div class="text-headline-md font-headline-md text-primary dark:text-primary-fixed">댕이를 부탁해</div>
+<div class="hidden md:flex gap-gutter items-center"><a class="text-on-surface-variant font-medium hover:text-secondary hover:transition-colors duration-200 px-3 py-2 rounded-lg" href="#">홈</a><a class="text-on-surface-variant font-medium hover:text-secondary hover:transition-colors duration-200 px-3 py-2 rounded-lg" href="#">예약</a><a class="text-primary font-bold border-b-2 border-primary pb-1 px-3 py-2" href="#">쇼핑몰</a><a class="text-on-surface-variant font-medium hover:text-secondary hover:transition-colors duration-200 px-3 py-2 rounded-lg" href="#">마이페이지</a></div>
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">search</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors relative">
+<span class="material-symbols-outlined">shopping_cart</span>
+<span class="absolute -top-1 -right-1 bg-secondary text-on-secondary text-xs rounded-full h-4 w-4 flex items-center justify-center font-label-sm">3</span>
+</button>
+<button class="hidden md:flex bg-primary text-on-primary font-label-md px-6 py-3 rounded-xl hover:opacity-90 transition-opacity">로그인</button>
+<button class="md:hidden text-on-surface-variant">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+</div>
+</nav>
+<main class="flex-grow max-w-container-max mx-auto w-full px-margin-mobile md:px-margin-desktop py-stack-lg">
+<!-- Promotional Banner -->
+<div class="relative w-full h-[300px] md:h-[400px] rounded-xl overflow-hidden mb-stack-lg group">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" data-alt="A warm, inviting lifestyle shot of a happy golden retriever playing with a high-quality squeaky toy in a sunlit, modern living room. The scene is brightly lit with a soft, comforting aesthetic. The colors feature warm earthy browns and cream tones, evoking a premium, safe, and nurturing environment for pets." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAK85tGMBkvDs1OEQUOO06yNrFM99lwVvRLBWF5tvyszy5q1_A8fcF-AnbrzL4q3gRD5APA02199xx161DGkHNoOr7DDP8w1oVhhW1dlu6PoQb2lsOVVE3RXmQTZmQ79tLXIjXZ7iZA2KCjCes4tckdO7nP2t7fcty91XsEFONFt9dE7sy9h5JNmfhcFguRRVWrb9fsvSWhi3Hk-lGdmQNsoGAUNUZGpowWC92q4E_axJ0JD3W29oVJOw')"></div>
+<div class="absolute inset-0 bg-gradient-to-r from-primary-container/80 to-transparent"></div>
+<div class="absolute inset-0 flex flex-col justify-center p-8 md:p-12 max-w-2xl">
+<span class="bg-secondary-container text-on-secondary-container font-label-sm px-3 py-1 rounded-full w-max mb-4">Special Offer</span>
+<h1 class="font-headline-xl text-headline-xl text-on-primary mb-4">Spring Refresh Sale</h1>
+<p class="font-body-lg text-body-lg text-surface-container-low mb-8 max-w-md">Get up to 30% off on premium treats, durable toys, and cozy accessories for your furry friend.</p>
+<button class="bg-primary-fixed text-on-primary-fixed font-label-md px-8 py-4 rounded-xl w-max hover:bg-surface-container-highest transition-colors shadow-sm">
+                    Shop the Sale
+                </button>
+</div>
+</div>
+<div class="flex flex-col md:flex-row gap-gutter">
+<!-- Sidebar / Filters -->
+<aside class="w-full md:w-64 shrink-0 mb-stack-lg md:mb-0">
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-surface-container shadow-sm sticky top-28">
+<h3 class="font-headline-md text-headline-md text-primary mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined">filter_list</span> Filters
+                    </h3>
+<div class="mb-8">
+<h4 class="font-label-md text-label-md text-on-surface mb-3">Categories</h4>
+<div class="space-y-2">
+<label class="flex items-center gap-3 cursor-pointer group">
+<input checked="" class="form-checkbox h-5 w-5 text-primary border-outline rounded focus:ring-primary focus:ring-offset-0 bg-transparent transition-all" type="checkbox">
+<span class="font-body-md text-on-surface-variant group-hover:text-primary transition-colors">Food</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input checked="" class="form-checkbox h-5 w-5 text-primary border-outline rounded focus:ring-primary focus:ring-offset-0 bg-transparent transition-all" type="checkbox">
+<span class="font-body-md text-on-surface-variant group-hover:text-primary transition-colors">Treats</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="form-checkbox h-5 w-5 text-primary border-outline rounded focus:ring-primary focus:ring-offset-0 bg-transparent transition-all" type="checkbox">
+<span class="font-body-md text-on-surface-variant group-hover:text-primary transition-colors">Toys</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="form-checkbox h-5 w-5 text-primary border-outline rounded focus:ring-primary focus:ring-offset-0 bg-transparent transition-all" type="checkbox">
+<span class="font-body-md text-on-surface-variant group-hover:text-primary transition-colors">Accessories</span>
+</label>
+</div>
+</div>
+<div>
+<h4 class="font-label-md text-label-md text-on-surface mb-3">Dog Size</h4>
+<div class="flex flex-wrap gap-2">
+<button class="px-4 py-2 rounded-full border border-primary text-primary font-label-sm bg-surface-container-low hover:bg-surface-dim transition-colors">Small</button>
+<button class="px-4 py-2 rounded-full border border-outline text-on-surface-variant font-label-sm hover:border-primary hover:text-primary transition-colors">Medium</button>
+<button class="px-4 py-2 rounded-full border border-outline text-on-surface-variant font-label-sm hover:border-primary hover:text-primary transition-colors">Large</button>
+</div>
+</div>
+</div>
+</aside>
+<!-- Product Grid -->
+<div class="flex-grow">
+<div class="flex justify-between items-center mb-6">
+<p class="font-body-md text-on-surface-variant">Showing 24 products</p>
+<select class="form-select bg-surface-container-lowest border-outline text-on-surface-variant font-body-md rounded-lg focus:ring-primary focus:border-primary">
+<option>Recommended</option>
+<option>Price: Low to High</option>
+<option>Price: High to Low</option>
+<option>Newest Arrivals</option>
+</select>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-gutter">
+<!-- Product Card 1 -->
+<div class="product-card bg-surface-container-lowest rounded-xl p-4 flex flex-col transition-all duration-300 border border-surface-container relative">
+<div class="absolute top-6 left-6 z-10 bg-secondary-container text-on-secondary-container font-label-sm px-3 py-1 rounded-full shadow-sm">Bestseller</div>
+<div class="aspect-square rounded-lg overflow-hidden mb-4 relative bg-surface-container-low">
+<img class="w-full h-full object-cover mix-blend-multiply" data-alt="A close-up studio shot of premium, organic dog kibble in a minimalist ceramic bowl. The lighting is soft and natural, emphasizing the texture and wholesome quality of the food. The background is a clean, warm cream color consistent with a high-end pet brand aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZzlLPSBK3oDsqkEi-7ljFvBqM61a7Xi5M9cNsHdLeohCVsmbOjDp2LhFV5G9tRrQCu_PshUzGKCUQWXVRW_NEo7f7Byq-rJsfKwxGXbzPfozLsfc04SDBpOwKLj0xVZFEPWPd8hFo6vpanRZt1MkNJoeFWJNTGHRuB5Le5ZyuEy1p60BrAcwyP1REmpQ7I3Xqj9gwCqb8RdSan1oi8HaCiRiUeY1ON6qcxOiOSdGtu6-cM9LJ6nAnpQ">
+</div>
+<div class="flex-grow">
+<div class="flex items-center gap-1 mb-2">
+<span class="material-symbols-outlined text-[16px] text-secondary" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px] text-secondary" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px] text-secondary" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px] text-secondary" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px] text-surface-dim" style="font-variation-settings: 'FILL' 1;">star_half</span>
+<span class="font-label-sm text-on-surface-variant ml-1">(128)</span>
+</div>
+<h3 class="font-label-md text-label-md text-on-surface mb-1">Premium Organic Beef Kibble</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-4">Adult Dogs • 5kg</p>
+</div>
+<div class="flex items-center justify-between mt-auto">
+<span class="font-headline-md text-headline-md text-primary">₩45,000</span>
+<button class="w-12 h-12 rounded-full bg-surface-container-high text-primary flex items-center justify-center hover:bg-primary hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined">add_shopping_cart</span>
+</button>
+</div>
+</div>
+<!-- Product Card 2 -->
+<div class="product-card bg-surface-container-lowest rounded-xl p-4 flex flex-col transition-all duration-300 border border-surface-container">
+<div class="aspect-square rounded-lg overflow-hidden mb-4 relative bg-surface-container-low">
+<img class="w-full h-full object-cover mix-blend-multiply" data-alt="A macro shot of natural sweet potato dog chews neatly arranged on a light wooden cutting board. Soft, warm directional lighting highlights the chewy texture. The setting feels rustic yet clean and premium, fitting a boutique pet food aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAaeIOquKORtXdcJiNMgQ5JP5YXg4gJw0_gtpzy76EhWEJybXhfZSFPIFh8fM_2bbzK5yK_cDWuM9fXxVdDGjnnY7s1jBRfitDvMNleBIRCq8wwF9uTrPUOnAiOqR9V0JO7ETpuFf_2kqH3JokUIVf0pgQlpjGx_PqbcV5htd4nMWwtBbxE7UVkA3uQ58Ha4tut-ZlM0sZVAZH2nxglp0nnDpyYLSomm9GVAVP7dmvxoIW84VKNtlsaXw">
+</div>
+<div class="flex-grow">
+<div class="flex items-center gap-1 mb-2">
+<span class="material-symbols-outlined text-[16px] text-secondary" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px] text-secondary" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px] text-secondary" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px] text-secondary" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px] text-secondary" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-label-sm text-on-surface-variant ml-1">(84)</span>
+</div>
+<h3 class="font-label-md text-label-md text-on-surface mb-1">Chewy Sweet Potato Sticks</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-4">All Ages • 200g</p>
+</div>
+<div class="flex items-center justify-between mt-auto">
+<span class="font-headline-md text-headline-md text-primary">₩12,000</span>
+<button class="w-12 h-12 rounded-full bg-surface-container-high text-primary flex items-center justify-center hover:bg-primary hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined">add_shopping_cart</span>
+</button>
+</div>
+</div>
+<!-- Product Card 3 -->
+<div class="product-card bg-surface-container-lowest rounded-xl p-4 flex flex-col transition-all duration-300 border border-surface-container">
+<div class="absolute top-6 left-6 z-10 bg-primary text-on-primary font-label-sm px-3 py-1 rounded-full shadow-sm">New</div>
+<div class="aspect-square rounded-lg overflow-hidden mb-4 relative bg-surface-container-low">
+<img class="w-full h-full object-cover mix-blend-multiply" data-alt="A stylized product shot of a durable, earth-toned rope toy for dogs. It is placed on a smooth, cream-colored surface with a soft, diffused shadow. The image exudes a modern, minimalist vibe, emphasizing safe and eco-friendly pet play." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAKwKald4g9WcXDeC8zAZ0EqkpfIQppp2_jCJGYB1NsM5lz1OdYCg2_yhOhRmPkVo0F0Uc6fLs9DcRtYb1OTiQq2Cq2UFyzOJACNCY2Q6xsCR_xMNplbO4KGeQdOVWCEcwbPLU0bFVMzEmBvKJE_TRO36u2gzTOKz6GQ9IUoJ-P1sTlBrEZuOrjQJZCrtLh1RYdL_jwGriw0TV1ARcQ1BX8DXju-9kfzs4U_Ft8j_i4k5r0G_fdbny5rw">
+</div>
+<div class="flex-grow">
+<div class="flex items-center gap-1 mb-2">
+<span class="material-symbols-outlined text-[16px] text-secondary" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px] text-secondary" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px] text-secondary" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px] text-secondary" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px] text-surface-container-highest" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-label-sm text-on-surface-variant ml-1">(12)</span>
+</div>
+<h3 class="font-label-md text-label-md text-on-surface mb-1">Eco-Tough Rope Tug</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-4">Medium/Large Dogs</p>
+</div>
+<div class="flex items-center justify-between mt-auto">
+<span class="font-headline-md text-headline-md text-primary">₩18,500</span>
+<button class="w-12 h-12 rounded-full bg-surface-container-high text-primary flex items-center justify-center hover:bg-primary hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined">add_shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+<div class="mt-12 flex justify-center">
+<button class="px-8 py-3 rounded-xl border-2 border-primary text-primary font-label-md hover:bg-primary hover:text-on-primary transition-colors">
+                        Load More Products
+                    </button>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-high dark:bg-surface-container-low w-full mt-stack-lg flat no shadows">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter py-stack-lg px-margin-desktop max-w-container-max mx-auto">
+<div class="flex flex-col gap-4">
+<div class="font-headline-md text-headline-md text-primary">
+                    댕이를 부탁해
+                </div>
+<p class="font-body-md text-on-surface-variant max-w-xs">Premium care and curated goods for your beloved companions.</p>
+</div>
+<div class="flex flex-col gap-3">
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-body-md" href="#">Privacy Policy</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-body-md" href="#">Terms of Service</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-body-md" href="#">FAQ</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-body-md" href="#">Customer Support</a>
+</div>
+<div class="flex flex-col gap-3 md:col-span-2 md:items-end justify-end">
+<p class="font-body-md text-on-surface-variant">© 2024 댕이를 부탁해. All rights reserved.</p>
+</div>
+</div>
+</footer>
+
+
+</body></html>

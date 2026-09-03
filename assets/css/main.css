@@ -1,0 +1,106 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    @apply bg-white text-gray-900 antialiased;
+  }
+}
+
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+.material-symbols-outlined.icon-filled,
+.icon-filled {
+  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+@layer components {
+  .container-page {
+    @apply mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8;
+  }
+
+  /* ── Warm Paw Prints 테마(테마1/테마2) 공통 컴포넌트 ───────────── */
+  .container-warm {
+    @apply mx-auto w-full max-w-container-max px-margin-mobile md:px-margin-desktop;
+  }
+
+  .btn-warm {
+    @apply inline-flex min-h-[48px] items-center justify-center gap-2 rounded-lg bg-primary px-6 py-3 font-label-md text-label-md text-on-primary transition-all hover:-translate-y-0.5 hover:bg-primary-container disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .btn-warm-soft {
+    @apply inline-flex min-h-[48px] items-center justify-center gap-2 rounded-lg border border-secondary-container bg-secondary-container/20 px-6 py-3 font-label-md text-label-md text-secondary transition-all hover:-translate-y-0.5 hover:bg-secondary-container/30;
+  }
+
+  .card-warm {
+    @apply rounded-2xl border border-surface-container-highest bg-surface-container-lowest p-6 shadow-[0_4px_24px_rgba(93,64,36,0.06)];
+  }
+
+  .input-warm {
+    @apply w-full rounded-lg border border-outline-variant bg-surface px-4 py-3 font-body-md text-on-surface transition-all focus:border-secondary focus:outline-none focus:ring-2 focus:ring-secondary/20;
+  }
+
+  .label-warm {
+    @apply mb-2 block font-label-md text-label-md text-on-surface-variant;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center rounded-lg bg-brand-500 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-600 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-semibold text-gray-700 transition hover:bg-gray-50;
+  }
+
+  .card {
+    @apply rounded-xl border border-gray-200 bg-white p-5 shadow-sm;
+  }
+
+  .input-field {
+    @apply w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500;
+  }
+
+  .label-field {
+    @apply mb-1.5 block text-sm font-medium text-gray-700;
+  }
+
+  /* ── 관리자(Admin) Warm 테마 공통 ─────────────────────────── */
+  .admin-card {
+    @apply rounded-2xl border border-outline-variant/50 bg-surface-container-lowest p-6 shadow-[0_4px_24px_rgba(93,64,36,0.06)];
+  }
+
+  .glass-card {
+    @apply rounded-2xl border border-outline-variant/50 bg-surface-container-lowest/70 shadow-[0_4px_24px_rgba(93,64,36,0.06)] backdrop-blur;
+  }
+
+  .admin-chip {
+    @apply inline-flex items-center rounded-full px-2.5 py-0.5 font-label-sm text-[11px] font-bold;
+  }
+
+  .admin-th {
+    @apply px-4 py-3 text-left font-label-sm text-label-sm font-medium text-on-surface-variant;
+  }
+
+  .admin-td {
+    @apply px-4 py-3 font-body-md text-sm text-on-surface;
+  }
+}

@@ -1,0 +1,496 @@
+<!DOCTYPE html><html lang="ko"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>호텔 &amp; 데이케어 | 댕이를 부탁해</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700&amp;family=Be+Vietnam+Pro:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "background": "#fff8f5",
+                      "secondary-container": "#feb6c4",
+                      "surface-container-low": "#fff1ea",
+                      "on-surface-variant": "#4f453c",
+                      "on-surface": "#221a15",
+                      "tertiary-fixed-dim": "#c9c6c1",
+                      "primary-container": "#5d4024",
+                      "on-tertiary-container": "#b7b4ae",
+                      "secondary-fixed-dim": "#fbb3c1",
+                      "on-error": "#ffffff",
+                      "on-background": "#221a15",
+                      "on-tertiary-fixed-variant": "#484743",
+                      "outline": "#81756b",
+                      "tertiary": "#31302c",
+                      "on-tertiary-fixed": "#1c1c18",
+                      "primary": "#442a10",
+                      "on-secondary-fixed-variant": "#6b3743",
+                      "surface-tint": "#78583a",
+                      "primary-fixed": "#ffdcbf",
+                      "inverse-primary": "#e9bf9a",
+                      "surface": "#fff8f5",
+                      "error-container": "#ffdad6",
+                      "inverse-on-surface": "#feeee5",
+                      "on-primary-fixed": "#2c1601",
+                      "surface-container-highest": "#efdfd7",
+                      "on-error-container": "#93000a",
+                      "inverse-surface": "#382f29",
+                      "surface-container-high": "#f5e5dc",
+                      "on-primary-fixed-variant": "#5e4125",
+                      "tertiary-fixed": "#e6e2dc",
+                      "on-primary-container": "#d5ac89",
+                      "surface-dim": "#e7d7ce",
+                      "on-secondary-container": "#7a4450",
+                      "secondary": "#864e5a",
+                      "error": "#ba1a1a",
+                      "surface-variant": "#efdfd7",
+                      "on-tertiary": "#ffffff",
+                      "primary-fixed-dim": "#e9bf9a",
+                      "on-secondary": "#ffffff",
+                      "on-secondary-fixed": "#360c19",
+                      "tertiary-container": "#474642",
+                      "surface-bright": "#fff8f5",
+                      "secondary-fixed": "#ffd9df",
+                      "on-primary": "#ffffff",
+                      "outline-variant": "#d3c4b9",
+                      "surface-container-lowest": "#ffffff",
+                      "surface-container": "#fbebe2"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "stack-sm": "8px",
+                      "gutter": "24px",
+                      "container-max": "1200px",
+                      "margin-desktop": "40px",
+                      "stack-lg": "32px",
+                      "base": "8px",
+                      "margin-mobile": "16px",
+                      "stack-md": "16px"
+              },
+              "fontFamily": {
+                      "headline-lg-mobile": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "body-lg": [
+                              "Be Vietnam Pro"
+                      ],
+                      "label-md": [
+                              "Be Vietnam Pro"
+                      ],
+                      "label-sm": [
+                              "Be Vietnam Pro"
+                      ],
+                      "headline-md": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "body-md": [
+                              "Be Vietnam Pro"
+                      ],
+                      "headline-xl": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "headline-lg": [
+                              "Plus Jakarta Sans"
+                      ]
+              },
+              "fontSize": {
+                      "headline-lg-mobile": [
+                              "28px",
+                              {
+                                      "lineHeight": "36px",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "label-sm": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-xl": [
+                              "48px",
+                              {
+                                      "lineHeight": "56px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "700"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+        .soft-shadow {
+            box-shadow: 0 10px 30px -10px rgba(68, 42, 16, 0.08);
+        }
+        .hover-lift {
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
+        }
+        .hover-lift:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 35px -5px rgba(68, 42, 16, 0.12);
+        }
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #feb6c4;
+            box-shadow: 0 0 0 3px rgba(254, 182, 196, 0.3);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md antialiased min-h-screen flex flex-col">
+<!-- TopNavBar -->
+<header class="bg-background dark:bg-background text-primary dark:text-primary-fixed font-body-md text-body-md w-full top-0 sticky shadow-sm dark:bg-surface-container-low shadow-sm z-50">
+<div class="flex justify-between items-center h-20 px-margin-desktop max-w-container-max mx-auto">
+<div class="text-headline-md font-headline-md text-primary dark:text-primary-fixed">댕이를 부탁해</div>
+<nav class="hidden md:flex gap-gutter"><a class="text-primary font-bold border-b-2 border-primary pb-1 hover:text-secondary hover:transition-colors duration-200 transition-all hover:-translate-y-0.5" href="#">홈</a><a class="text-on-surface-variant font-medium hover:text-secondary hover:transition-colors duration-200 transition-all hover:-translate-y-0.5" href="#">예약</a><a class="text-on-surface-variant font-medium hover:text-secondary hover:transition-colors duration-200 transition-all hover:-translate-y-0.5" href="#">쇼핑몰</a><a class="text-on-surface-variant font-medium hover:text-secondary hover:transition-colors duration-200 transition-all hover:-translate-y-0.5" href="#">마이페이지</a></nav>
+<div class="flex items-center gap-stack-md">
+<button class="hidden md:flex items-center justify-center h-12 px-6 rounded-full bg-primary text-on-primary font-label-md hover:bg-surface-tint transition-colors">Sign In</button>
+<button class="md:hidden text-primary">
+<span class="material-symbols-outlined text-[28px]">menu</span>
+</button>
+</div>
+</div>
+</header>
+<main class="flex-grow">
+<!-- Hero Section -->
+<section class="relative pt-20 pb-32 overflow-hidden">
+<div class="absolute inset-0 z-0">
+<div class="absolute inset-0 bg-gradient-to-br from-surface-container-low to-background"></div>
+<!-- Abstract blobs for soft organic feel -->
+<div class="absolute top-0 right-0 w-[600px] h-[600px] bg-secondary-container/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"></div>
+<div class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-primary-fixed/30 rounded-full blur-3xl translate-y-1/3 -translate-x-1/4"></div>
+</div>
+<div class="relative z-10 max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+<div class="space-y-stack-lg">
+<div class="inline-flex items-center gap-2 px-4 py-2 bg-surface-container-highest rounded-full text-primary font-label-sm">
+<span class="material-symbols-outlined text-[18px]">pets</span>
+                        최고의 펫 휴양지
+                    </div>
+<h1 class="font-headline-xl text-headline-xl text-on-background">내 아이를 위한<br>완벽한 하루, <span class="text-primary">안전한 휴식</span></h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-md">
+                        넓고 쾌적한 플레이 에어리어부터 안락한 프라이빗 룸까지. 전문가의 세심한 케어로 반려견에게 최고의 하루를 선물하세요.
+                    </p>
+<div class="flex flex-wrap gap-4 pt-stack-sm">
+<button class="h-12 px-8 rounded-full bg-primary text-on-primary font-label-md flex items-center gap-2 hover:bg-surface-tint transition-all hover-lift" onclick="document.getElementById('booking').scrollIntoView({behavior: 'smooth'})">
+                            상담 예약하기
+                            <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</button>
+<button class="h-12 px-8 rounded-full bg-secondary-container/10 text-secondary font-label-md flex items-center gap-2 hover:bg-secondary-container/20 transition-all hover-lift">
+                            시설 둘러보기
+                        </button>
+</div>
+</div>
+<div class="relative">
+<div class="aspect-[4/3] rounded-[2rem] overflow-hidden soft-shadow relative z-10">
+<img class="w-full h-full object-cover" data-alt="A joyful golden retriever playing in a brightly lit, premium indoor dog daycare facility. The space features soft pastel colors, natural wood elements, and large windows letting in abundant sunlight. The atmosphere is safe, nurturing, and high-end modern organic. A professional caretaker is softly smiling in the background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAivRiIqee8Vcy0hi58JCgIdM2v4e36IgI22dkUjjNiQWS3-CUrmHjtPCtFsoi-8OrHPBOO01k9WBJ_R7H11VL4r282O1sSNxuPDtWCePuRQtgMVyUn3s75wslgohc3Fy-bLbkIptkx4U7-bR3LOpRr1saT2VzUAY_zzIoxc3A-rB9VBDb2H77bcXU6YytAhxhXkRF8WGMVgRYQz09h5gxGspULSzvfmZq_ta6tIpk6Y8_nsnB90WGHbg">
+</div>
+<!-- Decorative element -->
+<div class="absolute -bottom-6 -left-6 bg-surface-container-lowest p-6 rounded-2xl soft-shadow z-20 flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-primary-fixed flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">verified</span>
+</div>
+<div>
+<p class="font-label-md text-on-background">전문 훈련사 상주</p>
+<p class="font-label-sm text-on-surface-variant">24시간 안전 케어</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Services Bento Grid -->
+<section class="py-24 bg-surface-container-low relative">
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop space-y-16">
+<div class="text-center max-w-2xl mx-auto space-y-4">
+<h2 class="font-headline-lg text-headline-lg text-on-background">프리미엄 서비스</h2>
+<p class="font-body-md text-on-surface-variant">아이들의 성향과 컨디션에 맞춘 맞춤형 케어 프로그램을 제공합니다.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter auto-rows-[300px]">
+<!-- Daycare Card -->
+<div class="md:col-span-8 bg-surface-container-lowest rounded-[1rem] p-8 soft-shadow hover-lift flex flex-col justify-between relative overflow-hidden group">
+<div class="relative z-10 w-2/3">
+<div class="w-12 h-12 rounded-full bg-surface-container-low flex items-center justify-center text-primary mb-6">
+<span class="material-symbols-outlined text-[24px]">sunny</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-background mb-2">데이케어 (Daycare)</h3>
+<p class="font-body-md text-on-surface-variant mb-6">에너지 넘치는 아이들을 위한 사회화 프로그램. 넓은 실내외 플레이존에서 친구들과 신나게 뛰어놀며 스트레스를 해소합니다.</p>
+<ul class="space-y-2">
+<li class="flex items-center gap-2 font-label-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] text-primary">check_circle</span> 행동 교정 훈련사 밀착 케어
+                                </li>
+<li class="flex items-center gap-2 font-label-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] text-primary">check_circle</span> 맞춤형 놀이 스케줄
+                                </li>
+</ul>
+</div>
+<div class="absolute right-0 bottom-0 w-1/2 h-full">
+<div class="w-full h-full bg-cover bg-center opacity-80 group-hover:scale-105 transition-transform duration-500 mask-image-linear-to-l" data-alt="Several small dogs of various breeds happily interacting and running in a spacious, modern indoor play area. The floor is a soft, safe material in pastel tones. Large windows allow natural light to flood the space. The setting feels extremely clean, secure, and professionally managed." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBSlIY5gouB9YVxzILoaTEoltNeFeVvGdvOuwZKmVMhVvdPooUfp9Hvth4WnmsKsbR1jC9mfdyj41XiTsZXxPYSxwjchV7T4luSGjoYOWfe19kUmTuyRJjoUYGeObsMAoZpii_tSt5qvsrSqkt83WwgM61yYXyzb-wCi62Hji6Pbsp3wc-yNGX92N39iTaB2gU3Ki84vmS7pk5lyh6UY5Ax2VKFjX6O1uoAjInZX-aYArgiJAP52MxSEQ')"></div>
+<div class="absolute inset-0 bg-gradient-to-r from-surface-container-lowest via-surface-container-lowest/80 to-transparent"></div>
+</div>
+</div>
+<!-- Hotel Card -->
+<div class="md:col-span-4 bg-surface-container-lowest rounded-[1rem] p-8 soft-shadow hover-lift flex flex-col justify-between">
+<div>
+<div class="w-12 h-12 rounded-full bg-surface-container-low flex items-center justify-center text-primary mb-6">
+<span class="material-symbols-outlined text-[24px]">bed</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-background mb-2">호텔링 (Hotel)</h3>
+<p class="font-body-md text-on-surface-variant">개별 냉난방과 방음 시설이 완비된 프라이빗 룸에서 편안한 휴식을 취합니다.</p>
+</div>
+<div class="mt-6 flex gap-2">
+<span class="px-3 py-1 bg-surface-container bg-opacity-50 rounded-full font-label-sm text-on-surface-variant">24h 모니터링</span>
+<span class="px-3 py-1 bg-surface-container bg-opacity-50 rounded-full font-label-sm text-on-surface-variant">프리미엄 식단</span>
+</div>
+</div>
+<!-- Schedule Card -->
+<div class="md:col-span-4 bg-primary text-on-primary rounded-[1rem] p-8 soft-shadow hover-lift flex flex-col justify-between overflow-hidden relative">
+<div class="absolute top-0 right-0 p-4 opacity-10">
+<span class="material-symbols-outlined text-[120px]">schedule</span>
+</div>
+<div class="relative z-10">
+<h3 class="font-headline-md text-headline-md mb-6">Daily Schedule</h3>
+<ul class="space-y-4">
+<li class="flex items-start gap-4">
+<div class="font-label-md text-primary-fixed w-16">09:00</div>
+<div class="font-body-md text-on-primary/90">등원 및 컨디션 체크</div>
+</li>
+<li class="flex items-start gap-4">
+<div class="font-label-md text-primary-fixed w-16">10:30</div>
+<div class="font-body-md text-on-primary/90">오전 플레이타임</div>
+</li>
+<li class="flex items-start gap-4">
+<div class="font-label-md text-primary-fixed w-16">13:00</div>
+<div class="font-body-md text-on-primary/90">낮잠 및 개별 휴식</div>
+</li>
+<li class="flex items-start gap-4">
+<div class="font-label-md text-primary-fixed w-16">15:00</div>
+<div class="font-body-md text-on-primary/90">오후 산책 및 노즈워크</div>
+</li>
+</ul>
+</div>
+</div>
+<!-- Facilities Image -->
+<div class="md:col-span-8 rounded-[1rem] overflow-hidden soft-shadow relative group">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A beautiful, cozy private sleeping room for a dog in a luxury pet hotel. The room features a soft, plush dog bed, ambient warm lighting, and minimalist organic decor. The aesthetic is extremely high-end, clean, and comforting, resembling a boutique human hotel room scaled down for a pet." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCofDLl2YjKZeH5s3zR6zFvCz4swrWeCdfEaHotMGCM-ozrADD67bXgtopc5HMKtr7v3z60jR-J5bI87D80xmLICircfFC-AgPW1VAc2Ji-v04faAHLE1Xa4-upMRIBS_TwnA0VPW5wVKFkgQzQhznjRGj6E2wVC26fb5z1i9kNjSKyyzmuNzRXIVrb50f4Rwk3OVAnhv_B3EeKfwrX-wJ_HWNh_T1lfQl-3t-N0v--yqd8iwgzZrT1Sw">
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-8">
+<h3 class="font-headline-md text-headline-md text-white">최고급 시설과 안락한 환경</h3>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Booking Form Section -->
+<section class="py-24 bg-background" id="booking">
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
+<div class="bg-surface-container-lowest rounded-[2rem] p-8 md:p-12 soft-shadow flex flex-col lg:flex-row gap-12">
+<!-- Form Info -->
+<div class="lg:w-1/3 space-y-6">
+<div class="w-12 h-12 rounded-full bg-secondary-container/20 flex items-center justify-center text-secondary mb-2">
+<span class="material-symbols-outlined text-[24px]">calendar_month</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-on-background">상담 예약하기</h2>
+<p class="font-body-md text-on-surface-variant">
+                            방문 상담이나 서비스 예약을 원하시면 아래 폼을 작성해주세요. 담당자가 확인 후 빠르게 연락드리겠습니다.
+                        </p>
+<div class="pt-8 space-y-4">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary">call</span>
+<div>
+<p class="font-label-sm text-on-surface-variant">고객센터</p>
+<p class="font-label-md text-on-background">1588-0000</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary">location_on</span>
+<div>
+<p class="font-label-sm text-on-surface-variant">위치</p>
+<p class="font-label-md text-on-background">서울시 강남구 테헤란로 123</p>
+</div>
+</div>
+</div>
+</div>
+<!-- The Form -->
+<div class="lg:w-2/3 glass-panel rounded-[1rem] p-8 relative overflow-hidden">
+<!-- Paw print decorations -->
+<span class="material-symbols-outlined absolute top-4 right-8 text-[40px] text-surface-variant/50 -rotate-12">pets</span>
+<span class="material-symbols-outlined absolute top-16 right-24 text-[30px] text-surface-variant/50 rotate-12">pets</span>
+<form class="space-y-6 relative z-10">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="space-y-2">
+<label class="font-label-md text-on-background">보호자 성함</label>
+<input class="w-full h-12 px-4 rounded-lg border border-outline-variant bg-surface-bright text-on-background font-body-md placeholder-on-surface-variant/50 transition-all" placeholder="홍길동" type="text">
+</div>
+<div class="space-y-2">
+<label class="font-label-md text-on-background">연락처</label>
+<input class="w-full h-12 px-4 rounded-lg border border-outline-variant bg-surface-bright text-on-background font-body-md placeholder-on-surface-variant/50 transition-all" placeholder="010-0000-0000" type="tel">
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="space-y-2">
+<label class="font-label-md text-on-background">반려견 이름 &amp; 견종</label>
+<input class="w-full h-12 px-4 rounded-lg border border-outline-variant bg-surface-bright text-on-background font-body-md placeholder-on-surface-variant/50 transition-all" placeholder="초코 (푸들)" type="text">
+</div>
+<div class="space-y-2">
+<label class="font-label-md text-on-background">희망 서비스</label>
+<div class="relative">
+<select class="w-full h-12 px-4 rounded-lg border border-outline-variant bg-surface-bright text-on-background font-body-md appearance-none transition-all">
+<option value="">서비스 선택</option>
+<option value="daycare">데이케어</option>
+<option value="hotel">호텔링</option>
+<option value="consult">방문 상담</option>
+</select>
+<span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none">expand_more</span>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="space-y-2">
+<label class="font-label-md text-on-background">희망 날짜</label>
+<input class="w-full h-12 px-4 rounded-lg border border-outline-variant bg-surface-bright text-on-background font-body-md transition-all text-on-surface-variant" type="date">
+</div>
+<div class="space-y-2">
+<label class="font-label-md text-on-background">희망 시간</label>
+<input class="w-full h-12 px-4 rounded-lg border border-outline-variant bg-surface-bright text-on-background font-body-md transition-all text-on-surface-variant" type="time">
+</div>
+</div>
+<div class="space-y-2">
+<label class="font-label-md text-on-background">추가 문의사항</label>
+<textarea class="w-full h-32 p-4 rounded-lg border border-outline-variant bg-surface-bright text-on-background font-body-md placeholder-on-surface-variant/50 resize-none transition-all" placeholder="아이의 특이사항이나 궁금하신 점을 남겨주세요."></textarea>
+</div>
+<button class="w-full h-14 rounded-full bg-primary text-on-primary font-label-md text-[16px] flex items-center justify-center gap-2 hover:bg-surface-tint transition-all hover-lift" type="submit">
+                                상담 신청 완료하기
+                                <span class="material-symbols-outlined">check_circle</span>
+</button>
+</form>
+</div>
+</div>
+</div>
+</section>
+<!-- FAQ Section -->
+<section class="py-24 bg-surface-container-low">
+<div class="max-w-[800px] mx-auto px-margin-mobile md:px-margin-desktop space-y-12">
+<div class="text-center space-y-4">
+<h2 class="font-headline-lg text-headline-lg text-on-background">자주 묻는 질문</h2>
+<p class="font-body-md text-on-surface-variant">예약 전 확인하시면 좋은 정보들입니다.</p>
+</div>
+<div class="space-y-4">
+<!-- FAQ Item 1 -->
+<details class="group bg-surface-container-lowest rounded-[1rem] soft-shadow [&amp;_summary::-webkit-details-marker]:hidden">
+<summary class="flex items-center justify-between p-6 cursor-pointer font-label-md text-[16px] text-on-background">
+<span class="">입소 시 필수 예방접종 항목이 있나요?</span>
+<span class="material-symbols-outlined transition duration-300 group-open:-rotate-180 text-primary">expand_more</span>
+</summary>
+<div class="px-6 pb-6 font-body-md text-on-surface-variant">
+                            네, 모든 아이들의 안전을 위해 종합백신, 코로나장염, 켄넬코프, 광견병 예방접종이 1년 이내에 완료되어야 합니다. 첫 방문 시 접종 증명서(수첩 또는 앱)를 꼭 지참해 주시기 바랍니다.
+                        </div>
+</details>
+<!-- FAQ Item 2 -->
+<details class="group bg-surface-container-lowest rounded-[1rem] soft-shadow [&amp;_summary::-webkit-details-marker]:hidden">
+<summary class="flex items-center justify-between p-6 cursor-pointer font-label-md text-[16px] text-on-background">
+<span class="">응급 상황 발생 시 어떻게 대처하나요?</span>
+<span class="material-symbols-outlined transition duration-300 group-open:-rotate-180 text-primary">expand_more</span>
+</summary>
+<div class="px-6 pb-6 font-body-md text-on-surface-variant">
+                            24시간 상주하는 전문 스태프가 아이들의 상태를 모니터링합니다. 응급 상황 발생 시, 사전 등록된 보호자님께 즉시 연락드리며, 가장 가까운 협력 24시 동물병원으로 즉시 이송하는 시스템을 갖추고 있습니다.
+                        </div>
+</details>
+<!-- FAQ Item 3 -->
+<details class="group bg-surface-container-lowest rounded-[1rem] soft-shadow [&amp;_summary::-webkit-details-marker]:hidden">
+<summary class="flex items-center justify-between p-6 cursor-pointer font-label-md text-[16px] text-on-background">
+<span class="">호텔링 시 사료는 직접 챙겨가야 하나요?</span>
+<span class="material-symbols-outlined transition duration-300 group-open:-rotate-180 text-primary">expand_more</span>
+</summary>
+<div class="px-6 pb-6 font-body-md text-on-surface-variant">
+                            환경 변화로 인한 스트레스를 줄이고 장트러블을 예방하기 위해 평소 집에서 먹던 사료를 1회분씩 소분하여 챙겨주시는 것을 권장합니다. 필요한 경우 최고급 프리미엄 사료도 원내에 준비되어 있습니다.
+                        </div>
+</details>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-high dark:bg-surface-container-low text-primary dark:text-primary-fixed font-body-md text-body-md w-full mt-stack-lg bg-surface-container-high dark:bg-surface-container-low flat no shadows">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter py-stack-lg px-margin-desktop max-w-container-max mx-auto">
+<div class="col-span-1 md:col-span-1">
+<div class="font-headline-md text-headline-md text-primary mb-4">댕이를 부탁해</div>
+<p class="text-on-surface-variant text-[14px]">우리의 소중한 반려견을 위한 완벽한 휴식처. 전문적이고 따뜻한 케어를 약속드립니다.</p>
+</div>
+<div class="col-span-1">
+<h4 class="font-label-md text-primary font-bold mb-4">Links</h4>
+<ul class="space-y-2">
+<li class=""><a class="text-on-surface-variant hover:text-secondary transition-colors transition-opacity duration-200 hover:opacity-80" href="#">Privacy Policy</a></li>
+<li class=""><a class="text-on-surface-variant hover:text-secondary transition-colors transition-opacity duration-200 hover:opacity-80" href="#">Terms of Service</a></li>
+<li class=""><a class="text-on-surface-variant hover:text-secondary transition-colors transition-opacity duration-200 hover:opacity-80" href="#">FAQ</a></li>
+<li class=""><a class="text-on-surface-variant hover:text-secondary transition-colors transition-opacity duration-200 hover:opacity-80" href="#">Customer Support</a></li>
+</ul>
+</div>
+<div class="col-span-1 md:col-span-2 flex flex-col justify-between items-start md:items-end mt-8 md:mt-0">
+<div class="flex gap-4 mb-4">
+<a class="w-10 h-10 rounded-full bg-surface-container-low flex items-center justify-center text-primary hover:bg-surface-tint hover:text-on-primary transition-colors" href="#">
+<span class="material-symbols-outlined">mail</span>
+</a>
+<a class="w-10 h-10 rounded-full bg-surface-container-low flex items-center justify-center text-primary hover:bg-surface-tint hover:text-on-primary transition-colors" href="#">
+<span class="material-symbols-outlined">share</span>
+</a>
+</div>
+<div class="text-on-surface-variant text-[14px]">
+                    © 2024 댕이를 부탁해. All rights reserved.
+                </div>
+</div>
+</div>
+</footer>
+
+
+</body></html>

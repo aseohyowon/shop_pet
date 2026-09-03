@@ -1,0 +1,431 @@
+<!DOCTYPE html><html lang="ko"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>About Us - 댕이를 부탁해</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "background": "#fff8f5",
+                      "secondary-container": "#feb6c4",
+                      "surface-container-low": "#fff1ea",
+                      "on-surface-variant": "#4f453c",
+                      "on-surface": "#221a15",
+                      "tertiary-fixed-dim": "#c9c6c1",
+                      "primary-container": "#5d4024",
+                      "on-tertiary-container": "#b7b4ae",
+                      "secondary-fixed-dim": "#fbb3c1",
+                      "on-error": "#ffffff",
+                      "on-background": "#221a15",
+                      "on-tertiary-fixed-variant": "#484743",
+                      "outline": "#81756b",
+                      "tertiary": "#31302c",
+                      "on-tertiary-fixed": "#1c1c18",
+                      "primary": "#442a10",
+                      "on-secondary-fixed-variant": "#6b3743",
+                      "surface-tint": "#78583a",
+                      "primary-fixed": "#ffdcbf",
+                      "inverse-primary": "#e9bf9a",
+                      "surface": "#fff8f5",
+                      "error-container": "#ffdad6",
+                      "inverse-on-surface": "#feeee5",
+                      "on-primary-fixed": "#2c1601",
+                      "surface-container-highest": "#efdfd7",
+                      "on-error-container": "#93000a",
+                      "inverse-surface": "#382f29",
+                      "surface-container-high": "#f5e5dc",
+                      "on-primary-fixed-variant": "#5e4125",
+                      "tertiary-fixed": "#e6e2dc",
+                      "on-primary-container": "#d5ac89",
+                      "surface-dim": "#e7d7ce",
+                      "on-secondary-container": "#7a4450",
+                      "secondary": "#864e5a",
+                      "error": "#ba1a1a",
+                      "surface-variant": "#efdfd7",
+                      "on-tertiary": "#ffffff",
+                      "primary-fixed-dim": "#e9bf9a",
+                      "on-secondary": "#ffffff",
+                      "on-secondary-fixed": "#360c19",
+                      "tertiary-container": "#474642",
+                      "surface-bright": "#fff8f5",
+                      "secondary-fixed": "#ffd9df",
+                      "on-primary": "#ffffff",
+                      "outline-variant": "#d3c4b9",
+                      "surface-container-lowest": "#ffffff",
+                      "surface-container": "#fbebe2"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "stack-sm": "8px",
+                      "gutter": "24px",
+                      "container-max": "1200px",
+                      "margin-desktop": "40px",
+                      "stack-lg": "32px",
+                      "base": "8px",
+                      "margin-mobile": "16px",
+                      "stack-md": "16px"
+              },
+              "fontFamily": {
+                      "headline-lg-mobile": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "body-lg": [
+                              "Be Vietnam Pro"
+                      ],
+                      "label-md": [
+                              "Be Vietnam Pro"
+                      ],
+                      "label-sm": [
+                              "Be Vietnam Pro"
+                      ],
+                      "headline-md": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "body-md": [
+                              "Be Vietnam Pro"
+                      ],
+                      "headline-xl": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "headline-lg": [
+                              "Plus Jakarta Sans"
+                      ]
+              },
+              "fontSize": {
+                      "headline-lg-mobile": [
+                              "28px",
+                              {
+                                      "lineHeight": "36px",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "label-sm": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-xl": [
+                              "48px",
+                              {
+                                      "lineHeight": "56px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "700"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .icon-filled {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        .floating-card {
+            transition: all 0.3s ease;
+        }
+        .floating-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px -5px rgba(68, 42, 16, 0.1);
+        }
+        
+        .hero-pattern {
+            background-color: #fff8f5;
+            background-image: radial-gradient(#efdfd7 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md antialiased selection:bg-secondary-container selection:text-on-secondary-container">
+<!-- TopNavBar -->
+<header class="w-full top-0 sticky z-50 bg-background shadow-sm">
+<div class="flex justify-between items-center h-20 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+<a class="font-headline-md text-headline-md text-primary flex items-center gap-2 transition-all duration-300 hover:-translate-y-0.5" href="#"><span class="material-symbols-outlined icon-filled text-secondary text-3xl" data-icon="pets">pets</span>
+                댕이를 부탁해</a>
+<!-- Desktop Nav -->
+<nav class="hidden md:flex items-center gap-8"><a class="text-primary font-bold border-b-2 border-primary pb-1 hover:bg-surface-container-lowest transition-colors px-3 rounded-t-lg" href="#">홈</a>
+<a class="text-on-surface-variant font-body-md hover:text-primary hover:bg-surface-container-lowest transition-colors px-3 py-2 rounded-lg" href="#">예약</a>
+<a class="text-on-surface-variant font-body-md hover:text-primary hover:bg-surface-container-lowest transition-colors px-3 py-2 rounded-lg" href="#">쇼핑몰</a>
+<a class="text-on-surface-variant font-body-md hover:text-primary hover:bg-surface-container-lowest transition-colors px-3 py-2 rounded-lg" href="#">마이페이지</a></nav>
+<div class="hidden md:flex items-center gap-4">
+<button class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-surface-container-lowest transition-colors transition-all duration-300 hover:-translate-y-0.5">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+</button>
+<button class="bg-primary text-on-primary font-label-md text-label-md px-6 py-3 rounded-full hover:bg-primary-container transition-colors transition-all duration-300 hover:-translate-y-0.5 min-h-[48px] flex items-center shadow-sm">로­¸인</button>
+</div>
+<!-- Mobile Menu Toggle -->
+<button class="md:hidden w-12 h-12 flex items-center justify-center text-primary bg-surface-container-low rounded-xl">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+</div>
+</header>
+<main>
+<!-- Hero Section -->
+<section class="hero-pattern pt-stack-lg pb-24 px-margin-mobile md:px-margin-desktop relative overflow-hidden">
+<div class="max-w-container-max mx-auto text-center relative z-10">
+<div class="inline-flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-sm mb-6 border border-surface-container-highest">
+<span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Our Story</span>
+</div>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile md:font-headline-xl md:text-headline-xl text-primary mb-6 max-w-3xl mx-auto leading-tight">
+                    A Safe Haven for Your <br class="hidden md:block">Furriest Family Members.
+                </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto mb-10">
+                    We believe every pet deserves a space that feels like home, filled with love, safety, and professional care. We're more than a pet hotel; we're your partner in pet parenthood.
+                </p>
+</div>
+<!-- Decorative Elements -->
+<div class="absolute top-20 left-10 md:left-20 opacity-20 w-32 h-32 rounded-full bg-secondary blur-3xl"></div>
+<div class="absolute bottom-10 right-10 md:right-32 opacity-20 w-48 h-48 rounded-full bg-primary blur-3xl"></div>
+</section>
+<!-- Bento Grid Facility Tour -->
+<section class="py-stack-lg px-margin-mobile md:px-margin-desktop bg-surface-container-lowest">
+<div class="max-w-container-max mx-auto">
+<div class="flex flex-col md:flex-row justify-between items-end mb-10 gap-4">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-primary mb-2">Premium Environment</h2>
+<p class="text-on-surface-variant font-body-md max-w-xl">Designed specifically to reduce stress and maximize comfort for dogs of all sizes and temperaments.</p>
+</div>
+<button class="flex items-center gap-2 text-secondary font-label-md bg-secondary-container bg-opacity-20 px-5 py-2.5 rounded-full hover:bg-opacity-30 transition-colors min-h-[48px]">
+<span class="material-symbols-outlined" data-icon="360">360</span>
+                        Virtual Tour
+                    </button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter auto-rows-[300px]">
+<!-- Large Feature Cell -->
+<div class="md:col-span-2 md:row-span-2 rounded-[2rem] overflow-hidden relative group floating-card shadow-sm border border-surface-container-highest">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A spacious, high-end dog daycare playroom flooded with natural sunlight. The floor is covered in premium, soft rubber matting in a warm beige color. Several happy, well-groomed dogs are playing with colorful toys, supervised by a smiling staff member in a professional uniform. The aesthetic is clean, modern, organic, and deeply comforting, reflecting a luxury pet care facility." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAKg4MTE7G5x2f5lIp6yMWMOYzvJpjFODc6dggrlvpwpNXC_jQ3hR46gqjtZ9dMXpmLUwmZLS3vnCd6e4sHyYhIU3e5YY8j-pT3Vti9v-41F_TUzrDhGo3DLe-SCJQ_oeQQrARo5HF0gwUC9HJI5m8iu9djo9fHixhdJe1ZhXEcmvQPem5-6uO8RYymJyfb-RPl8muFVjaLXzO6MYVFFn3d9sax7cAN4S8SnehkZvISroOtEQc6qrULeQ">
+<div class="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent flex flex-col justify-end p-8">
+<span class="bg-white/20 backdrop-blur-md text-white font-label-sm px-3 py-1 rounded-full w-fit mb-3">Indoor Play Area</span>
+<h3 class="font-headline-md text-headline-md text-white mb-2">Climate-Controlled Playrooms</h3>
+<p class="text-white/80 font-body-md line-clamp-2">Our expansive indoor areas maintain perfect temperatures year-round, ensuring comfortable play regardless of the weather outside.</p>
+</div>
+</div>
+<!-- Small Cells -->
+<div class="rounded-xl overflow-hidden relative group floating-card shadow-sm border border-surface-container-highest bg-white p-6 flex flex-col justify-center items-center text-center">
+<div class="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center text-primary mb-4">
+<span class="material-symbols-outlined text-3xl icon-filled" data-icon="medical_services">medical_services</span>
+</div>
+<h4 class="font-headline-md text-xl text-primary mb-2">24/7 Care</h4>
+<p class="text-sm text-on-surface-variant">Veterinarian on-call and staff present around the clock.</p>
+</div>
+<div class="rounded-xl overflow-hidden relative group floating-card shadow-sm border border-surface-container-highest">
+<img class="w-full h-full object-cover" data-alt="A close-up shot of a cozy, private suite for a dog in a luxury pet hotel. The walls are a soft tertiary cream color. The suite features a premium orthopedic dog bed with a fluffy blanket, and a soft ambient light casting a warm, comforting glow. It feels more like a boutique hotel room than a kennel, adhering to a modern-organic aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDCNGDkbZ2ZM3spv8Tc0d3W5YLJAttWJtPkO7wYm8wm90nYHhk_yLHd_KeD77Fo36Zc2dCSJw-P8TcbXmNVnw3_pafCql7dWSkBEwLnQ1DRiL4OK_BS8DFwtRRqsSmnEJQ0Kegc8jevOCpGtDyQMfx9Ih-dGnxBHZV5Fa9hP9PE34AkUk4LVbvsDOhtM4WLgNC2lsHKzd6RuW5a-H0kpUCEl51V0hVEv8kLEWPJEyrtZGnTYlxGuKOB7w">
+<div class="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition-colors duration-300"></div>
+<div class="absolute bottom-4 left-4 right-4 text-white">
+<h4 class="font-bold text-lg drop-shadow-md">Luxury Suites</h4>
+</div>
+</div>
+<div class="rounded-xl overflow-hidden relative group floating-card shadow-sm border border-surface-container-highest">
+<img class="w-full h-full object-cover" data-alt="An outdoor, securely fenced dog play yard with pristine artificial turf designed specifically for pets. Gentle rolling mounds provide enrichment. The area is shaded by beautiful mature trees, bathed in bright, warm afternoon sunlight. High-quality outdoor play equipment is visible. The scene exudes safety, cleanliness, and premium care." src="https://lh3.googleusercontent.com/aida-public/AB6AXuALjYZsNXZzNF3lX9d8CLPCmeruspXgKwrIJw7SHFXZXlfv7M5zrn5Xwp4wE1qE2-atXrP1E3cSZSbzfJa5WifkfGY3MYz7q8sFzBVYSgGameaB54_T0_c_HfdShIxUfGmw7Yn4AorLIExArWGzJ3OMwJdezBEs8_QeLVeFILrCn23tX_NJYmX6Dymv5i1R_vGNRIjtE3B7De0qOeDu0TXX9k_91NzOp5Sm2DzCcdneo7Z3FIVP8YIC2Q">
+<div class="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition-colors duration-300"></div>
+<div class="absolute bottom-4 left-4 right-4 text-white">
+<h4 class="font-bold text-lg drop-shadow-md">Outdoor Parks</h4>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Meet the Team -->
+<section class="py-stack-lg px-margin-mobile md:px-margin-desktop bg-surface">
+<div class="max-w-container-max mx-auto text-center mb-12">
+<h2 class="font-headline-lg text-headline-lg text-primary mb-4">Meet The Caregivers</h2>
+<p class="text-on-surface-variant font-body-lg max-w-2xl mx-auto">Certified trainers, experienced vet techs, and passionate pet lovers dedicated to your furry family.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter max-w-container-max mx-auto">
+<!-- Team Member 1 -->
+<div class="bg-white rounded-[1rem] p-6 text-center floating-card shadow-sm border border-surface-container-highest">
+<div class="w-32 h-32 mx-auto rounded-full p-1 border-2 border-primary mb-4 bg-surface-container-low">
+<img class="w-full h-full object-cover rounded-full" data-alt="A professional headshot of a friendly, approachable female pet behaviorist in her 30s. She is smiling warmly at the camera, wearing a clean, branded polo shirt in a soft tertiary cream color. The background is slightly blurred but suggests a bright, modern indoor facility. The lighting is soft and flattering, highlighting her trustworthy and nurturing demeanor." src="https://lh3.googleusercontent.com/aida-public/AB6AXuASzPb9AxBIanuHHfySm1GNHhZlRG5-qFZb2G7djIxw3w30FgwHI9JXaJiDY6SDT6V4gurpx0f3o6B1SJuoT7rD4oPYX5Nm22TNjzMmUrL8EBIji5euskGzt9fQaxMSrCbZ5LmkZ2pecNBhAJ2XzZ5JYJPKryxtrZE_LXanbUfz47VjcsYmeHLh_NiYOq7LC6XW9Eei-Hb-QGV-UBKucnXVPSKdSJvVeC6VhQBGqr1mgTezDWqetkPuBg">
+</div>
+<h3 class="font-headline-md text-lg text-primary">Dr. Sarah Jenkins</h3>
+<p class="text-secondary font-label-sm mb-3">Lead Behaviorist</p>
+<p class="text-sm text-on-surface-variant mb-4">Certified in canine behavior modification with 10 years of experience.</p>
+<div class="flex justify-center gap-2">
+<span class="inline-block px-2 py-1 bg-surface-container rounded-md text-xs text-on-surface-variant border border-outline-variant">CPDT-KA</span>
+</div>
+</div>
+<!-- Team Member 2 -->
+<div class="bg-white rounded-[1rem] p-6 text-center floating-card shadow-sm border border-surface-container-highest">
+<div class="w-32 h-32 mx-auto rounded-full p-1 border-2 border-primary mb-4 bg-surface-container-low">
+<img class="w-full h-full object-cover rounded-full" data-alt="A professional headshot of a kind, dependable male veterinary technician in his 40s. He has a gentle smile and is wearing neat, professional scrubs in a muted, warm tone. He is holding a small, happy dog. The background is a clean, well-lit, modern pet care environment. The overall feel is highly professional, safe, and nurturing." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBJeyeTNSgFmrOev-bpWtBxJI-6a3TUFUGYkv5mEWanfOofUw0dHmaiCNfrp5Up3iXcKLfX-iSGWHu3w3Ukrse59y-rrOBf0-JMZcS7nmN2eI7YjsvFdfIJHVtYduahl-AqSsSA3U8JvmNh4PiemJydrMzkalyk5WknI2CQay6tTt9M50b7KGNtxItDA3kTs1eoKLzwmXWOG8bD2JnvIcrPQ1pYXDrfV3hLuVu2RVolXmgOltM1Rxqndw">
+</div>
+<h3 class="font-headline-md text-lg text-primary">Michael Chang</h3>
+<p class="text-secondary font-label-sm mb-3">Senior Caretaker</p>
+<p class="text-sm text-on-surface-variant mb-4">Former vet tech who ensures all medical and dietary needs are perfectly met.</p>
+<div class="flex justify-center gap-2">
+<span class="inline-block px-2 py-1 bg-surface-container rounded-md text-xs text-on-surface-variant border border-outline-variant">Pet CPR Certified</span>
+</div>
+</div>
+<!-- Team Member 3 -->
+<div class="bg-white rounded-[1rem] p-6 text-center floating-card shadow-sm border border-surface-container-highest">
+<div class="w-32 h-32 mx-auto rounded-full p-1 border-2 border-primary mb-4 bg-surface-container-low">
+<img class="w-full h-full object-cover rounded-full" data-alt="A professional headshot of a cheerful, energetic young woman in her 20s. She is an enrichment specialist for dogs, wearing a comfortable but professional outdoor-friendly uniform. She is outdoors with a blurred background of a sunny dog park. Her expression is bright and enthusiastic, reflecting the playful yet secure brand identity of a premium pet care service." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAw3IZrhaGX49wVRl3X1eEvnMbXLPVtMf8FhhjKEObzW-B70irTsnH4Bn3iBg_o9IsKiYMcRSZ1p7RTF9XkaurKYP287RwdE4zJDnKXoZ1RlM-8smprjfjChfnEWsTMVZjBDHYlzEK_njfEO3vba4eig_kEWHm7tX_SoVng2GpSGNxqSW5pyaeG2aa7HeUKsXT3OvC0Od6ZRChIvoyvR9OvWiV5QuQK9DbaGOXIIDXGdjkRR5ttGniUtg">
+</div>
+<h3 class="font-headline-md text-lg text-primary">Emily Rodriguez</h3>
+<p class="text-secondary font-label-sm mb-3">Enrichment Specialist</p>
+<p class="text-sm text-on-surface-variant mb-4">Designs personalized play sessions to keep pups mentally stimulated.</p>
+<div class="flex justify-center gap-2">
+<span class="inline-block px-2 py-1 bg-surface-container rounded-md text-xs text-on-surface-variant border border-outline-variant">Agility Expert</span>
+</div>
+</div>
+<!-- Join Team -->
+<div class="bg-surface-container-low rounded-[1rem] p-6 text-center flex flex-col justify-center items-center border border-dashed border-outline-variant hover:border-primary transition-colors cursor-pointer group">
+<div class="w-16 h-16 rounded-full bg-white flex items-center justify-center text-primary mb-4 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+</div>
+<h3 class="font-headline-md text-lg text-primary">Join Our Pack</h3>
+<p class="text-sm text-on-surface-variant mt-2">We are always looking for passionate pet professionals.</p>
+</div>
+</div>
+</section>
+<!-- Location & Contact -->
+<section class="py-stack-lg px-margin-mobile md:px-margin-desktop bg-surface-container-lowest">
+<div class="max-w-container-max mx-auto bg-white rounded-2xl shadow-sm border border-surface-container-highest overflow-hidden flex flex-col md:flex-row">
+<!-- Map Area -->
+<div class="md:w-1/2 h-[300px] md:h-auto relative bg-surface-container-low">
+<!-- Placeholder for Map, using image -->
+<img class="w-full h-full object-cover" data-alt="A clean, highly stylized digital map showing the location of a premium pet hotel in Seoul, South Korea. The map aesthetic matches the 'safe haven' brand identity, using soft creams, warm browns, and subtle pink accents. A prominent, stylized map pin with a paw print icon marks the specific location. The design is modern, uncluttered, and professional." data-location="Seoul, South Korea" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAAPGLGYc043jl0Xul6FAFt_JNh0sB9lo3LU0q2urkVyvwV9SMRDL5UZ3dNYoAryvxB2rBHTyiIy-uQlvlm8unAChFWVJp49jiy3fuyj5dzjPRiKfTi1-5ddd_WkMncxD8Hbt7c1Zfoiar3jguAtbR4QTL2xMePCoS4wfpgn2-Km7qyfqKSV8g8BdnGS2U5igXjGDne702gkGh0-oFnXVTSK6XhcgL89xGKt8LXX1-FInXKcxMJa3dlBw">
+</div>
+<!-- Contact Info -->
+<div class="md:w-1/2 p-8 md:p-12">
+<h2 class="font-headline-lg text-headline-lg text-primary mb-6">Find Us Here</h2>
+<ul class="space-y-6">
+<li class="flex items-start gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined" data-icon="location_on">location_on</span>
+</div>
+<div>
+<h4 class="font-label-md text-primary mb-1">Address</h4>
+<p class="text-on-surface-variant font-body-md">123 Pet Haven Lane, Gangnam-gu<br>Seoul, South Korea 06000</p>
+</div>
+</li>
+<li class="flex items-start gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined" data-icon="call">call</span>
+</div>
+<div>
+<h4 class="font-label-md text-primary mb-1">Phone</h4>
+<p class="text-on-surface-variant font-body-md">02-555-DOGS (3647)</p>
+</div>
+</li>
+<li class="flex items-start gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined" data-icon="schedule">schedule</span>
+</div>
+<div>
+<h4 class="font-label-md text-primary mb-1">Hours</h4>
+<p class="text-on-surface-variant font-body-md">Mon - Fri: 7:00 AM - 8:00 PM<br>Weekends: 8:00 AM - 6:00 PM</p>
+</div>
+</li>
+</ul>
+<div class="mt-8 pt-8 border-t border-surface-container-highest">
+<h4 class="font-label-md text-primary mb-4">Connect With Us</h4>
+<div class="flex gap-4">
+<button class="w-12 h-12 rounded-full bg-surface flex items-center justify-center text-primary border border-outline-variant hover:border-primary hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined" data-icon="share">share</span>
+</button>
+<button class="w-12 h-12 rounded-full bg-surface flex items-center justify-center text-primary border border-outline-variant hover:border-primary hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined" data-icon="mail">mail</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full mt-stack-lg bg-surface-container-high dark:bg-surface-container-low">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter py-stack-lg px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+<div class="col-span-1 md:col-span-1 mb-6 md:mb-0">
+<a class="font-headline-md text-headline-md text-primary flex items-center gap-2 mb-4 transition-opacity duration-200 hover:opacity-80" href="#">
+<span class="material-symbols-outlined icon-filled text-secondary" data-icon="pets">pets</span>
+                    댕이를 부탁해
+                </a>
+<p class="text-on-surface-variant font-body-md text-sm">
+                    © 2024 댕이를 부탁해. All rights reserved.
+                </p>
+</div>
+<div class="col-span-1">
+<h4 class="font-label-md text-primary mb-4 uppercase tracking-wider">Company</h4>
+<ul class="space-y-3">
+<li class=""><a class="text-on-surface-variant font-body-md hover:text-secondary transition-colors transition-opacity duration-200 hover:opacity-80" href="#">Privacy Policy</a></li>
+<li class=""><a class="text-on-surface-variant font-body-md hover:text-secondary transition-colors transition-opacity duration-200 hover:opacity-80" href="#">Terms of Service</a></li>
+</ul>
+</div>
+<div class="col-span-1">
+<h4 class="font-label-md text-primary mb-4 uppercase tracking-wider">Support</h4>
+<ul class="space-y-3">
+<li class=""><a class="text-on-surface-variant font-body-md hover:text-secondary transition-colors transition-opacity duration-200 hover:opacity-80" href="#">FAQ</a></li>
+<li class=""><a class="text-on-surface-variant font-body-md hover:text-secondary transition-colors transition-opacity duration-200 hover:opacity-80" href="#">Customer Support</a></li>
+</ul>
+</div>
+<div class="col-span-1">
+<h4 class="font-label-md text-primary mb-4 uppercase tracking-wider">Newsletter</h4>
+<div class="flex gap-2">
+<input class="w-full bg-white border border-outline-variant rounded-lg px-4 py-2 focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary text-sm text-on-surface" placeholder="Enter email" type="email">
+<button class="bg-primary text-on-primary p-2 rounded-lg hover:bg-primary-container transition-colors">
+<span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</footer>
+
+
+</body></html>

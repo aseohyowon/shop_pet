@@ -1,0 +1,476 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>댕이를 부탁해 오픈 준비</title>
+<meta name="description" content="애견호텔 플랫폼 오픈 전 사장님 준비사항과 완료 현황 정리 — 고객 미팅 자료" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" />
+
+<style>
+  :root {
+    --bg: #f7f2ec;
+    --surface: #fffdfb;
+    --surface-2: #f1e8df;
+    --border: #e6dacd;
+    --border-strong: #d8c8b7;
+    --ink: #2b2119;
+    --muted: #857668;
+    --accent: #6b4426;
+    --accent-soft: #efe0d3;
+    --pink: #8a4f5c;
+    --pink-soft: #f7e4e7;
+    --done: #3d7a57;
+    --done-soft: #e2efe7;
+    --dev: #6f5f4d;
+    --dev-soft: #ece4d8;
+    --shadow: 0 1px 2px rgba(74, 52, 32, .05), 0 8px 24px rgba(74, 52, 32, .06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #1b1712;
+      --surface: #262019;
+      --surface-2: #2f2820;
+      --border: #3a3128;
+      --border-strong: #4a3f33;
+      --ink: #f1e8de;
+      --muted: #a89a8b;
+      --accent: #dcab84;
+      --accent-soft: #3a2c1f;
+      --pink: #dc9caa;
+      --pink-soft: #3a2a2e;
+      --done: #7ec9a0;
+      --done-soft: #22332a;
+      --dev: #bda88f;
+      --dev-soft: #322a20;
+      --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 10px 30px rgba(0, 0, 0, .25);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #1b1712;
+    --surface: #262019;
+    --surface-2: #2f2820;
+    --border: #3a3128;
+    --border-strong: #4a3f33;
+    --ink: #f1e8de;
+    --muted: #a89a8b;
+    --accent: #dcab84;
+    --accent-soft: #3a2c1f;
+    --pink: #dc9caa;
+    --pink-soft: #3a2a2e;
+    --done: #7ec9a0;
+    --done-soft: #22332a;
+    --dev: #bda88f;
+    --dev-soft: #322a20;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 10px 30px rgba(0, 0, 0, .25);
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    font-weight: 400;
+    line-height: 1.7;
+    letter-spacing: -0.003em;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page { max-width: 812px; margin: 0 auto; padding: 64px 28px 96px; }
+
+  /* ---- masthead ---- */
+  .masthead { border-bottom: 2px solid var(--ink); padding-bottom: 22px; margin-bottom: 40px; }
+  .kicker {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 12px; font-weight: 500;
+    letter-spacing: .14em; text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 14px;
+  }
+  h1 {
+    font-size: clamp(30px, 6vw, 44px);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+    margin: 0 0 14px;
+  }
+  .dek { font-size: 16px; color: var(--muted); margin: 0; max-width: 60ch; }
+  .meta {
+    display: flex; flex-wrap: wrap; gap: 8px 20px;
+    margin-top: 20px;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 12.5px; color: var(--muted);
+  }
+  .meta b { color: var(--ink); font-weight: 500; }
+
+  /* ---- at-a-glance ---- */
+  .glance {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
+    background: var(--border); border: 1px solid var(--border);
+    border-radius: 12px; overflow: hidden; margin-bottom: 44px;
+  }
+  .glance div { background: var(--surface); padding: 18px 20px; }
+  .glance .n {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 25px; font-weight: 600; color: var(--accent);
+    font-variant-numeric: tabular-nums;
+    display: block; line-height: 1.2;
+  }
+  .glance .l { font-size: 13px; color: var(--muted); margin-top: 3px; }
+  @media (max-width: 620px) {
+    .glance { grid-template-columns: 1fr; }
+  }
+
+  /* ---- legend ---- */
+  .legend {
+    display: flex; flex-wrap: wrap; gap: 8px 18px;
+    padding: 14px 18px; margin-bottom: 48px;
+    background: var(--surface-2); border-radius: 10px;
+    font-size: 13px; color: var(--muted);
+  }
+  .legend span { display: inline-flex; align-items: center; gap: 7px; }
+  .swatch { width: 10px; height: 10px; border-radius: 3px; flex: none; }
+  .sw-done { background: var(--done); }
+  .sw-client { background: var(--pink); }
+  .sw-dev { background: var(--dev); }
+
+  /* ---- section ---- */
+  section { margin-bottom: 52px; }
+  .sec-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 6px; }
+  .sec-num {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 13px; font-weight: 600; color: var(--accent);
+  }
+  h2 {
+    font-size: 21px; font-weight: 700; letter-spacing: -0.015em;
+    margin: 0; text-wrap: balance;
+  }
+  .sec-note { font-size: 14px; color: var(--muted); margin: 4px 0 22px; }
+
+  /* ---- done list ---- */
+  .done-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px 22px;
+  }
+  @media (max-width: 620px) { .done-grid { grid-template-columns: 1fr; } }
+  .done-grid li {
+    list-style: none; position: relative;
+    padding-left: 26px; font-size: 14.5px;
+  }
+  .done-grid { padding: 0; margin: 0; }
+  .done-grid li::before {
+    content: "✓";
+    position: absolute; left: 0; top: 0;
+    color: var(--done); font-weight: 700;
+    font-size: 14px;
+  }
+  .done-grid li b { font-weight: 600; }
+  .done-grid li span { color: var(--muted); }
+
+  /* ---- task cards ---- */
+  .tasks { display: flex; flex-direction: column; gap: 14px; }
+  .task {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--pink);
+    border-radius: 10px;
+    padding: 18px 20px 18px 22px;
+    box-shadow: var(--shadow);
+  }
+  .task.is-dev { border-left-color: var(--dev); }
+  .task-top { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+  .task-idx {
+    font-family: "IBM Plex Mono", monospace;
+    font-weight: 600; font-size: 15px; color: var(--pink);
+    flex: none; font-variant-numeric: tabular-nums;
+  }
+  .task h3 { font-size: 16.5px; font-weight: 600; margin: 0; letter-spacing: -0.01em; }
+  .pill {
+    margin-left: auto;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11px; font-weight: 600; letter-spacing: .04em;
+    padding: 3px 9px; border-radius: 999px; white-space: nowrap;
+  }
+  .pill-todo { background: var(--pink-soft); color: var(--pink); }
+  .pill-doing { background: var(--accent-soft); color: var(--accent); }
+  .pill-done { background: var(--done-soft); color: var(--done); }
+  .task dl { margin: 12px 0 0; display: grid; grid-template-columns: 68px 1fr; gap: 6px 14px; }
+  .task dt {
+    font-size: 12px; color: var(--muted); font-weight: 500;
+    padding-top: 1px;
+  }
+  .task dd { margin: 0; font-size: 14px; }
+  .task dd + dt { border-top: 1px solid var(--border); padding-top: 9px; margin-top: 3px; }
+  .task dd.spaced { padding-bottom: 3px; }
+  .task dd b { font-weight: 600; color: var(--accent); }
+  @media (max-width: 520px) {
+    .task dl { grid-template-columns: 1fr; gap: 2px; }
+    .task dd { margin-bottom: 8px; }
+    .task dd + dt { border-top: none; padding-top: 4px; }
+  }
+
+  /* ---- timeline ---- */
+  .timeline { display: flex; flex-direction: column; gap: 0; }
+  .tl-row {
+    display: grid; grid-template-columns: 92px 1fr;
+    gap: 18px; padding: 16px 0;
+    border-top: 1px solid var(--border);
+  }
+  .tl-row:last-child { border-bottom: 1px solid var(--border); }
+  .tl-when {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 13px; font-weight: 600; color: var(--accent);
+  }
+  .tl-what { font-size: 14.5px; }
+  .tl-what .who {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11px; letter-spacing: .03em;
+    padding: 1px 7px; border-radius: 5px; margin-right: 7px;
+    background: var(--surface-2); color: var(--muted);
+  }
+  .tl-what .who.c { background: var(--pink-soft); color: var(--pink); }
+  .tl-what .who.d { background: var(--dev-soft); color: var(--dev); }
+
+  .callout {
+    margin-top: 20px; padding: 14px 18px;
+    background: var(--accent-soft); border-radius: 10px;
+    font-size: 13.5px; color: var(--ink);
+  }
+  .callout b { color: var(--accent); }
+
+  footer {
+    margin-top: 60px; padding-top: 22px;
+    border-top: 1px solid var(--border);
+    font-size: 13px; color: var(--muted);
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+  }
+
+  a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 3px; }
+
+  @media print {
+    body { background: #fff; }
+    .task, .glance { box-shadow: none; }
+    section { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <header class="masthead">
+    <p class="kicker">댕이를 부탁해 · 오픈 준비 안내</p>
+    <h1>서비스 오픈 전, 사장님이 준비하실 것</h1>
+    <p class="dek">플랫폼 개발은 마무리 단계입니다. 실제 결제를 받고 정식 오픈하려면 사업자 관련 서류와 도메인이 필요합니다. 아래 순서대로 진행하시면 됩니다.</p>
+    <div class="meta">
+      <span><b>미팅</b> 2026. 09. 03</span>
+      <span><b>대상</b> 애견호텔 · 데이케어 + 온라인 쇼핑몰 통합 플랫폼</span>
+    </div>
+  </header>
+
+  <div class="glance">
+    <div><span class="n">완료</span><span class="l">플랫폼 개발 (예약·쇼핑몰·결제·관리자)</span></div>
+    <div><span class="n">8</span><span class="l">사장님 준비 항목</span></div>
+    <div><span class="n">2~3주</span><span class="l">사업자등록 처리 후 오픈까지</span></div>
+  </div>
+
+  <div class="legend">
+    <span><i class="swatch sw-done"></i> 완료됨</span>
+    <span><i class="swatch sw-client"></i> 사장님이 준비</span>
+    <span><i class="swatch sw-dev"></i> 개발사가 처리</span>
+  </div>
+
+  <!-- ===== 1. done ===== -->
+  <section>
+    <div class="sec-head"><span class="sec-num">01</span><h2>이미 만들어진 것</h2></div>
+    <p class="sec-note">사장님 확인 없이도 지금 바로 시연 가능한 기능입니다.</p>
+    <ul class="done-grid">
+      <li><b>예약 시스템</b> <span>— 호텔 숙박 / 데이케어, 날짜·시간 선택, 정원 관리</span></li>
+      <li><b>쇼핑몰</b> <span>— 상품·카테고리·장바구니·주문</span></li>
+      <li><b>결제</b> <span>— 토스페이먼츠 카드·카카오페이 (현재 테스트 모드)</span></li>
+      <li><b>회원</b> <span>— 이메일 가입 + 카카오 로그인</span></li>
+      <li><b>마이페이지</b> <span>— 예약·주문·문의 내역, 배송조회</span></li>
+      <li><b>관리자 페이지</b> <span>— 대시보드, 예약·상품·주문·회원·문의 관리, 송장 등록</span></li>
+      <li><b>디자인 테마 2종</b> <span>— 메인화면 포함, 관리자에서 전환</span></li>
+      <li><b>1:1 문의</b> <span>— 접수 및 답변</span></li>
+      <li><b>이용약관 · 개인정보처리방침</b> <span>— 초안 작성 (사업자 정보만 채우면 완성)</span></li>
+    </ul>
+  </section>
+
+  <!-- ===== 2. client tasks ===== -->
+  <section>
+    <div class="sec-head"><span class="sec-num">02</span><h2>사장님이 준비하실 것</h2></div>
+    <p class="sec-note">번호는 진행 순서입니다. ①이 되어야 ④·⑤가 진행됩니다.</p>
+
+    <div class="tasks">
+
+      <div class="task">
+        <div class="task-top">
+          <span class="task-idx">1</span>
+          <h3>사업자등록</h3>
+          <span class="pill pill-doing">진행 중</span>
+        </div>
+        <dl>
+          <dt>왜</dt><dd class="spaced">결제 정산·통신판매·세금의 기본. 아래 대부분이 이 번호에 달려 있습니다.</dd>
+          <dt>준비</dt><dd class="spaced">개인사업자 등록 — 업종에 <b>애견호텔업(동물위탁관리업)</b>과 <b>전자상거래 소매업(통신판매)</b>을 함께 넣기</dd>
+          <dt>어디서</dt><dd>홈택스 온라인 신청 또는 관할 세무서 (보통 2~3일)</dd>
+        </dl>
+      </div>
+
+      <div class="task">
+        <div class="task-top">
+          <span class="task-idx">2</span>
+          <h3>통신판매업 신고</h3>
+          <span class="pill pill-todo">대기</span>
+        </div>
+        <dl>
+          <dt>왜</dt><dd class="spaced">온라인 상품 판매의 법적 필수 절차. 토스 가맹점 심사에도 신고번호가 필요합니다.</dd>
+          <dt>준비</dt><dd class="spaced">사업자등록증 + <b>구매안전서비스 이용확인증</b>(에스크로 — 결제대행사/은행에서 발급)</dd>
+          <dt>어디서</dt><dd>정부24 또는 관할 시·군·구청</dd>
+        </dl>
+      </div>
+
+      <div class="task">
+        <div class="task-top">
+          <span class="task-idx">3</span>
+          <h3>사업자 정보 전달</h3>
+          <span class="pill pill-todo">대기</span>
+        </div>
+        <dl>
+          <dt>왜</dt><dd class="spaced">약관·개인정보처리방침·사이트 하단·결제 화면에 표시됩니다. 결제 심사 통과 조건이기도 합니다.</dd>
+          <dt>전달할 값</dt><dd class="spaced">상호명 · 대표자 성명 · 사업자등록번호 · 통신판매업 신고번호 · 사업장 주소 · 대표 전화 · 대표 이메일 · 개인정보 보호책임자</dd>
+          <dt>정하실 것</dt><dd>예약 취소·환불 규정(기간별 환불 비율) · 배송비 정책 · 교환/반품 규정</dd>
+        </dl>
+      </div>
+
+      <div class="task">
+        <div class="task-top">
+          <span class="task-idx">4</span>
+          <h3>토스페이먼츠 가맹점(정산) 심사</h3>
+          <span class="pill pill-todo">1·2번 후</span>
+        </div>
+        <dl>
+          <dt>왜</dt><dd class="spaced">실제 결제 대금을 정산받으려면 필수. 지금은 테스트 결제만 됩니다.</dd>
+          <dt>서류</dt><dd class="spaced">사업자등록증 · 통신판매업 신고증 · 대표자 신분증 · 정산받을 통장 사본</dd>
+          <dt>참고</dt><dd>심사 시 사이트에 약관·사업자정보·환불정책이 표시돼 있어야 통과. 통과 후 개발사가 테스트키 → 실제(라이브)키로 교체.</dd>
+        </dl>
+      </div>
+
+      <div class="task">
+        <div class="task-top">
+          <span class="task-idx">5</span>
+          <h3>카카오 로그인 — 비즈니스 인증</h3>
+          <span class="pill pill-todo">1번 후</span>
+        </div>
+        <dl>
+          <dt>왜</dt><dd class="spaced">카카오 로그인으로 이메일까지 받으려면 카카오 비즈니스 인증이 필요합니다. (현재는 닉네임만 수집)</dd>
+          <dt>준비</dt><dd class="spaced">카카오 디벨로퍼스에서 사업자등록번호로 비즈니스 인증 신청</dd>
+          <dt>참고</dt><dd>로그인 기능·앱 설정은 이미 완료. 인증만 하면 이메일 동의항목이 활성화됩니다.</dd>
+        </dl>
+      </div>
+
+      <div class="task">
+        <div class="task-top">
+          <span class="task-idx">6</span>
+          <h3>도메인 구매</h3>
+          <span class="pill pill-todo">대기</span>
+        </div>
+        <dl>
+          <dt>왜</dt><dd class="spaced">사이트 실제 주소(예: daengyi.co.kr). 사업자번호 없이 개인으로도 구매 가능합니다.</dd>
+          <dt>어디서</dt><dd class="spaced">가비아 · 후이즈 · 카페24 · Cloudflare 등 — 연 2만 원 안팎, <b>.co.kr</b> 권장</dd>
+          <dt>정하실 것</dt><dd>원하는 주소 후보 2~3개. 구매 후 개발사에 계정 정보 전달.</dd>
+        </dl>
+      </div>
+
+      <div class="task">
+        <div class="task-top">
+          <span class="task-idx">7</span>
+          <h3>이메일 발송 도메인 인증 (Resend)</h3>
+          <span class="pill pill-todo">6번 후</span>
+        </div>
+        <dl>
+          <dt>왜</dt><dd class="spaced">가입 인증·예약/주문 알림 메일을 사장님 도메인 주소로 보내기 위함.</dd>
+          <dt>준비</dt><dd>도메인 구매 후 Resend가 안내하는 DNS 값 등록 (개발사가 값 전달·확인)</dd>
+        </dl>
+      </div>
+
+      <div class="task">
+        <div class="task-top">
+          <span class="task-idx">8</span>
+          <h3>사업용 계좌 · 결제수단</h3>
+          <span class="pill pill-todo">선택</span>
+        </div>
+        <dl>
+          <dt>왜</dt><dd>정산 통장, 도메인·호스팅 등 소액 비용 결제용. 개인 계좌로도 시작 가능하나 사업용 분리 권장.</dd>
+        </dl>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== 3. dev tasks ===== -->
+  <section>
+    <div class="sec-head"><span class="sec-num">03</span><h2>개발사가 처리할 것</h2></div>
+    <p class="sec-note">사장님 액션은 없습니다. 재료(사업자 정보·도메인·라이브키)가 준비되면 진행합니다.</p>
+    <div class="tasks">
+      <div class="task is-dev">
+        <div class="task-top"><span class="task-idx">·</span><h3>실서버 배포 &amp; 도메인 연결</h3></div>
+        <dl><dt>내용</dt><dd>클라우드(Vercel/Netlify)에 배포, 구매한 도메인 연결, HTTPS 적용</dd></dl>
+      </div>
+      <div class="task is-dev">
+        <div class="task-top"><span class="task-idx">·</span><h3>키 · 환경설정 이전</h3></div>
+        <dl><dt>내용</dt><dd>API 키 이전, 토스 라이브키 교체, Supabase 운영 설정(이메일 인증 재활성화), 카카오 Redirect URI에 실도메인 추가</dd></dl>
+      </div>
+      <div class="task is-dev">
+        <div class="task-top"><span class="task-idx">·</span><h3>마무리 기능</h3></div>
+        <dl><dt>내용</dt><dd>회원가입 약관 동의 체크박스, 예약·주문 완료 알림 메일 연동, 최종 점검</dd></dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 4. timeline ===== -->
+  <section>
+    <div class="sec-head"><span class="sec-num">04</span><h2>오픈까지 순서</h2></div>
+    <p class="sec-note">사업자등록·심사 처리 기간에 따라 앞뒤로 움직일 수 있습니다.</p>
+    <div class="timeline">
+      <div class="tl-row">
+        <div class="tl-when">1주차</div>
+        <div class="tl-what">
+          <div><span class="who c">사장님</span>사업자등록 → 통신판매업 신고</div>
+          <div><span class="who d">개발사</span>사업자 정보 받는 대로 약관·개인정보처리방침 완성</div>
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-when">2주차</div>
+        <div class="tl-what">
+          <div><span class="who c">사장님</span>토스 가맹점 심사 신청 · 카카오 비즈니스 인증 (동시 진행)</div>
+          <div><span class="who c">사장님</span>도메인 구매 → 개발사 전달</div>
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-when">3주차</div>
+        <div class="tl-what">
+          <div><span class="who d">개발사</span>실서버 배포 · 도메인 연결 · 라이브키 교체 · Resend 도메인 인증</div>
+          <div><span class="who d">개발사</span>전체 흐름 최종 점검 → <b>정식 오픈</b></div>
+        </div>
+      </div>
+    </div>
+    <div class="callout">
+      <b>지금 당장 하실 것</b> — ① 사업자등록 완료(진행 중), ② 통신판매업 신고, ③ 사업자 정보 전달, ⑥ 도메인 후보 정하기. 이 4가지가 나머지 일정을 결정합니다.
+    </div>
+  </section>
+
+  <footer>
+    <span>댕이를 부탁해 — 오픈 준비 안내</span>
+    <span>2026. 09. 03 작성</span>
+  </footer>
+
+</div>
+
+</body>
+</html>
