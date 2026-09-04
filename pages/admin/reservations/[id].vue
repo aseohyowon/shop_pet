@@ -18,6 +18,11 @@ const statusLabel: Record<string, string> = {
 }
 const toHHMM = (t: string) => t?.slice(0, 5)
 
+const vaccStatusLabel = (no: number): string => {
+  const s = reservation.value?.pets?.vaccinations?.[String(no)]
+  return s === 'admin' ? `관리자확인 ${no}` : s === 'member' ? `회원확인 ${no}` : '미접종'
+}
+
 onMounted(async () => {
   try {
     reservation.value = await fetchReservationById(route.params.id as string)
@@ -64,7 +69,26 @@ const handleAction = async (status: 'confirmed' | 'rejected') => {
           <p class="text-sm text-gray-600">견종: {{ reservation.pets?.breed || '-' }}</p>
           <p class="text-sm text-gray-600">나이: {{ reservation.pets?.age ?? '-' }}세</p>
           <p class="text-sm text-gray-600">체중: {{ reservation.pets?.weight ?? '-' }}kg</p>
-          <p class="text-sm text-gray-600">백신 접종: {{ reservation.pets?.is_vaccinated ? '완료' : '미접종' }}</p>
+          <div class="pt-1">
+            <p class="mb-1.5 text-sm text-gray-600">예방접종 현황</p>
+            <div class="flex flex-wrap gap-1.5">
+              <span
+                v-for="no in [1, 2, 3, 4, 5]"
+                :key="no"
+                class="rounded-full px-2 py-0.5 text-xs font-semibold"
+                :class="reservation.pets?.vaccinations?.[String(no)] === 'admin'
+                  ? 'bg-green-100 text-green-700'
+                  : reservation.pets?.vaccinations?.[String(no)] === 'member'
+                    ? 'bg-amber-100 text-amber-700'
+                    : 'bg-gray-100 text-gray-400'"
+              >
+                {{ vaccStatusLabel(no) }}
+              </span>
+            </div>
+            <p class="mt-1.5 text-xs text-gray-400">
+              규정 동의: {{ reservation.pets?.rules_agreed_at ? '완료' : '미확인' }}
+            </p>
+          </div>
           <p class="text-sm text-gray-600">특이사항: {{ reservation.pets?.notes || '-' }}</p>
         </div>
       </div>

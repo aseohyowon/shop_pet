@@ -6,8 +6,9 @@ const props = withDefaults(
     type: ReservationType
     modelValue: { start: string | null; end: string | null }
     warm?: boolean
+    single?: boolean // 하루만 선택 (데이케어)
   }>(),
-  { warm: false }
+  { warm: false, single: false }
 )
 
 const emit = defineEmits<{
@@ -113,6 +114,11 @@ const ui = computed(() =>
 const handleClick = (dateStr: string | null) => {
   if (!dateStr || isDisabled(dateStr)) return
 
+  if (props.single) {
+    emit('update:modelValue', { start: dateStr, end: dateStr })
+    return
+  }
+
   const { start, end } = props.modelValue
   if (!start || end) {
     emit('update:modelValue', { start: dateStr, end: null })
@@ -163,6 +169,8 @@ const handleClick = (dateStr: string | null) => {
     </div>
 
     <p v-if="loading" class="mt-2 text-center text-xs" :class="ui.hint">예약 현황 불러오는 중...</p>
-    <p class="mt-3 text-xs" :class="ui.hint">체크인 날짜를 먼저 선택하고, 체크아웃 날짜를 다시 클릭해주세요.</p>
+    <p class="mt-3 text-xs" :class="ui.hint">
+      {{ single ? '이용하실 날짜 하루를 선택해주세요.' : '체크인 날짜를 먼저 선택하고, 체크아웃 날짜를 다시 클릭해주세요.' }}
+    </p>
   </div>
 </template>

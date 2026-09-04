@@ -6,10 +6,22 @@ definePageMeta({ middleware: 'auth' })
 const router = useRouter()
 const { fetchMyPets, createPet } = usePets()
 const { createReservation } = useReservations()
+const { fetchServiceSettings, nights } = useServiceSettings()
 const { isWarm } = useSiteTheme()
+
+const { data: serviceSettings } = useAsyncData('service-settings', fetchServiceSettings, { default: () => ({}) as any })
 
 const reservationType = ref<ReservationType>('hotel')
 const dateRange = ref<{ start: string | null; end: string | null }>({ start: null, end: null })
+
+const isDaycare = computed(() => reservationType.value === 'daycare')
+
+// 데이케어(원데이)는 하루만: 서비스 전환 시 범위를 당일로 축소
+watch(reservationType, () => {
+  if (isDaycare.value && dateRange.value.start) {
+    dateRange.value = { start: dateRange.value.start, end: dateRange.value.start }
+  }
+})
 
 // 운영 시간(09:00~21:00) 내 30분 단위 옵션
 const timeOptions = computed(() => {
@@ -25,8 +37,8 @@ const timeOptions = computed(() => {
 const startTime = ref('09:00')
 const endTime = ref('21:00')
 
-const startTimeLabel = computed(() => (reservationType.value === 'hotel' ? '체크인 시간' : '등원 시간'))
-const endTimeLabel = computed(() => (reservationType.value === 'hotel' ? '체크아웃 시간' : '하원 시간'))
+const startTimeLabel = computed(() => (isDaycare.value ? '등원 시간' : '체크인 시간'))
+const endTimeLabel = computed(() => (isDaycare.value ? '하원 시간' : '체크아웃 시간'))
 
 const myPets = ref<Pet[]>([])
 const selectedPetId = ref<string>('new')
@@ -36,9 +48,30 @@ const newPet = reactive({
   breed: '',
   age: null as number | null,
   weight: null as number | null,
-  isVaccinated: null as boolean | null,
+  vaccinations: [] as number[],
+  rulesAgreed: false,
   notes: ''
 })
+
+// 접종 현황 / 규정 동의 모달
+const showVaccineModal = ref(false)
+const vaccineDraft = reactive<Record<number, boolean>>({ 1: false, 2: false, 3: false, 4: false, 5: false })
+const rulesDraft = ref(false)
+
+const openVaccineModal = () => {
+  for (const n of [1, 2, 3, 4, 5]) vaccineDraft[n] = newPet.vaccinations.includes(n)
+  rulesDraft.value = newPet.rulesAgreed
+  showVaccineModal.value = true
+}
+const confirmVaccine = () => {
+  if (!rulesDraft.value) return
+  newPet.vaccinations = [1, 2, 3, 4, 5].filter((n) => vaccineDraft[n])
+  newPet.rulesAgreed = true
+  showVaccineModal.value = false
+}
+const vaccineSummaryText = computed(() =>
+  newPet.rulesAgreed ? `예방접종 ${newPet.vaccinations.length}/5 · 규정 동의 완료` : '작성 필요 (필수)'
+)
 
 const memo = ref('')
 const submitting = ref(false)
@@ -56,19 +89,56 @@ const summaryPetLabel = computed(() => {
   return myPets.value.find((p) => p.id === selectedPetId.value)?.name ?? '입력 전'
 })
 
+const dateSummary = computed(() => {
+  const { start, end } = dateRange.value
+  if (!start) return '선택 전'
+  if (!end || end === start) return start
+  return `${start} ~ ${end}`
+})
+
+// 예상 금액 (호텔: 박 수 × 1박 요금, 데이케어: 1일 요금)
+const priceUnits = computed(() => {
+  const { start, end } = dateRange.value
+  if (!start) return 0
+  if (isDaycare.value) return 1
+  return nights(start, end ?? start)
+})
+const estimatedPrice = computed(() => {
+  const s = serviceSettings.value?.[reservationType.value]
+  if (!s || !dateRange.value.start) return null
+  return Math.round(s.price * priceUnits.value * Number(s.deposit_rate ?? 1))
+})
+const priceBreakdown = computed(() => {
+  const s = serviceSettings.value?.[reservationType.value]
+  if (!s || !dateRange.value.start) return ''
+  const unit = isDaycare.value ? '1일' : `${priceUnits.value}박`
+  const rate = Number(s.deposit_rate ?? 1)
+  const base = `${s.price.toLocaleString()}원 × ${unit}`
+  return rate < 1 ? `${base} · 예약금 ${Math.round(rate * 100)}%` : base
+})
+
 const handleSubmit = async () => {
   errorMessage.value = ''
 
-  if (!dateRange.value.start || !dateRange.value.end) {
+  if (!dateRange.value.start) {
     errorMessage.value = '이용 날짜를 선택해주세요.'
     return
   }
-  if (dateRange.value.start === dateRange.value.end && endTime.value <= startTime.value) {
+  if (!isDaycare.value && !dateRange.value.end) {
+    errorMessage.value = '체크아웃 날짜를 선택해주세요.'
+    return
+  }
+  const endDate = isDaycare.value ? dateRange.value.start : dateRange.value.end!
+  if (dateRange.value.start === endDate && endTime.value <= startTime.value) {
     errorMessage.value = `${endTimeLabel.value}은 ${startTimeLabel.value} 이후로 선택해주세요.`
     return
   }
   if (isNewPet.value && !newPet.name) {
     errorMessage.value = '반려동물 이름을 입력해주세요.'
+    return
+  }
+  if (isNewPet.value && !newPet.rulesAgreed) {
+    errorMessage.value = '접종 현황 및 이용 규정 동의를 완료해주세요.'
     return
   }
 
@@ -81,7 +151,8 @@ const handleSubmit = async () => {
         breed: newPet.breed,
         age: newPet.age,
         weight: newPet.weight,
-        isVaccinated: newPet.isVaccinated ?? false,
+        vaccinations: newPet.vaccinations,
+        rulesAgreed: newPet.rulesAgreed,
         notes: newPet.notes
       })
       petId = created.id
@@ -92,7 +163,7 @@ const handleSubmit = async () => {
       petId,
       type: reservationType.value,
       startDate: dateRange.value.start,
-      endDate: dateRange.value.end,
+      endDate,
       startTime: startTime.value,
       endTime: endTime.value,
       memo: memo.value
@@ -105,10 +176,6 @@ const handleSubmit = async () => {
     submitting.value = false
   }
 }
-
-const dateSummary = computed(() =>
-  dateRange.value.start ? `${dateRange.value.start} ~ ${dateRange.value.end ?? dateRange.value.start}` : '선택 전'
-)
 </script>
 
 <template>
@@ -131,17 +198,18 @@ const dateSummary = computed(() =>
           </h2>
           <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <button
-              v-for="opt in [{ v: 'hotel', icon: 'bed', label: '🏨 호텔 숙박' }, { v: 'daycare', icon: 'wb_sunny', label: '☀️ 데이케어' }]"
+              v-for="opt in [{ v: 'hotel', icon: 'bed', label: '🏨 호텔 숙박', desc: '1박 이상' }, { v: 'daycare', icon: 'wb_sunny', label: '☀️ 데이케어', desc: '당일 (원데이)' }]"
               :key="opt.v"
               type="button"
-              class="flex h-full flex-col items-center justify-center gap-3 rounded-xl border-2 p-6 shadow-sm transition-all hover:-translate-y-1"
+              class="flex h-full flex-col items-center justify-center gap-1 rounded-xl border-2 p-6 shadow-sm transition-all hover:-translate-y-1"
               :class="reservationType === opt.v
                 ? 'border-secondary bg-secondary-fixed/30 text-secondary'
                 : 'border-surface-container-high bg-surface-container-lowest text-on-surface-variant hover:border-secondary/50'"
               @click="reservationType = opt.v as ReservationType"
             >
               <span class="material-symbols-outlined text-4xl">{{ opt.icon }}</span>
-              <span class="font-label-md text-label-md font-bold">{{ opt.label }}</span>
+              <span class="mt-2 font-label-md text-label-md font-bold">{{ opt.label }}</span>
+              <span class="font-label-sm text-label-sm opacity-70">{{ opt.desc }}</span>
             </button>
           </div>
         </section>
@@ -154,15 +222,18 @@ const dateSummary = computed(() =>
           </h2>
           <div class="mb-6 flex items-center gap-2 rounded-lg bg-surface-container-low p-4 font-body-md text-body-md text-on-surface-variant">
             <span class="material-symbols-outlined text-sm text-secondary">info</span>
-            체크인 날짜를 먼저 선택하고, 체크아웃 날짜를 다시 클릭해주세요.
+            {{ isDaycare ? '이용하실 날짜 하루를 선택해주세요.' : '체크인 날짜를 먼저 선택하고, 체크아웃 날짜를 다시 클릭해주세요.' }}
           </div>
 
           <div class="rounded-xl border border-outline-variant/50 bg-surface p-4">
-            <ReservationAvailabilityCalendar v-model="dateRange" :type="reservationType" warm />
+            <ReservationAvailabilityCalendar v-model="dateRange" :type="reservationType" :single="isDaycare" warm />
           </div>
           <div class="mt-3 flex gap-4 font-body-md text-sm text-on-surface-variant">
-            <span>체크인: <strong class="text-primary">{{ dateRange.start ?? '-' }}</strong></span>
-            <span>체크아웃: <strong class="text-primary">{{ dateRange.end ?? '-' }}</strong></span>
+            <span v-if="isDaycare">이용일: <strong class="text-primary">{{ dateRange.start ?? '-' }}</strong></span>
+            <template v-else>
+              <span>체크인: <strong class="text-primary">{{ dateRange.start ?? '-' }}</strong></span>
+              <span>체크아웃: <strong class="text-primary">{{ dateRange.end ?? '-' }}</strong></span>
+            </template>
           </div>
 
           <div class="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2">
@@ -223,15 +294,18 @@ const dateSummary = computed(() =>
                 </div>
               </div>
               <div class="space-y-2 pt-2">
-                <label class="label-warm">백신 접종 여부</label>
-                <div class="flex gap-4 font-body-md text-on-surface">
-                  <label class="flex cursor-pointer items-center gap-2">
-                    <input v-model="newPet.isVaccinated" :value="true" type="radio" name="w-vaccinated" class="text-secondary" /> 접종 완료
-                  </label>
-                  <label class="flex cursor-pointer items-center gap-2">
-                    <input v-model="newPet.isVaccinated" :value="false" type="radio" name="w-vaccinated" class="text-secondary" /> 미접종
-                  </label>
-                </div>
+                <label class="label-warm">접종 현황 및 규정 동의</label>
+                <button
+                  type="button"
+                  class="flex w-full items-center justify-between rounded-lg border px-4 py-3 text-left font-body-md transition-colors"
+                  :class="newPet.rulesAgreed
+                    ? 'border-green-300 bg-green-50 text-green-700'
+                    : 'border-secondary/40 bg-secondary-fixed/20 text-secondary'"
+                  @click="openVaccineModal"
+                >
+                  <span>{{ vaccineSummaryText }}</span>
+                  <span class="material-symbols-outlined text-[20px]">{{ newPet.rulesAgreed ? 'check_circle' : 'chevron_right' }}</span>
+                </button>
               </div>
               <div class="space-y-2 pt-2">
                 <label class="label-warm" for="w-pet-notes">특이사항 및 요청사항</label>
@@ -254,7 +328,7 @@ const dateSummary = computed(() =>
           <ul class="mb-8 space-y-4">
             <li class="flex items-start justify-between">
               <span class="font-label-md text-label-md text-on-surface-variant">서비스</span>
-              <span class="text-right font-body-md font-semibold text-on-surface">{{ reservationType === 'hotel' ? '호텔 숙박' : '데이케어' }}</span>
+              <span class="text-right font-body-md font-semibold text-on-surface">{{ isDaycare ? '데이케어 (당일)' : '호텔 숙박' }}</span>
             </li>
             <li class="flex items-start justify-between">
               <span class="font-label-md text-label-md text-on-surface-variant">날짜</span>
@@ -267,6 +341,15 @@ const dateSummary = computed(() =>
             <li class="flex items-start justify-between">
               <span class="font-label-md text-label-md text-on-surface-variant">반려동물</span>
               <span class="text-right font-body-md font-semibold" :class="summaryPetLabel === '입력 전' ? 'text-outline' : 'text-on-surface'">{{ summaryPetLabel }}</span>
+            </li>
+            <li class="flex items-start justify-between border-t border-outline-variant/30 pt-4">
+              <span class="font-label-md text-label-md text-on-surface-variant">예상 금액</span>
+              <span class="text-right">
+                <span class="block font-headline-md text-headline-md text-primary">
+                  {{ estimatedPrice != null ? `${estimatedPrice.toLocaleString()}원` : '날짜 선택 시 표시' }}
+                </span>
+                <span v-if="priceBreakdown" class="block font-label-sm text-label-sm text-on-surface-variant">{{ priceBreakdown }}</span>
+              </span>
             </li>
           </ul>
 
@@ -307,7 +390,7 @@ const dateSummary = computed(() =>
               :class="reservationType === 'hotel' ? 'border-brand-500 bg-brand-50 text-brand-600' : 'border-gray-200 text-gray-600 hover:bg-gray-50'"
               @click="reservationType = 'hotel'"
             >
-              🏨 호텔 숙박
+              🏨 호텔 숙박<span class="ml-1 text-xs font-normal text-gray-400">1박 이상</span>
             </button>
             <button
               type="button"
@@ -315,7 +398,7 @@ const dateSummary = computed(() =>
               :class="reservationType === 'daycare' ? 'border-brand-500 bg-brand-50 text-brand-600' : 'border-gray-200 text-gray-600 hover:bg-gray-50'"
               @click="reservationType = 'daycare'"
             >
-              ☀️ 데이케어
+              ☀️ 데이케어<span class="ml-1 text-xs font-normal text-gray-400">당일</span>
             </button>
           </div>
         </div>
@@ -323,10 +406,13 @@ const dateSummary = computed(() =>
         <!-- 날짜 선택 -->
         <div class="card">
           <p class="label-field mb-3">이용 날짜</p>
-          <ReservationAvailabilityCalendar v-model="dateRange" :type="reservationType" />
+          <ReservationAvailabilityCalendar v-model="dateRange" :type="reservationType" :single="isDaycare" />
           <div class="mt-3 flex gap-4 text-sm text-gray-600">
-            <span>체크인: <strong>{{ dateRange.start ?? '-' }}</strong></span>
-            <span>체크아웃: <strong>{{ dateRange.end ?? '-' }}</strong></span>
+            <span v-if="isDaycare">이용일: <strong>{{ dateRange.start ?? '-' }}</strong></span>
+            <template v-else>
+              <span>체크인: <strong>{{ dateRange.start ?? '-' }}</strong></span>
+              <span>체크아웃: <strong>{{ dateRange.end ?? '-' }}</strong></span>
+            </template>
           </div>
 
           <div class="mt-4 grid grid-cols-2 gap-4 border-t border-gray-100 pt-4">
@@ -376,15 +462,18 @@ const dateSummary = computed(() =>
               <input id="pet-weight" v-model.number="newPet.weight" type="number" min="0" step="0.1" class="input-field" placeholder="4.5" />
             </div>
             <div class="sm:col-span-2">
-              <label class="label-field">백신 접종 여부</label>
-              <div class="flex gap-4 text-sm text-gray-700">
-                <label class="inline-flex items-center gap-2">
-                  <input v-model="newPet.isVaccinated" :value="true" type="radio" name="vaccinated" class="text-brand-500" /> 접종 완료
-                </label>
-                <label class="inline-flex items-center gap-2">
-                  <input v-model="newPet.isVaccinated" :value="false" type="radio" name="vaccinated" class="text-brand-500" /> 미접종
-                </label>
-              </div>
+              <label class="label-field">접종 현황 및 규정 동의</label>
+              <button
+                type="button"
+                class="flex w-full items-center justify-between rounded-lg border px-4 py-3 text-left text-sm font-medium transition"
+                :class="newPet.rulesAgreed
+                  ? 'border-green-300 bg-green-50 text-green-700'
+                  : 'border-brand-300 bg-brand-50 text-brand-600'"
+                @click="openVaccineModal"
+              >
+                <span>{{ vaccineSummaryText }}</span>
+                <span aria-hidden="true">{{ newPet.rulesAgreed ? '✓' : '›' }}</span>
+              </button>
             </div>
             <div class="sm:col-span-2">
               <label class="label-field" for="pet-notes">특이사항</label>
@@ -404,10 +493,19 @@ const dateSummary = computed(() =>
         <div class="card sticky top-24 space-y-3">
           <p class="font-semibold text-gray-900">예약 요약</p>
           <div class="space-y-1 text-sm text-gray-500">
-            <p>서비스: {{ reservationType === 'hotel' ? '호텔 숙박' : '데이케어' }}</p>
+            <p>서비스: {{ isDaycare ? '데이케어 (당일)' : '호텔 숙박' }}</p>
             <p>날짜: {{ dateSummary }}</p>
             <p>시간: {{ startTime }} ~ {{ endTime }}</p>
             <p>반려동물: {{ summaryPetLabel }}</p>
+          </div>
+          <div class="flex items-baseline justify-between border-t border-gray-100 pt-3">
+            <span class="text-sm text-gray-500">예상 금액</span>
+            <span class="text-right">
+              <span class="block font-bold text-brand-600">
+                {{ estimatedPrice != null ? `${estimatedPrice.toLocaleString()}원` : '날짜 선택 시' }}
+              </span>
+              <span v-if="priceBreakdown" class="block text-xs text-gray-400">{{ priceBreakdown }}</span>
+            </span>
           </div>
 
           <p v-if="errorMessage" class="text-sm text-red-500">{{ errorMessage }}</p>
@@ -422,4 +520,72 @@ const dateSummary = computed(() =>
       </div>
     </div>
   </div>
+
+  <!-- ══════════ 접종 현황 / 규정 동의 모달 ══════════ -->
+  <Teleport to="body">
+    <div
+      v-if="showVaccineModal"
+      class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
+      @click.self="showVaccineModal = false"
+    >
+      <div class="flex max-h-[88vh] w-full max-w-lg flex-col overflow-hidden rounded-2xl bg-white shadow-xl">
+        <div class="border-b border-gray-100 px-6 py-4">
+          <h3 class="text-lg font-bold text-gray-900">접종 현황 및 이용 규정 동의</h3>
+          <p class="mt-0.5 text-sm text-gray-500">완료한 예방접종에 체크하고, 이용 규정을 확인한 뒤 동의해주세요.</p>
+        </div>
+
+        <div class="flex-1 space-y-5 overflow-y-auto px-6 py-5">
+          <!-- 예방접종 -->
+          <div>
+            <p class="mb-2 text-sm font-semibold text-gray-900">예방접종 현황</p>
+            <div class="space-y-2">
+              <label
+                v-for="n in 5"
+                :key="n"
+                class="flex cursor-pointer items-center gap-3 rounded-lg border border-gray-200 px-3 py-2.5 hover:bg-gray-50"
+              >
+                <input
+                  type="checkbox"
+                  :checked="vaccineDraft[n]"
+                  class="h-5 w-5 rounded border-gray-300 text-brand-500 focus:ring-brand-500"
+                  @change="vaccineDraft[n] = ($event.target as HTMLInputElement).checked"
+                />
+                <span class="text-sm text-gray-800">예방접종 {{ n }}차</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- 이용 규정 -->
+          <div>
+            <p class="mb-2 text-sm font-semibold text-gray-900">예약 서비스 이용 규정</p>
+            <div class="max-h-64 space-y-3 overflow-y-auto rounded-lg border border-gray-200 bg-gray-50 p-4 text-xs leading-relaxed text-gray-600">
+              <p v-for="rule in RESERVATION_RULES" :key="rule.no">
+                <span class="font-semibold text-gray-800">{{ rule.no }}. {{ rule.title }}</span><br />
+                {{ rule.body }}
+              </p>
+              <p class="border-t border-gray-200 pt-2 text-gray-400">
+                전체 약관은
+                <NuxtLink to="/terms" target="_blank" class="text-brand-600 underline">이용약관</NuxtLink> ·
+                <NuxtLink to="/privacy" target="_blank" class="text-brand-600 underline">개인정보처리방침</NuxtLink>에서 확인하실 수 있습니다.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="border-t border-gray-100 px-6 py-4">
+          <label class="mb-3 flex cursor-pointer items-start gap-3 rounded-lg bg-brand-50 p-3">
+            <input v-model="rulesDraft" type="checkbox" class="mt-0.5 h-5 w-5 rounded border-gray-300 text-brand-500 focus:ring-brand-500" />
+            <span class="text-sm text-gray-800">
+              위 예약 서비스 이용 규정 및 약관을 모두 확인했으며 이에 <strong>동의합니다.</strong>
+              <span class="font-semibold text-red-500">(필수)</span>
+            </span>
+          </label>
+          <div class="flex gap-2">
+            <button type="button" class="btn-secondary flex-1" @click="showVaccineModal = false">취소</button>
+            <button type="button" class="btn-primary flex-1" :disabled="!rulesDraft" @click="confirmVaccine">확인</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </Teleport>
 </template>

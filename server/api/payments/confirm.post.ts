@@ -77,7 +77,12 @@ export default defineEventHandler(async (event) => {
       console.error('finalize_order failed after payment capture:', finalizeError.message)
     }
   } else {
-    await supabase.from('reservations').update({ deposit_paid: true }).eq('id', payment.target_id)
+    // 결제 완료 시 예약을 자동으로 확정 처리 (관리자 승인 단계 생략)
+    await supabase
+      .from('reservations')
+      .update({ deposit_paid: true, status: 'confirmed' })
+      .eq('id', payment.target_id)
+      .in('status', ['pending', 'confirmed'])
   }
 
   return { targetType: payment.target_type, targetId: payment.target_id }

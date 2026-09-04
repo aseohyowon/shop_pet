@@ -22,11 +22,10 @@ export const usePayments = () => {
     return { orderId: row.order_id as string, paymentId: row.payment_id as string, totalAmount: row.total_amount as number }
   }
 
-  // 예약 건의 예약금 결제 레코드 생성
-  const createReservationPayment = async (reservationId: string, amount = 30000) => {
+  // 예약 건의 결제 레코드 생성 (금액은 서버에서 서비스 요금 기준으로 산정)
+  const createReservationPayment = async (reservationId: string) => {
     const { data, error } = await supabase.rpc('create_reservation_payment', {
-      p_reservation_id: reservationId,
-      p_amount: amount
+      p_reservation_id: reservationId
     })
     if (error) throw error
     return data

@@ -12,6 +12,10 @@ export type HomeVariant = 'auto' | 'main1' | 'main2'
 
 export type InquiryStatus = 'open' | 'answered' | 'closed'
 
+// 예방접종 현황: key = 백신 번호(1~5), value = 'member'(회원 확인) | 'admin'(관리자 확인)
+export type VaccineStatus = 'member' | 'admin'
+export type VaccineMap = Partial<Record<'1' | '2' | '3' | '4' | '5', VaccineStatus>>
+
 export interface Database {
   public: {
     Tables: {
@@ -46,6 +50,8 @@ export interface Database {
           age: number | null
           weight: number | null
           is_vaccinated: boolean
+          vaccinations: VaccineMap
+          rules_agreed_at: string | null
           notes: string | null
           created_at: string
         }
@@ -56,6 +62,8 @@ export interface Database {
           age?: number | null
           weight?: number | null
           is_vaccinated?: boolean
+          vaccinations?: VaccineMap
+          rules_agreed_at?: string | null
           notes?: string | null
         }
         Update: Partial<Database['public']['Tables']['pets']['Insert']>
@@ -92,9 +100,9 @@ export interface Database {
         }
       }
       service_settings: {
-        Row: { type: ReservationType; default_capacity: number }
-        Insert: { type: ReservationType; default_capacity: number }
-        Update: { default_capacity?: number }
+        Row: { type: ReservationType; default_capacity: number; price: number; deposit_rate: number }
+        Insert: { type: ReservationType; default_capacity: number; price?: number; deposit_rate?: number }
+        Update: { default_capacity?: number; price?: number; deposit_rate?: number }
       }
       daily_capacity: {
         Row: { id: string; date: string; type: ReservationType; max_capacity: number }
@@ -250,8 +258,12 @@ export interface Database {
         Returns: { order_id: string; payment_id: string; total_amount: number }[]
       }
       create_reservation_payment: {
-        Args: { p_reservation_id: string; p_amount?: number }
+        Args: { p_reservation_id: string }
         Returns: Database['public']['Tables']['payments']['Row']
+      }
+      set_vaccine_status: {
+        Args: { p_pet_id: string; p_no: number; p_status: 'member' | 'admin' | 'none' }
+        Returns: Database['public']['Tables']['pets']['Row']
       }
     }
   }

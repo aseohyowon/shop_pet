@@ -53,7 +53,7 @@ export const useReservations = () => {
   const fetchAllReservations = async () => {
     const { data, error } = await supabase
       .from('reservations')
-      .select('*, pets(name, breed, age, weight, is_vaccinated, notes), profiles(name, phone, email)')
+      .select('*, pets(id, name, breed, age, weight, vaccinations, rules_agreed_at, notes), profiles(name, phone, email)')
       .order('start_date', { ascending: false })
 
     if (error) throw error
@@ -63,7 +63,7 @@ export const useReservations = () => {
   const fetchReservationById = async (id: string) => {
     const { data, error } = await supabase
       .from('reservations')
-      .select('*, pets(name, breed, age, weight, is_vaccinated, notes), profiles(name, phone, email)')
+      .select('*, pets(id, name, breed, age, weight, vaccinations, rules_agreed_at, notes), profiles(name, phone, email)')
       .eq('id', id)
       .single()
 

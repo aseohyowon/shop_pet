@@ -1,0 +1,9 @@
+월 고정비
+항목	무료 범위	유료 전환 시
+Cloudflare 도메인 1년간 약 10달러
+Cloudflare Workers (호스팅)	하루 10만 요청, 신용카드 불필요. 정적 파일(JS·CSS·이미지)은 무제한 무료	트래픽 폭증 시 $5/월 (월 1천만 요청 포함)
+Supabase (DB·로그인)	500MB DB, 월 5만 사용자, 5GB 대역폭	$25/월 (Pro)
+Resend (이메일)	월 3,000통 / 일 100통	초과 시 $20/월
+
+-------------
+npm run db:restore backups/<폴더명> --confirm
