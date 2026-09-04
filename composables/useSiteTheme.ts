@@ -8,6 +8,8 @@ import type { SiteTheme, HomeVariant } from '~/types/database.types'
 export const useSiteTheme = () => {
   const siteTheme = useState<SiteTheme>('site-theme', () => 'default')
   const homeVariant = useState<HomeVariant>('home-variant', () => 'auto')
+  // 1:1 문의 메뉴 노출 여부 (관리자가 /admin/settings 에서 on/off). 기본 off.
+  const contactEnabled = useState<boolean>('contact-enabled', () => false)
   const loaded = useState<boolean>('site-theme-loaded', () => false)
 
   const supabase = useSupabaseClient()
@@ -18,6 +20,7 @@ export const useSiteTheme = () => {
       for (const row of (data ?? []) as { key: string; value: string }[]) {
         if (row.key === 'site_theme') siteTheme.value = row.value as SiteTheme
         if (row.key === 'home_variant') homeVariant.value = row.value as HomeVariant
+        if (row.key === 'contact_enabled') contactEnabled.value = row.value === 'on'
       }
     } catch {
       // site_settings 테이블이 아직 없으면 기본(default) 테마 유지
@@ -37,12 +40,16 @@ export const useSiteTheme = () => {
     return 'classic'
   })
 
-  const updateSetting = async (key: 'site_theme' | 'home_variant', value: string) => {
+  const updateSetting = async (
+    key: 'site_theme' | 'home_variant' | 'contact_enabled',
+    value: string
+  ) => {
     const { error } = await supabase.from('site_settings').upsert({ key, value }, { onConflict: 'key' })
     if (error) throw error
     if (key === 'site_theme') siteTheme.value = value as SiteTheme
     if (key === 'home_variant') homeVariant.value = value as HomeVariant
+    if (key === 'contact_enabled') contactEnabled.value = value === 'on'
   }
 
-  return { siteTheme, homeVariant, loaded, isWarm, resolvedHome, load, updateSetting }
+  return { siteTheme, homeVariant, contactEnabled, loaded, isWarm, resolvedHome, load, updateSetting }
 }

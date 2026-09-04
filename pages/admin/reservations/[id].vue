@@ -111,6 +111,7 @@ const cancelUnpaid = async () => {
           <p class="text-sm text-gray-600">견종: {{ reservation.pets?.breed || '-' }}</p>
           <p class="text-sm text-gray-600">나이: {{ reservation.pets?.age ?? '-' }}세</p>
           <p class="text-sm text-gray-600">체중: {{ reservation.pets?.weight ?? '-' }}kg</p>
+          <p class="text-sm text-gray-600">동물등록번호: {{ reservation.pets?.registration_no || '-' }}</p>
           <div class="pt-1">
             <p class="mb-1.5 text-sm text-gray-600">예방접종 현황</p>
             <div class="flex flex-wrap gap-1.5">

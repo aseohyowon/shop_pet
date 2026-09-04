@@ -3,13 +3,37 @@ import type { SiteTheme, HomeVariant } from '~/types/database.types'
 
 definePageMeta({ layout: 'admin', middleware: 'admin' })
 
-const { siteTheme, homeVariant, updateSetting } = useSiteTheme()
+const { siteTheme, homeVariant, contactEnabled, updateSetting } = useSiteTheme()
 
 const selectedTheme = ref<SiteTheme>(siteTheme.value)
 const selectedHome = ref<HomeVariant>(homeVariant.value)
+const selectedContact = ref<boolean>(contactEnabled.value)
 
 watch(siteTheme, (v) => (selectedTheme.value = v))
 watch(homeVariant, (v) => (selectedHome.value = v))
+watch(contactEnabled, (v) => (selectedContact.value = v))
+
+const savingContact = ref(false)
+const contactMessage = ref<{ type: 'ok' | 'err'; text: string } | null>(null)
+
+const toggleContact = async () => {
+  savingContact.value = true
+  contactMessage.value = null
+  try {
+    await updateSetting('contact_enabled', selectedContact.value ? 'on' : 'off')
+    contactMessage.value = {
+      type: 'ok',
+      text: selectedContact.value
+        ? '1:1 문의 메뉴를 활성화했습니다.'
+        : '1:1 문의 메뉴를 비활성화했습니다. 고객 화면에서 숨겨집니다.'
+    }
+  } catch (e: any) {
+    selectedContact.value = contactEnabled.value
+    contactMessage.value = { type: 'err', text: e?.message ?? '저장에 실패했습니다.' }
+  } finally {
+    savingContact.value = false
+  }
+}
 
 const themeOptions: { value: SiteTheme; label: string; desc: string }[] = [
   { value: 'default', label: '지금 테마', desc: '현재 기본 디자인 (오렌지 톤). 홈·예약·쇼핑몰·마이페이지 모두 기존 화면.' },
@@ -95,6 +119,37 @@ const homePreviewName = computed(() => {
         </label>
       </div>
       <p class="mt-2 text-xs text-gray-400">현재 적용될 홈: <strong>{{ homePreviewName }}</strong></p>
+    </section>
+
+    <!-- 1:1 문의 메뉴 -->
+    <section class="mb-8">
+      <h2 class="mb-3 text-sm font-semibold text-gray-700">1:1 문의 메뉴</h2>
+      <div class="rounded-xl border border-gray-200 p-4">
+        <label class="flex cursor-pointer items-start gap-3">
+          <input
+            v-model="selectedContact"
+            type="checkbox"
+            class="mt-1 h-4 w-4 rounded text-brand-500"
+            @change="toggleContact"
+          />
+          <span>
+            <span class="block font-semibold text-gray-900">
+              문의 메뉴 {{ selectedContact ? '활성화' : '비활성화' }}
+            </span>
+            <span class="block text-sm text-gray-500">
+              헤더·푸터의 "문의", 마이페이지 "문의 내역" 탭, 홈 화면 문의 폼, /contact 페이지를 표시할지 결정합니다.
+              꺼두면 고객에게 노출되지 않습니다.
+            </span>
+          </span>
+        </label>
+        <p
+          v-if="contactMessage"
+          class="mt-3 text-sm"
+          :class="contactMessage.type === 'ok' ? 'text-green-600' : 'text-red-500'"
+        >
+          {{ savingContact ? '저장 중...' : contactMessage.text }}
+        </p>
+      </div>
     </section>
 
     <div class="flex items-center gap-3">

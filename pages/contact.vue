@@ -1,4 +1,6 @@
 <script setup lang="ts">
+definePageMeta({ middleware: 'contact-enabled' })
+
 const { isWarm } = useSiteTheme()
 const { createInquiry } = useInquiries()
 const { profile, user } = useAuth()

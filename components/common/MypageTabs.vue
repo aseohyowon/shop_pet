@@ -1,12 +1,13 @@
 <script setup lang="ts">
 const route = useRoute()
+const { contactEnabled } = useSiteTheme()
 
-const tabs = [
+const tabs = computed(() => [
   { label: '통합 조회', to: '/mypage' },
   { label: '예약 내역', to: '/mypage/reservations' },
   { label: '주문 내역', to: '/mypage/orders' },
-  { label: '문의 내역', to: '/mypage/inquiries' }
-]
+  ...(contactEnabled.value ? [{ label: '문의 내역', to: '/mypage/inquiries' }] : [])
+])
 </script>
 
 <template>

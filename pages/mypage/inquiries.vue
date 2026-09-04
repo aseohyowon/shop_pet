@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Inquiry, InquiryStatus } from '~/types/database.types'
 
-definePageMeta({ middleware: 'auth' })
+definePageMeta({ middleware: ['auth', 'contact-enabled'] })
 
 const { fetchMyInquiries } = useInquiries()
 

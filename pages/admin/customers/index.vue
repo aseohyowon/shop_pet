@@ -127,6 +127,20 @@ const changeVaccine = async (customerId: string, petId: string, no: number, stat
           <p v-if="detailLoading === c.id" class="py-4 text-center font-body-md text-sm text-on-surface-variant">불러오는 중...</p>
 
           <div v-else-if="details[c.id]" class="flex flex-col gap-6">
+            <!-- 연락처 / 주소 -->
+            <section class="grid gap-1 rounded-xl border border-outline-variant/50 bg-surface-container-lowest p-4 font-body-md text-sm text-on-surface-variant">
+              <p>연락처: {{ details[c.id].profile?.phone || '-' }}</p>
+              <p>이메일: {{ details[c.id].profile?.email || '-' }}</p>
+              <p>
+                주소:
+                <span v-if="details[c.id].profile?.address">
+                  ({{ details[c.id].profile?.postcode }}) {{ details[c.id].profile?.address }}
+                  {{ details[c.id].profile?.address_detail }}
+                </span>
+                <span v-else>-</span>
+              </p>
+            </section>
+
             <!-- 반려동물 + 접종 현황 -->
             <section>
               <h3 class="mb-3 font-label-md text-label-md text-primary">반려동물 ({{ details[c.id].pets.length }})</h3>
@@ -140,7 +154,7 @@ const changeVaccine = async (customerId: string, petId: string, no: number, stat
                   <div class="mb-3 flex flex-wrap items-baseline gap-x-3 gap-y-1">
                     <span class="font-label-md text-label-md text-on-surface">{{ pet.name }}</span>
                     <span class="font-body-md text-sm text-on-surface-variant">
-                      {{ pet.breed || '견종 미입력' }}<span v-if="pet.age"> · {{ pet.age }}살</span><span v-if="pet.weight"> · {{ pet.weight }}kg</span>
+                      {{ pet.breed || '견종 미입력' }}<span v-if="pet.age"> · {{ pet.age }}살</span><span v-if="pet.weight"> · {{ pet.weight }}kg</span><span v-if="pet.registration_no"> · 등록번호 {{ pet.registration_no }}</span>
                     </span>
                     <span
                       v-if="pet.rules_agreed_at"

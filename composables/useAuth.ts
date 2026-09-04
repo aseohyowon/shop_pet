@@ -20,14 +20,28 @@ export const useAuth = () => {
     profile.value = error ? null : (data as Profile)
   }
 
-  const signUp = async (params: { email: string; password: string; name: string; phone: string }) => {
+  const signUp = async (params: {
+    email: string
+    password: string
+    name: string
+    phone: string
+    postcode?: string
+    address?: string
+    addressDetail?: string
+  }) => {
     loading.value = true
     try {
       const { error } = await supabase.auth.signUp({
         email: params.email,
         password: params.password,
         options: {
-          data: { name: params.name, phone: params.phone }
+          data: {
+            name: params.name,
+            phone: params.phone,
+            postcode: params.postcode ?? '',
+            address: params.address ?? '',
+            address_detail: params.addressDetail ?? ''
+          }
         }
       })
       if (error) throw error

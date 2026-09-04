@@ -48,6 +48,7 @@ const newPet = reactive({
   breed: '',
   age: null as number | null,
   weight: null as number | null,
+  registrationNo: '',
   vaccinations: [] as number[],
   rulesAgreed: false,
   notes: ''
@@ -153,6 +154,7 @@ const handleSubmit = async () => {
         weight: newPet.weight,
         vaccinations: newPet.vaccinations,
         rulesAgreed: newPet.rulesAgreed,
+        registrationNo: newPet.registrationNo,
         notes: newPet.notes
       })
       petId = created.id
@@ -292,6 +294,10 @@ const handleSubmit = async () => {
                   <label class="label-warm" for="w-pet-weight">체중 (kg)</label>
                   <input id="w-pet-weight" v-model.number="newPet.weight" type="number" min="0" step="0.1" class="input-warm h-12" placeholder="체중 입력" />
                 </div>
+              </div>
+              <div class="space-y-2 pt-2">
+                <label class="label-warm" for="w-pet-regno">동물등록번호</label>
+                <input id="w-pet-regno" v-model="newPet.registrationNo" type="text" class="input-warm h-12" placeholder="동물등록번호 (선택, 15자리)" />
               </div>
               <div class="space-y-2 pt-2">
                 <label class="label-warm">접종 현황 및 규정 동의</label>
@@ -460,6 +466,10 @@ const handleSubmit = async () => {
             <div>
               <label class="label-field" for="pet-weight">체중 (kg)</label>
               <input id="pet-weight" v-model.number="newPet.weight" type="number" min="0" step="0.1" class="input-field" placeholder="4.5" />
+            </div>
+            <div class="sm:col-span-2">
+              <label class="label-field" for="pet-regno">동물등록번호</label>
+              <input id="pet-regno" v-model="newPet.registrationNo" type="text" class="input-field" placeholder="동물등록번호 (선택, 15자리)" />
             </div>
             <div class="sm:col-span-2">
               <label class="label-field">접종 현황 및 규정 동의</label>

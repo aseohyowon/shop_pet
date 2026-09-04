@@ -1,3 +1,7 @@
+<script setup lang="ts">
+const { contactEnabled } = useSiteTheme()
+</script>
+
 <template>
   <footer class="border-t border-gray-200 bg-gray-50">
     <div class="container-page grid gap-6 py-10 text-sm text-gray-500 sm:grid-cols-2 lg:grid-cols-3">
@@ -16,7 +20,7 @@
         <p class="mb-2 font-semibold text-gray-700">문의</p>
         <p>대표전화 02-000-0000</p>
         <p>이메일 hello@daengyi.example</p>
-        <NuxtLink to="/contact" class="mt-1 inline-block font-medium text-brand-600 hover:underline">1:1 문의하기</NuxtLink>
+        <NuxtLink v-if="contactEnabled" to="/contact" class="mt-1 inline-block font-medium text-brand-600 hover:underline">1:1 문의하기</NuxtLink>
       </div>
     </div>
     <div class="border-t border-gray-200 py-4 text-center text-xs text-gray-400">

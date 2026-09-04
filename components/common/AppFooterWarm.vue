@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const year = new Date().getFullYear()
+const { contactEnabled } = useSiteTheme()
 </script>
 
 <template>
@@ -31,7 +32,7 @@ const year = new Date().getFullYear()
         <h4 class="mb-2 font-label-md text-primary">고객센터</h4>
         <p class="text-sm">대표전화 02-000-0000</p>
         <p class="text-sm">hello@daengyi.example</p>
-        <NuxtLink to="/contact" class="text-sm font-medium text-primary transition-colors hover:text-secondary">1:1 문의하기</NuxtLink>
+        <NuxtLink v-if="contactEnabled" to="/contact" class="text-sm font-medium text-primary transition-colors hover:text-secondary">1:1 문의하기</NuxtLink>
       </div>
     </div>
     <div class="border-t border-surface-dim py-4 text-center">

@@ -23,6 +23,7 @@ export const usePets = () => {
     weight: number | null
     vaccinations: number[] // 회원이 체크한 예방접종 번호 (1~5)
     rulesAgreed: boolean
+    registrationNo?: string // 동물등록번호 (선택)
     notes: string
   }): Promise<Pet> => {
     if (!user.value) throw new Error('로그인이 필요합니다.')
@@ -44,6 +45,7 @@ export const usePets = () => {
         is_vaccinated: input.vaccinations.length > 0,
         vaccinations,
         rules_agreed_at: new Date().toISOString(),
+        registration_no: input.registrationNo?.trim() || null,
         notes: input.notes || null
       })
       .select('*')

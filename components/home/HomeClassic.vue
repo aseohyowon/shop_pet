@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const { createInquiry } = useInquiries()
+const { contactEnabled } = useSiteTheme()
 
 const services = [
   { title: '호텔 숙박', desc: '여행 중에도 안심할 수 있는 1:1 케어 숙박 서비스', icon: '🏨' },
@@ -78,7 +79,7 @@ const sendContact = async () => {
     </section>
 
     <!-- Contact -->
-    <section class="container-page py-16">
+    <section v-if="contactEnabled" class="container-page py-16">
       <h2 class="mb-6 text-center text-2xl font-bold text-gray-900">문의하기</h2>
       <div v-if="sent" class="mx-auto max-w-lg rounded-xl border border-gray-200 bg-white p-8 text-center">
         <p class="mb-1 font-bold text-gray-900">문의가 접수되었습니다</p>

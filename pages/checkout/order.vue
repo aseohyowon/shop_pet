@@ -110,6 +110,9 @@ onMounted(async () => {
       cartItems.value = await fetchCart()
       shipping.recipientName = profile.value?.name ?? ''
       shipping.recipientPhone = profile.value?.phone ?? ''
+      shipping.postcode = profile.value?.postcode ?? ''
+      shipping.address = profile.value?.address ?? ''
+      shipping.addressDetail = profile.value?.address_detail ?? ''
     }
   } catch (e: any) {
     errorMessage.value = e?.message ?? '불러오는 데 실패했습니다.'

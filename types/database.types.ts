@@ -25,6 +25,9 @@ export interface Database {
           email: string
           name: string | null
           phone: string | null
+          postcode: string | null
+          address: string | null
+          address_detail: string | null
           role: 'customer' | 'admin'
           created_at: string
         }
@@ -38,6 +41,9 @@ export interface Database {
         Update: {
           name?: string | null
           phone?: string | null
+          postcode?: string | null
+          address?: string | null
+          address_detail?: string | null
           role?: 'customer' | 'admin'
         }
       }
@@ -52,6 +58,7 @@ export interface Database {
           is_vaccinated: boolean
           vaccinations: VaccineMap
           rules_agreed_at: string | null
+          registration_no: string | null
           notes: string | null
           created_at: string
         }
@@ -64,6 +71,7 @@ export interface Database {
           is_vaccinated?: boolean
           vaccinations?: VaccineMap
           rules_agreed_at?: string | null
+          registration_no?: string | null
           notes?: string | null
         }
         Update: Partial<Database['public']['Tables']['pets']['Insert']>

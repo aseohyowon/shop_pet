@@ -3,14 +3,46 @@ definePageMeta({ layout: 'auth' })
 
 const router = useRouter()
 const { signUp, loading } = useAuth()
+const { embed: embedPostcode } = usePostcode()
 
 const name = ref('')
 const email = ref('')
 const phone = ref('')
 const password = ref('')
 const passwordConfirm = ref('')
+const postcode = ref('')
+const address = ref('')
+const addressDetail = ref('')
 const errorMessage = ref('')
 const successMessage = ref('')
+
+const addressDetailRef = ref<HTMLInputElement | null>(null)
+const postcodeBox = ref<HTMLElement | null>(null)
+const showPostcode = ref(false)
+
+const findAddress = async () => {
+  errorMessage.value = ''
+  showPostcode.value = true
+  await nextTick()
+  if (!postcodeBox.value) return
+  try {
+    await embedPostcode(
+      postcodeBox.value,
+      ({ zonecode, address: addr }) => {
+        postcode.value = zonecode
+        address.value = addr
+        showPostcode.value = false
+        nextTick(() => addressDetailRef.value?.focus())
+      },
+      () => {
+        showPostcode.value = false
+      }
+    )
+  } catch (e: any) {
+    showPostcode.value = false
+    errorMessage.value = e?.message ?? '주소 검색에 실패했습니다.'
+  }
+}
 
 const handleSubmit = async () => {
   errorMessage.value = ''
@@ -26,7 +58,15 @@ const handleSubmit = async () => {
   }
 
   try {
-    await signUp({ email: email.value, password: password.value, name: name.value, phone: phone.value })
+    await signUp({
+      email: email.value,
+      password: password.value,
+      name: name.value,
+      phone: phone.value,
+      postcode: postcode.value,
+      address: address.value,
+      addressDetail: addressDetail.value
+    })
     successMessage.value = '가입 확인 이메일을 보냈습니다. 메일함을 확인해주세요.'
     setTimeout(() => router.push('/login'), 1500)
   } catch (e: any) {
@@ -58,6 +98,45 @@ const handleSubmit = async () => {
       <div>
         <label class="label-field" for="phone">연락처</label>
         <input id="phone" v-model="phone" type="tel" required class="input-field" placeholder="010-0000-0000" />
+      </div>
+      <div>
+        <label class="label-field" for="postcode">주소</label>
+        <div class="flex gap-2">
+          <input
+            id="postcode"
+            v-model="postcode"
+            type="text"
+            readonly
+            class="input-field !w-32 bg-gray-50"
+            placeholder="우편번호"
+          />
+          <button
+            type="button"
+            class="shrink-0 rounded-lg border border-gray-300 px-4 text-sm font-medium text-gray-600 hover:border-brand-300 hover:text-brand-600"
+            @click="findAddress"
+          >
+            주소 검색
+          </button>
+        </div>
+        <div
+          v-show="showPostcode"
+          ref="postcodeBox"
+          class="mt-2 h-[420px] w-full overflow-hidden rounded-lg border border-gray-200"
+        />
+        <input
+          v-model="address"
+          type="text"
+          readonly
+          class="input-field mt-2 bg-gray-50"
+          placeholder="기본 주소"
+        />
+        <input
+          ref="addressDetailRef"
+          v-model="addressDetail"
+          type="text"
+          class="input-field mt-2"
+          placeholder="상세 주소 (동/호수 등)"
+        />
       </div>
       <div>
         <label class="label-field" for="password">비밀번호</label>

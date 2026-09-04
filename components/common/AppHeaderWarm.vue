@@ -3,14 +3,15 @@ const isMenuOpen = ref(false)
 const router = useRouter()
 const { user, profile, signOut } = useAuth()
 const { fetchCart } = useCart()
+const { contactEnabled } = useSiteTheme()
 
-const navLinks = [
+const navLinks = computed(() => [
   { label: '홈', to: '/' },
   { label: '예약', to: '/reservation' },
   { label: '쇼핑몰', to: '/shop' },
   { label: '마이페이지', to: '/mypage' },
-  { label: '문의', to: '/contact' }
-]
+  ...(contactEnabled.value ? [{ label: '문의', to: '/contact' }] : [])
+])
 
 const cartCount = ref(0)
 const loadCartCount = async () => {
