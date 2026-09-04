@@ -3,7 +3,29 @@ import type { SiteTheme, HomeVariant } from '~/types/database.types'
 
 definePageMeta({ layout: 'admin', middleware: 'admin' })
 
-const { siteTheme, homeVariant, contactEnabled, updateSetting } = useSiteTheme()
+const { siteTheme, homeVariant, contactEnabled, pointEarnRate, updateSetting } = useSiteTheme()
+
+const earnRateInput = ref<number>(pointEarnRate.value)
+watch(pointEarnRate, (v) => (earnRateInput.value = v))
+const savingEarnRate = ref(false)
+const earnRateMessage = ref<{ type: 'ok' | 'err'; text: string } | null>(null)
+
+const saveEarnRate = async () => {
+  let v = Math.round(Number(earnRateInput.value) || 0)
+  if (v < 0) v = 0
+  if (v > 100) v = 100
+  earnRateInput.value = v
+  savingEarnRate.value = true
+  earnRateMessage.value = null
+  try {
+    await updateSetting('point_earn_rate', String(v))
+    earnRateMessage.value = { type: 'ok', text: `구매 적립률을 ${v}%로 저장했습니다.` }
+  } catch (e: any) {
+    earnRateMessage.value = { type: 'err', text: e?.message ?? '저장에 실패했습니다.' }
+  } finally {
+    savingEarnRate.value = false
+  }
+}
 
 const selectedTheme = ref<SiteTheme>(siteTheme.value)
 const selectedHome = ref<HomeVariant>(homeVariant.value)
@@ -119,6 +141,41 @@ const homePreviewName = computed(() => {
         </label>
       </div>
       <p class="mt-2 text-xs text-gray-400">현재 적용될 홈: <strong>{{ homePreviewName }}</strong></p>
+    </section>
+
+    <!-- 포인트 적립률 -->
+    <section class="mb-8">
+      <h2 class="mb-3 text-sm font-semibold text-gray-700">포인트 구매 적립</h2>
+      <div class="rounded-xl border border-gray-200 p-4">
+        <div class="flex items-end gap-3">
+          <div>
+            <label class="label-field" for="earn-rate">적립률 (%)</label>
+            <input
+              id="earn-rate"
+              v-model.number="earnRateInput"
+              type="number"
+              min="0"
+              max="100"
+              step="1"
+              class="input-field w-28"
+            />
+          </div>
+          <button type="button" class="btn-primary" :disabled="savingEarnRate" @click="saveEarnRate">
+            {{ savingEarnRate ? '저장 중...' : '저장' }}
+          </button>
+        </div>
+        <p class="mt-2 text-sm text-gray-500">
+          결제 완료 시 <strong>실제 카드 결제 금액</strong>의 {{ earnRateInput || 0 }}%를 포인트로 자동 적립합니다.
+          (포인트로 결제한 금액은 적립 대상에서 제외) · 회원가입 시 1,000P는 항상 지급됩니다.
+        </p>
+        <p
+          v-if="earnRateMessage"
+          class="mt-2 text-sm"
+          :class="earnRateMessage.type === 'ok' ? 'text-green-600' : 'text-red-500'"
+        >
+          {{ earnRateMessage.text }}
+        </p>
+      </div>
     </section>
 
     <!-- 1:1 문의 메뉴 -->

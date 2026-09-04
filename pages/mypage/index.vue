@@ -3,11 +3,13 @@ import type { Pet } from '~/types/database.types'
 
 definePageMeta({ middleware: 'auth' })
 
-const { user, profile } = useAuth()
+const { user, profile, fetchProfile } = useAuth()
 const { fetchMyReservations } = useReservations()
 const { fetchMyOrders } = useOrders()
 const { fetchMyPets } = usePets()
-const { isWarm } = useSiteTheme()
+const { isWarm, contactEnabled } = useSiteTheme()
+
+const points = computed(() => profile.value?.points ?? 0)
 
 const orderStatusLabel: Record<string, string> = {
   pending: '결제 대기',
@@ -47,7 +49,8 @@ onMounted(async () => {
   const [reservations, orders, pets] = await Promise.all([
     fetchMyReservations(),
     fetchMyOrders(),
-    fetchMyPets()
+    fetchMyPets(),
+    fetchProfile()
   ])
   latestReservation.value = reservations[0] ?? null
   latestOrder.value = orders[0] ?? null
@@ -71,7 +74,10 @@ onMounted(async () => {
           <NuxtLink to="/mypage/orders" class="flex items-center gap-3 rounded-lg px-4 py-3 font-medium text-on-surface-variant transition-colors hover:bg-surface-container hover:text-primary">
             <span class="material-symbols-outlined">shopping_bag</span> 주문 내역
           </NuxtLink>
-          <NuxtLink to="/mypage/inquiries" class="flex items-center gap-3 rounded-lg px-4 py-3 font-medium text-on-surface-variant transition-colors hover:bg-surface-container hover:text-primary">
+          <NuxtLink to="/mypage/points" class="flex items-center gap-3 rounded-lg px-4 py-3 font-medium text-on-surface-variant transition-colors hover:bg-surface-container hover:text-primary">
+            <span class="material-symbols-outlined">savings</span> 포인트
+          </NuxtLink>
+          <NuxtLink v-if="contactEnabled" to="/mypage/inquiries" class="flex items-center gap-3 rounded-lg px-4 py-3 font-medium text-on-surface-variant transition-colors hover:bg-surface-container hover:text-primary">
             <span class="material-symbols-outlined">support_agent</span> 문의 내역
           </NuxtLink>
         </nav>
@@ -89,9 +95,13 @@ onMounted(async () => {
             <h1 class="mb-1 font-headline-lg-mobile text-headline-lg-mobile text-on-surface md:font-headline-lg md:text-headline-lg">
               안녕하세요, {{ displayName }}님!
             </h1>
-            <p class="mb-4 font-body-md text-body-md text-on-surface-variant">
+            <p class="mb-3 font-body-md text-body-md text-on-surface-variant">
               오늘도 <span v-if="firstPet">{{ firstPet.name }}와 </span>행복한 하루 보내세요.
             </p>
+            <NuxtLink to="/mypage/points" class="mb-4 inline-flex items-center gap-2 rounded-full bg-secondary-fixed/40 px-4 py-1.5 font-label-md text-label-md text-primary transition-colors hover:bg-secondary-fixed/60">
+              <span class="material-symbols-outlined text-[18px]">savings</span>
+              보유 포인트 {{ points.toLocaleString() }}P
+            </NuxtLink>
             <div class="flex flex-wrap justify-center gap-3 sm:justify-start">
               <NuxtLink to="/mypage/reservations" class="rounded-lg bg-primary px-5 py-2.5 font-label-md text-label-md text-on-primary shadow-sm transition-colors hover:bg-primary-container">예약 내역</NuxtLink>
               <NuxtLink to="/mypage/orders" class="rounded-lg border border-outline-variant bg-surface-container-high px-5 py-2.5 font-label-md text-label-md text-on-surface transition-colors hover:bg-surface-container-highest">주문 내역</NuxtLink>
@@ -224,6 +234,11 @@ onMounted(async () => {
     </p>
 
     <CommonMypageTabs />
+
+    <NuxtLink to="/mypage/points" class="card mb-6 flex items-center justify-between transition hover:border-brand-200">
+      <span class="font-semibold text-gray-900">보유 포인트</span>
+      <span class="text-xl font-bold text-brand-600">{{ points.toLocaleString() }}P</span>
+    </NuxtLink>
 
     <div class="grid gap-6 md:grid-cols-2">
       <div class="card">

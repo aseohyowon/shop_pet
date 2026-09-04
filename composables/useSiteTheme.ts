@@ -10,6 +10,8 @@ export const useSiteTheme = () => {
   const homeVariant = useState<HomeVariant>('home-variant', () => 'auto')
   // 1:1 문의 메뉴 노출 여부 (관리자가 /admin/settings 에서 on/off). 기본 off.
   const contactEnabled = useState<boolean>('contact-enabled', () => false)
+  // 구매 적립률 (%) — 관리자가 /admin/settings 에서 설정. 기본 0.
+  const pointEarnRate = useState<number>('point-earn-rate', () => 0)
   const loaded = useState<boolean>('site-theme-loaded', () => false)
 
   const supabase = useSupabaseClient()
@@ -21,6 +23,7 @@ export const useSiteTheme = () => {
         if (row.key === 'site_theme') siteTheme.value = row.value as SiteTheme
         if (row.key === 'home_variant') homeVariant.value = row.value as HomeVariant
         if (row.key === 'contact_enabled') contactEnabled.value = row.value === 'on'
+        if (row.key === 'point_earn_rate') pointEarnRate.value = Number(row.value) || 0
       }
     } catch {
       // site_settings 테이블이 아직 없으면 기본(default) 테마 유지
@@ -41,7 +44,7 @@ export const useSiteTheme = () => {
   })
 
   const updateSetting = async (
-    key: 'site_theme' | 'home_variant' | 'contact_enabled',
+    key: 'site_theme' | 'home_variant' | 'contact_enabled' | 'point_earn_rate',
     value: string
   ) => {
     const { error } = await supabase.from('site_settings').upsert({ key, value }, { onConflict: 'key' })
@@ -49,7 +52,18 @@ export const useSiteTheme = () => {
     if (key === 'site_theme') siteTheme.value = value as SiteTheme
     if (key === 'home_variant') homeVariant.value = value as HomeVariant
     if (key === 'contact_enabled') contactEnabled.value = value === 'on'
+    if (key === 'point_earn_rate') pointEarnRate.value = Number(value) || 0
   }
 
-  return { siteTheme, homeVariant, contactEnabled, loaded, isWarm, resolvedHome, load, updateSetting }
+  return {
+    siteTheme,
+    homeVariant,
+    contactEnabled,
+    pointEarnRate,
+    loaded,
+    isWarm,
+    resolvedHome,
+    load,
+    updateSetting
+  }
 }

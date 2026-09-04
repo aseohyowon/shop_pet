@@ -4,7 +4,8 @@ export const usePayments = () => {
   // 장바구니 상품으로 주문 + 결제 레코드 생성 (재고 확인/차감은 DB에서 원자적으로 처리)
   const createOrderPayment = async (
     items: { productId: string; quantity: number }[],
-    shipping?: { recipientName: string; recipientPhone: string; shippingAddress: string; shippingMemo?: string }
+    shipping?: { recipientName: string; recipientPhone: string; shippingAddress: string; shippingMemo?: string },
+    pointsUsed = 0
   ) => {
     const { data, error } = await supabase.rpc('create_order', {
       p_items: items.map((i) => ({ product_id: i.productId, quantity: i.quantity })),
@@ -15,11 +16,18 @@ export const usePayments = () => {
             shipping_address: shipping.shippingAddress,
             shipping_memo: shipping.shippingMemo ?? ''
           }
-        : {}
+        : {},
+      p_points_used: Math.max(0, Math.floor(pointsUsed || 0))
     })
     if (error) throw error
     const row = Array.isArray(data) ? data[0] : data
-    return { orderId: row.order_id as string, paymentId: row.payment_id as string, totalAmount: row.total_amount as number }
+    return {
+      orderId: row.order_id as string,
+      paymentId: row.payment_id as string,
+      totalAmount: row.total_amount as number,
+      payableAmount: row.payable_amount as number,
+      fullyPaid: row.fully_paid as boolean
+    }
   }
 
   // 결제 안 하고 이탈한 주문의 결제를 다시 이어가기 (기존 ready 결제 재사용)
@@ -38,9 +46,10 @@ export const usePayments = () => {
   }
 
   // 예약 건의 결제 레코드 생성 (금액은 서버에서 서비스 요금 기준으로 산정)
-  const createReservationPayment = async (reservationId: string) => {
+  const createReservationPayment = async (reservationId: string, pointsUsed = 0) => {
     const { data, error } = await supabase.rpc('create_reservation_payment', {
-      p_reservation_id: reservationId
+      p_reservation_id: reservationId,
+      p_points_used: Math.max(0, Math.floor(pointsUsed || 0))
     })
     if (error) throw error
     return data
@@ -50,7 +59,7 @@ export const usePayments = () => {
   const fetchPaidPayment = async (targetType: 'order' | 'reservation', targetId: string) => {
     const { data, error } = await supabase
       .from('payments')
-      .select('id, amount, status, refunded_amount, method, paid_at, cancel_reason')
+      .select('id, amount, points_used, status, refunded_amount, method, paid_at, cancel_reason')
       .eq('target_type', targetType)
       .eq('target_id', targetId)
       .eq('status', 'paid')

@@ -84,7 +84,9 @@ const handleSubmit = async () => {
 <template>
   <div class="card">
     <h1 class="mb-1 text-xl font-bold text-gray-900">회원가입</h1>
-    <p class="mb-6 text-sm text-gray-500">이메일로 간편하게 가입하세요.</p>
+    <p class="mb-6 text-sm text-gray-500">
+      이메일로 간편하게 가입하세요. 가입 즉시 <strong class="text-brand-600">1,000P</strong>를 드려요.
+    </p>
 
     <form class="space-y-4" @submit.prevent="handleSubmit">
       <div>

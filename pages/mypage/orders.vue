@@ -40,12 +40,18 @@ onMounted(load)
 const canCancel = (o: any) => o.status === 'paid' || o.status === 'preparing'
 
 const handleCancel = async (o: any) => {
-  if (!confirm(`이 주문을 취소하고 전액 환불받으시겠어요?\n(${o.total_amount.toLocaleString()}원)`)) return
   errorMessage.value = ''
   cancelling.value = o.id
   try {
     const payment = await fetchPaidPayment('order', o.id)
     if (!payment) throw new Error('결제 정보를 찾을 수 없습니다. 고객센터로 문의해주세요.')
+    const cashLine = payment.amount > 0 ? `${payment.amount.toLocaleString()}원 환불` : ''
+    const pointLine = payment.points_used > 0 ? `${payment.points_used.toLocaleString()}P 복원` : ''
+    const detail = [cashLine, pointLine].filter(Boolean).join(' + ') || '전액 환불'
+    if (!confirm(`이 주문을 취소하시겠어요?\n${detail}`)) {
+      cancelling.value = null
+      return
+    }
     await cancelPayment({ paymentId: payment.id, reason: '고객 주문 취소' })
     await load()
   } catch (e: any) {

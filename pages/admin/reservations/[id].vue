@@ -142,6 +142,7 @@ const cancelUnpaid = async () => {
         <dl v-if="payment" class="mb-4 grid grid-cols-2 gap-x-6 gap-y-2 text-sm">
           <div><dt class="text-gray-400">결제 금액</dt><dd class="text-gray-800">{{ payment.amount.toLocaleString() }}원</dd></div>
           <div><dt class="text-gray-400">결제 수단</dt><dd class="text-gray-800">{{ payment.method || '-' }}</dd></div>
+          <div v-if="payment.points_used > 0"><dt class="text-gray-400">포인트 사용</dt><dd class="text-brand-600">{{ payment.points_used.toLocaleString() }}P</dd></div>
           <div v-if="payment.refunded_amount > 0" class="col-span-2">
             <dt class="text-gray-400">환불됨</dt>
             <dd class="font-semibold text-red-500">{{ payment.refunded_amount.toLocaleString() }}원</dd>

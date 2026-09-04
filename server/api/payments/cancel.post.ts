@@ -129,5 +129,14 @@ export default defineEventHandler(async (event) => {
     await supabase.from('reservations').update({ status: 'cancelled' }).eq('id', payment.target_id)
   }
 
+  // 사용 포인트 복원 + 적립 포인트 회수
+  const { error: revertError } = await supabase.rpc('revert_purchase_points', {
+    p_target_type: payment.target_type,
+    p_target_id: payment.target_id
+  })
+  if (revertError) {
+    console.error('revert_purchase_points failed:', revertError.message)
+  }
+
   return { ok: true, refundAmount, targetType: payment.target_type }
 })

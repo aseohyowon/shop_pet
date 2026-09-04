@@ -6,6 +6,7 @@ definePageMeta({ layout: 'admin', middleware: 'admin' })
 
 const { fetchCustomers, fetchCustomerDetail } = useCustomers()
 const { setVaccineStatus } = usePets()
+const { adminAdjust } = usePoints()
 
 const customers = ref<Profile[]>([])
 const loading = ref(true)
@@ -65,6 +66,35 @@ const orderSummary = (o: any) => {
 
 const vaccStatusOf = (pet: any, no: number): VaccineStatus | undefined => pet.vaccinations?.[String(no)]
 
+// 포인트 수동 조정
+const pointDraft = reactive<Record<string, { amount: number | null; memo: string; busy: boolean; msg: string }>>({})
+const pointRow = (id: string) => (pointDraft[id] ??= { amount: null, memo: '', busy: false, msg: '' })
+
+const adjustPoints = async (customerId: string) => {
+  const row = pointRow(customerId)
+  const amount = Math.trunc(Number(row.amount) || 0)
+  if (!amount) {
+    row.msg = '지급(+) 또는 차감(-) 포인트를 입력하세요.'
+    return
+  }
+  row.busy = true
+  row.msg = ''
+  try {
+    const balance = await adminAdjust(customerId, amount, row.memo || undefined)
+    const d = details[customerId]
+    if (d?.profile) d.profile.points = balance
+    const c = customers.value.find((x) => x.id === customerId)
+    if (c) c.points = balance
+    row.amount = null
+    row.memo = ''
+    row.msg = `완료 · 현재 ${balance.toLocaleString()}P`
+  } catch (e: any) {
+    row.msg = e?.message ?? '조정에 실패했습니다.'
+  } finally {
+    row.busy = false
+  }
+}
+
 // 관리자 확인/취소 — details 캐시를 갱신
 const changeVaccine = async (customerId: string, petId: string, no: number, status: 'member' | 'admin' | 'none') => {
   await setVaccineStatus(petId, no, status)
@@ -113,7 +143,10 @@ const changeVaccine = async (customerId: string, petId: string, no: number, stat
             {{ (c.name || c.email)[0] }}
           </span>
           <div class="min-w-0 flex-grow">
-            <p class="truncate font-label-md text-label-md text-on-surface">{{ c.name || '이름 미등록' }}</p>
+            <p class="truncate font-label-md text-label-md text-on-surface">
+              {{ c.name || '이름 미등록' }}
+              <span class="ml-2 rounded-full bg-secondary-fixed/40 px-2 py-0.5 align-middle font-label-sm text-[11px] text-primary">{{ (c.points ?? 0).toLocaleString() }}P</span>
+            </p>
             <p class="truncate font-body-md text-sm text-on-surface-variant">{{ c.email }} · {{ c.phone || '연락처 없음' }}</p>
           </div>
           <span class="shrink-0 font-label-sm text-label-sm text-on-surface-variant">{{ fmtDate(c.created_at) }}</span>
@@ -139,6 +172,38 @@ const changeVaccine = async (customerId: string, petId: string, no: number, stat
                 </span>
                 <span v-else>-</span>
               </p>
+            </section>
+
+            <!-- 포인트 -->
+            <section class="rounded-xl border border-outline-variant/50 bg-surface-container-lowest p-4">
+              <div class="mb-3 flex items-center justify-between">
+                <h3 class="font-label-md text-label-md text-primary">포인트</h3>
+                <span class="font-headline-md text-lg text-secondary">{{ (details[c.id].profile?.points ?? 0).toLocaleString() }}P</span>
+              </div>
+              <div class="flex flex-wrap items-center gap-2">
+                <input
+                  v-model.number="pointRow(c.id).amount"
+                  type="number"
+                  step="1"
+                  placeholder="+지급 / -차감"
+                  class="w-36 rounded-lg border border-outline-variant/60 bg-surface px-3 py-2 font-body-md text-sm"
+                />
+                <input
+                  v-model="pointRow(c.id).memo"
+                  type="text"
+                  placeholder="메모 (선택)"
+                  class="min-w-[8rem] flex-1 rounded-lg border border-outline-variant/60 bg-surface px-3 py-2 font-body-md text-sm"
+                />
+                <button
+                  type="button"
+                  class="shrink-0 rounded-lg bg-primary px-4 py-2 font-label-sm text-label-sm text-on-primary disabled:opacity-50"
+                  :disabled="pointRow(c.id).busy"
+                  @click="adjustPoints(c.id)"
+                >
+                  {{ pointRow(c.id).busy ? '처리 중' : '적용' }}
+                </button>
+              </div>
+              <p v-if="pointRow(c.id).msg" class="mt-2 font-body-md text-xs text-on-surface-variant">{{ pointRow(c.id).msg }}</p>
             </section>
 
             <!-- 반려동물 + 접종 현황 -->

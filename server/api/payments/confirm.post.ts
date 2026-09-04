@@ -69,6 +69,14 @@ export default defineEventHandler(async (event) => {
     })
     .eq('id', paymentId)
 
+  // 사용한 포인트 차감 (payments.points_used 만큼)
+  const { error: consumeError } = await supabase.rpc('consume_points_for_payment', {
+    p_payment_id: paymentId
+  })
+  if (consumeError) {
+    console.error('consume_points_for_payment failed:', consumeError.message)
+  }
+
   if (payment.target_type === 'order') {
     // 재고를 여기서(결제 승인 시점에) 원자적으로 재검증 + 차감한다.
     // 이미 토스 결제는 승인됐으므로, 이 시점의 재고 부족은 드문 예외 상황으로 간주해 관리자가 후속 처리한다.
@@ -83,6 +91,15 @@ export default defineEventHandler(async (event) => {
       .update({ deposit_paid: true, status: 'confirmed' })
       .eq('id', payment.target_id)
       .in('status', ['pending', 'confirmed'])
+  }
+
+  // 구매 적립 (실제 카드 결제 금액의 N%)
+  const { error: earnError } = await supabase.rpc('award_purchase_points', {
+    p_target_type: payment.target_type,
+    p_target_id: payment.target_id
+  })
+  if (earnError) {
+    console.error('award_purchase_points failed:', earnError.message)
   }
 
   return { targetType: payment.target_type, targetId: payment.target_id }

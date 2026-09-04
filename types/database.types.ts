@@ -28,6 +28,7 @@ export interface Database {
           postcode: string | null
           address: string | null
           address_detail: string | null
+          points: number
           role: 'customer' | 'admin'
           created_at: string
         }
@@ -157,6 +158,7 @@ export interface Database {
           user_id: string
           status: OrderStatus
           total_amount: number
+          points_used: number
           recipient_name: string | null
           recipient_phone: string | null
           shipping_address: string | null
@@ -226,6 +228,7 @@ export interface Database {
           target_type: PaymentTargetType
           target_id: string
           amount: number
+          points_used: number
           status: PaymentStatus
           toss_payment_key: string | null
           method: string | null
@@ -250,6 +253,21 @@ export interface Database {
         Row: { id: string; days_before: number; refund_rate: number; created_at: string }
         Insert: { days_before: number; refund_rate: number }
         Update: { days_before?: number; refund_rate?: number }
+      }
+      point_transactions: {
+        Row: {
+          id: string
+          user_id: string
+          amount: number
+          balance_after: number
+          reason: 'signup' | 'earn' | 'use' | 'cancel' | 'admin'
+          target_type: PaymentTargetType | null
+          target_id: string | null
+          memo: string | null
+          created_at: string
+        }
+        Insert: never
+        Update: never
       }
     }
     Functions: {
@@ -278,12 +296,23 @@ export interface Database {
             shipping_address?: string
             shipping_memo?: string
           }
+          p_points_used?: number
         }
-        Returns: { order_id: string; payment_id: string; total_amount: number }[]
+        Returns: {
+          order_id: string
+          payment_id: string
+          total_amount: number
+          payable_amount: number
+          fully_paid: boolean
+        }[]
       }
       create_reservation_payment: {
-        Args: { p_reservation_id: string }
+        Args: { p_reservation_id: string; p_points_used?: number }
         Returns: Database['public']['Tables']['payments']['Row']
+      }
+      admin_adjust_points: {
+        Args: { p_user: string; p_amount: number; p_memo?: string }
+        Returns: number
       }
       set_vaccine_status: {
         Args: { p_pet_id: string; p_no: number; p_status: 'member' | 'admin' | 'none' }
@@ -309,3 +338,4 @@ export type Order = Database['public']['Tables']['orders']['Row']
 export type OrderItem = Database['public']['Tables']['order_items']['Row']
 export type Payment = Database['public']['Tables']['payments']['Row']
 export type RefundTier = Database['public']['Tables']['refund_policy_tiers']['Row']
+export type PointTransaction = Database['public']['Tables']['point_transactions']['Row']
