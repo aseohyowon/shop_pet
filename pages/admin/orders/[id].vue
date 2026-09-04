@@ -145,7 +145,9 @@ const saveTracking = async () => {
       <div class="card">
         <p class="mb-3 font-semibold text-gray-900">결제</p>
         <dl v-if="payment" class="grid grid-cols-2 gap-x-6 gap-y-2 text-sm">
-          <div><dt class="text-gray-400">결제 금액</dt><dd class="text-gray-800">{{ payment.amount.toLocaleString() }}원</dd></div>
+          <div><dt class="text-gray-400">주문 합계</dt><dd class="text-gray-800">{{ order.total_amount.toLocaleString() }}원</dd></div>
+          <div><dt class="text-gray-400">배송비 (포함)</dt><dd class="text-gray-800">{{ (order.shipping_fee ?? 0) === 0 ? '무료' : `${order.shipping_fee.toLocaleString()}원` }}</dd></div>
+          <div><dt class="text-gray-400">카드 결제 금액</dt><dd class="text-gray-800">{{ payment.amount.toLocaleString() }}원</dd></div>
           <div><dt class="text-gray-400">결제 수단</dt><dd class="text-gray-800">{{ payment.method || '-' }}</dd></div>
           <div v-if="payment.points_used > 0"><dt class="text-gray-400">포인트 사용</dt><dd class="text-brand-600">{{ payment.points_used.toLocaleString() }}P</dd></div>
           <div v-if="payment.refunded_amount > 0" class="col-span-2">

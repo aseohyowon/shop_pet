@@ -8,7 +8,11 @@ const { fetchMyOrderById } = useOrders()
 const { profile, user } = useAuth()
 const { createOrderPayment, resumeOrderPayment } = usePayments()
 const { fetchMyBalance } = usePoints()
+const { shippingFee: cfgShippingFee, freeShippingThreshold } = useSiteTheme()
 const { embed: embedPostcode } = usePostcode()
+
+// 재개 모드에선 주문에 저장된 배송비, 아니면 설정값 기준으로 계산
+const resumeShippingFee = ref<number | null>(null)
 
 const cartItems = ref<any[]>([])
 const loading = ref(true)
@@ -72,8 +76,17 @@ const findAddress = async () => {
 
 const total = computed(() => cartItems.value.reduce((sum, item) => sum + item.products.price * item.quantity, 0))
 
-const maxUsablePoints = computed(() => Math.min(pointBalance.value, total.value))
-const payable = computed(() => Math.max(0, total.value - pointsToUse.value))
+const shippingFee = computed(() => {
+  if (resumeShippingFee.value != null) return resumeShippingFee.value
+  const th = freeShippingThreshold.value
+  if (th > 0 && total.value >= th) return 0
+  return cfgShippingFee.value
+})
+const isFreeShipping = computed(() => shippingFee.value === 0)
+const grandTotal = computed(() => total.value + shippingFee.value)
+
+const maxUsablePoints = computed(() => Math.min(pointBalance.value, grandTotal.value))
+const payable = computed(() => Math.max(0, grandTotal.value - pointsToUse.value))
 const pointsLocked = computed(() => resumeMode.value || !!paymentInfo.value)
 
 const clampPoints = () => {
@@ -119,6 +132,7 @@ onMounted(async () => {
       savedAddress.value = order.shipping_address ?? ''
       savedRecipient.value = [order.recipient_name, order.recipient_phone].filter(Boolean).join(' · ')
       pointsToUse.value = order.points_used ?? 0
+      resumeShippingFee.value = order.shipping_fee ?? 0
 
       const payment = await resumeOrderPayment(resumeId)
       if (!payment) {
@@ -228,6 +242,17 @@ const handlePay = async () => {
           <span>상품 금액</span>
           <span>{{ total.toLocaleString() }}원</span>
         </div>
+        <div class="flex justify-between text-sm text-gray-500">
+          <span>배송비</span>
+          <span v-if="isFreeShipping" class="text-brand-600">무료</span>
+          <span v-else>{{ shippingFee.toLocaleString() }}원</span>
+        </div>
+        <p
+          v-if="!resumeMode && !isFreeShipping && freeShippingThreshold > 0"
+          class="text-xs text-gray-400"
+        >
+          {{ (freeShippingThreshold - total).toLocaleString() }}원 더 담으면 무료배송
+        </p>
         <div v-if="pointsToUse > 0" class="flex justify-between text-sm text-brand-600">
           <span>포인트 사용</span>
           <span>-{{ pointsToUse.toLocaleString() }}P</span>

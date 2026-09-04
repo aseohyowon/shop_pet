@@ -12,6 +12,9 @@ export const useSiteTheme = () => {
   const contactEnabled = useState<boolean>('contact-enabled', () => false)
   // 구매 적립률 (%) — 관리자가 /admin/settings 에서 설정. 기본 0.
   const pointEarnRate = useState<number>('point-earn-rate', () => 0)
+  // 배송비 / 무료배송 기준(상품 합계)
+  const shippingFee = useState<number>('shipping-fee', () => 3000)
+  const freeShippingThreshold = useState<number>('free-shipping-threshold', () => 30000)
   const loaded = useState<boolean>('site-theme-loaded', () => false)
 
   const supabase = useSupabaseClient()
@@ -24,6 +27,8 @@ export const useSiteTheme = () => {
         if (row.key === 'home_variant') homeVariant.value = row.value as HomeVariant
         if (row.key === 'contact_enabled') contactEnabled.value = row.value === 'on'
         if (row.key === 'point_earn_rate') pointEarnRate.value = Number(row.value) || 0
+        if (row.key === 'shipping_fee') shippingFee.value = Number(row.value) || 0
+        if (row.key === 'free_shipping_threshold') freeShippingThreshold.value = Number(row.value) || 0
       }
     } catch {
       // site_settings 테이블이 아직 없으면 기본(default) 테마 유지
@@ -44,7 +49,13 @@ export const useSiteTheme = () => {
   })
 
   const updateSetting = async (
-    key: 'site_theme' | 'home_variant' | 'contact_enabled' | 'point_earn_rate',
+    key:
+      | 'site_theme'
+      | 'home_variant'
+      | 'contact_enabled'
+      | 'point_earn_rate'
+      | 'shipping_fee'
+      | 'free_shipping_threshold',
     value: string
   ) => {
     const { error } = await supabase.from('site_settings').upsert({ key, value }, { onConflict: 'key' })
@@ -53,6 +64,8 @@ export const useSiteTheme = () => {
     if (key === 'home_variant') homeVariant.value = value as HomeVariant
     if (key === 'contact_enabled') contactEnabled.value = value === 'on'
     if (key === 'point_earn_rate') pointEarnRate.value = Number(value) || 0
+    if (key === 'shipping_fee') shippingFee.value = Number(value) || 0
+    if (key === 'free_shipping_threshold') freeShippingThreshold.value = Number(value) || 0
   }
 
   return {
@@ -60,6 +73,8 @@ export const useSiteTheme = () => {
     homeVariant,
     contactEnabled,
     pointEarnRate,
+    shippingFee,
+    freeShippingThreshold,
     loaded,
     isWarm,
     resolvedHome,

@@ -2,6 +2,7 @@
 definePageMeta({ middleware: 'auth' })
 
 const { fetchCart, updateQuantity, removeFromCart } = useCart()
+const { shippingFee: cfgShippingFee, freeShippingThreshold } = useSiteTheme()
 
 const cartItems = ref<any[]>([])
 const loading = ref(true)
@@ -20,6 +21,13 @@ onMounted(load)
 const total = computed(() =>
   cartItems.value.reduce((sum, item) => sum + item.products.price * item.quantity, 0)
 )
+const shipFee = computed(() => {
+  if (cartItems.value.length === 0) return 0
+  const th = freeShippingThreshold.value
+  if (th > 0 && total.value >= th) return 0
+  return cfgShippingFee.value
+})
+const grandTotal = computed(() => total.value + shipFee.value)
 
 const handleQuantityChange = async (item: any, value: number) => {
   const clamped = Math.min(Math.max(value, 1), item.products.stock)
@@ -73,9 +81,20 @@ const handleRemove = async (item: any) => {
             <span>상품 합계</span>
             <span>{{ total.toLocaleString() }}원</span>
           </div>
+          <div class="flex justify-between text-sm text-gray-500">
+            <span>배송비</span>
+            <span v-if="shipFee === 0" class="text-brand-600">무료</span>
+            <span v-else>{{ shipFee.toLocaleString() }}원</span>
+          </div>
+          <p
+            v-if="cartItems.length > 0 && shipFee > 0 && freeShippingThreshold > 0"
+            class="text-xs text-gray-400"
+          >
+            {{ (freeShippingThreshold - total).toLocaleString() }}원 더 담으면 무료배송
+          </p>
           <div class="flex justify-between border-t border-gray-100 pt-3 font-bold text-gray-900">
             <span>총 결제금액</span>
-            <span>{{ total.toLocaleString() }}원</span>
+            <span>{{ grandTotal.toLocaleString() }}원</span>
           </div>
           <NuxtLink
             to="/checkout/order"

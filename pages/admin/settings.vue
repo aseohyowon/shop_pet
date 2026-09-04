@@ -3,7 +3,45 @@ import type { SiteTheme, HomeVariant } from '~/types/database.types'
 
 definePageMeta({ layout: 'admin', middleware: 'admin' })
 
-const { siteTheme, homeVariant, contactEnabled, pointEarnRate, updateSetting } = useSiteTheme()
+const {
+  siteTheme,
+  homeVariant,
+  contactEnabled,
+  pointEarnRate,
+  shippingFee,
+  freeShippingThreshold,
+  updateSetting
+} = useSiteTheme()
+
+const feeInput = ref<number>(shippingFee.value)
+const freeThInput = ref<number>(freeShippingThreshold.value)
+watch(shippingFee, (v) => (feeInput.value = v))
+watch(freeShippingThreshold, (v) => (freeThInput.value = v))
+const savingShipping = ref(false)
+const shippingMessage = ref<{ type: 'ok' | 'err'; text: string } | null>(null)
+
+const saveShipping = async () => {
+  const fee = Math.max(0, Math.round(Number(feeInput.value) || 0))
+  const th = Math.max(0, Math.round(Number(freeThInput.value) || 0))
+  feeInput.value = fee
+  freeThInput.value = th
+  savingShipping.value = true
+  shippingMessage.value = null
+  try {
+    await updateSetting('shipping_fee', String(fee))
+    await updateSetting('free_shipping_threshold', String(th))
+    shippingMessage.value = {
+      type: 'ok',
+      text: th > 0
+        ? `배송비 ${fee.toLocaleString()}원 · ${th.toLocaleString()}원 이상 무료로 저장했습니다.`
+        : `배송비 ${fee.toLocaleString()}원 (무료배송 기준 없음)으로 저장했습니다.`
+    }
+  } catch (e: any) {
+    shippingMessage.value = { type: 'err', text: e?.message ?? '저장에 실패했습니다.' }
+  } finally {
+    savingShipping.value = false
+  }
+}
 
 const earnRateInput = ref<number>(pointEarnRate.value)
 watch(pointEarnRate, (v) => (earnRateInput.value = v))
@@ -141,6 +179,36 @@ const homePreviewName = computed(() => {
         </label>
       </div>
       <p class="mt-2 text-xs text-gray-400">현재 적용될 홈: <strong>{{ homePreviewName }}</strong></p>
+    </section>
+
+    <!-- 배송비 -->
+    <section class="mb-8">
+      <h2 class="mb-3 text-sm font-semibold text-gray-700">쇼핑몰 배송비</h2>
+      <div class="rounded-xl border border-gray-200 p-4">
+        <div class="flex flex-wrap items-end gap-3">
+          <div>
+            <label class="label-field" for="ship-fee">기본 배송비 (원)</label>
+            <input id="ship-fee" v-model.number="feeInput" type="number" min="0" step="500" class="input-field w-32" />
+          </div>
+          <div>
+            <label class="label-field" for="free-th">무료배송 기준 (원 이상)</label>
+            <input id="free-th" v-model.number="freeThInput" type="number" min="0" step="1000" class="input-field w-40" />
+          </div>
+          <button type="button" class="btn-primary" :disabled="savingShipping" @click="saveShipping">
+            {{ savingShipping ? '저장 중...' : '저장' }}
+          </button>
+        </div>
+        <p class="mt-2 text-sm text-gray-500">
+          상품 합계가 무료배송 기준 이상이면 배송비가 0원이 됩니다. 기준을 <strong>0</strong>으로 두면 항상 배송비가 부과됩니다.
+        </p>
+        <p
+          v-if="shippingMessage"
+          class="mt-2 text-sm"
+          :class="shippingMessage.type === 'ok' ? 'text-green-600' : 'text-red-500'"
+        >
+          {{ shippingMessage.text }}
+        </p>
+      </div>
     </section>
 
     <!-- 포인트 적립률 -->

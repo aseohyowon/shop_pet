@@ -25,6 +25,7 @@ export const usePayments = () => {
       orderId: row.order_id as string,
       paymentId: row.payment_id as string,
       totalAmount: row.total_amount as number,
+      shippingFee: row.shipping_fee as number,
       payableAmount: row.payable_amount as number,
       fullyPaid: row.fully_paid as boolean
     }

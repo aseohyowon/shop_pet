@@ -159,6 +159,7 @@ export interface Database {
           status: OrderStatus
           total_amount: number
           points_used: number
+          shipping_fee: number
           stock_issue: string | null
           recipient_name: string | null
           recipient_phone: string | null
@@ -303,6 +304,7 @@ export interface Database {
           order_id: string
           payment_id: string
           total_amount: number
+          shipping_fee: number
           payable_amount: number
           fully_paid: boolean
         }[]
