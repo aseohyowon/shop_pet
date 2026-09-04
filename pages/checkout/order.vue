@@ -1,9 +1,12 @@
 <script setup lang="ts">
 definePageMeta({ middleware: 'auth' })
 
+const route = useRoute()
+const router = useRouter()
 const { fetchCart } = useCart()
+const { fetchMyOrderById } = useOrders()
 const { profile, user } = useAuth()
-const { createOrderPayment } = usePayments()
+const { createOrderPayment, resumeOrderPayment } = usePayments()
 const { embed: embedPostcode } = usePostcode()
 
 const cartItems = ref<any[]>([])
@@ -12,6 +15,11 @@ const errorMessage = ref('')
 const paymentInfo = ref<{ paymentId: string; amount: number; orderName: string } | null>(null)
 const widgetRef = ref<{ requestPayment: () => Promise<void> } | null>(null)
 const submitting = ref(false)
+
+// 결제 이어가기(미결제 주문 재개) 모드
+const resumeMode = ref(false)
+const savedAddress = ref('')
+const savedRecipient = ref('')
 
 const shipping = reactive({
   recipientName: '',
@@ -59,23 +67,56 @@ const findAddress = async () => {
 
 const total = computed(() => cartItems.value.reduce((sum, item) => sum + item.products.price * item.quantity, 0))
 
-onMounted(async () => {
-  try {
-    cartItems.value = await fetchCart()
-    shipping.recipientName = profile.value?.name ?? ''
-    shipping.recipientPhone = profile.value?.phone ?? ''
-  } catch (e: any) {
-    errorMessage.value = e?.message ?? '장바구니를 불러오지 못했습니다.'
-  } finally {
-    loading.value = false
-  }
-})
-
 const orderName = computed(() =>
   cartItems.value.length > 1
     ? `${cartItems.value[0]?.products.name} 외 ${cartItems.value.length - 1}건`
     : (cartItems.value[0]?.products.name ?? '주문')
 )
+
+onMounted(async () => {
+  const resumeId = route.query.resume as string | undefined
+  try {
+    if (resumeId) {
+      const order = await fetchMyOrderById(resumeId)
+      if (!order) {
+        errorMessage.value = '주문을 찾을 수 없습니다.'
+        return
+      }
+      if (order.status !== 'pending') {
+        await router.replace('/mypage/orders')
+        return
+      }
+      resumeMode.value = true
+      cartItems.value = (order.order_items ?? []).map((it: any) => ({
+        id: it.id,
+        quantity: it.quantity,
+        products: {
+          id: it.product_id,
+          name: it.products?.name ?? '상품',
+          price: it.price_at_order,
+          image_url: it.products?.image_url
+        }
+      }))
+      savedAddress.value = order.shipping_address ?? ''
+      savedRecipient.value = [order.recipient_name, order.recipient_phone].filter(Boolean).join(' · ')
+
+      const payment = await resumeOrderPayment(resumeId)
+      if (!payment) {
+        errorMessage.value = '결제 정보가 만료되었습니다. 장바구니에서 다시 주문해주세요.'
+        return
+      }
+      paymentInfo.value = { paymentId: payment.id, amount: payment.amount, orderName: orderName.value }
+    } else {
+      cartItems.value = await fetchCart()
+      shipping.recipientName = profile.value?.name ?? ''
+      shipping.recipientPhone = profile.value?.phone ?? ''
+    }
+  } catch (e: any) {
+    errorMessage.value = e?.message ?? '불러오는 데 실패했습니다.'
+  } finally {
+    loading.value = false
+  }
+})
 
 const validateShipping = () => {
   if (!shipping.recipientName.trim()) return '수령인 이름을 입력해주세요.'
@@ -129,9 +170,16 @@ const handlePay = async () => {
 <template>
   <div class="container-page max-w-lg py-12">
     <h1 class="mb-2 text-2xl font-bold text-gray-900">주문 결제</h1>
-    <p class="mb-8 text-gray-500">배송지를 입력하고 결제를 진행해주세요.</p>
+    <p class="mb-8 text-gray-500">
+      {{ resumeMode ? '미결제 주문의 결제를 이어서 진행합니다.' : '배송지를 입력하고 결제를 진행해주세요.' }}
+    </p>
 
     <p v-if="loading" class="py-8 text-center text-sm text-gray-400">불러오는 중...</p>
+
+    <p v-else-if="errorMessage && cartItems.length === 0" class="py-8 text-center text-sm text-gray-400">
+      {{ errorMessage }}
+      <NuxtLink to="/shop" class="mt-2 block text-brand-600 hover:underline">쇼핑몰로 가기</NuxtLink>
+    </p>
 
     <p v-else-if="cartItems.length === 0" class="py-8 text-center text-sm text-gray-400">
       장바구니가 비어있습니다.
@@ -151,64 +199,72 @@ const handlePay = async () => {
         </div>
       </div>
 
-      <!-- 배송지 -->
+      <!-- 배송지: 신규 주문이면 입력 폼, 이어가기면 저장된 배송지 표시 -->
       <div class="card mt-4 space-y-4">
         <p class="font-semibold text-gray-900">배송지 정보</p>
-        <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="label-field" for="ship-name">수령인</label>
-            <input id="ship-name" v-model="shipping.recipientName" type="text" class="input-field" :disabled="!!paymentInfo" placeholder="홍길동" />
+
+        <template v-if="resumeMode">
+          <p class="text-sm text-gray-600">{{ savedRecipient || '-' }}</p>
+          <p class="text-sm text-gray-600">{{ savedAddress || '배송지 정보 없음' }}</p>
+        </template>
+
+        <template v-else>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="label-field" for="ship-name">수령인</label>
+              <input id="ship-name" v-model="shipping.recipientName" type="text" class="input-field" :disabled="!!paymentInfo" placeholder="홍길동" />
+            </div>
+            <div>
+              <label class="label-field" for="ship-phone">연락처</label>
+              <input id="ship-phone" v-model="shipping.recipientPhone" type="tel" class="input-field" :disabled="!!paymentInfo" placeholder="010-0000-0000" />
+            </div>
           </div>
           <div>
-            <label class="label-field" for="ship-phone">연락처</label>
-            <input id="ship-phone" v-model="shipping.recipientPhone" type="tel" class="input-field" :disabled="!!paymentInfo" placeholder="010-0000-0000" />
-          </div>
-        </div>
-        <div>
-          <label class="label-field" for="ship-postcode">주소</label>
-          <div class="flex gap-2">
+            <label class="label-field" for="ship-postcode">주소</label>
+            <div class="flex gap-2">
+              <input
+                id="ship-postcode"
+                :value="shipping.postcode"
+                type="text"
+                class="input-field flex-1"
+                placeholder="우편번호"
+                readonly
+              />
+              <button
+                type="button"
+                class="btn-secondary shrink-0 !px-4 !py-2 text-sm"
+                :disabled="!!paymentInfo"
+                @click="findAddress"
+              >
+                주소 찾기
+              </button>
+            </div>
+            <div
+              v-show="showPostcode"
+              ref="postcodeBox"
+              class="mt-2 h-[420px] w-full overflow-hidden rounded-lg border border-gray-200"
+            />
             <input
-              id="ship-postcode"
-              :value="shipping.postcode"
+              :value="shipping.address"
               type="text"
-              class="input-field flex-1"
-              placeholder="우편번호"
+              class="input-field mt-2"
+              placeholder="도로명/지번 주소 (주소 찾기 버튼으로 선택)"
               readonly
             />
-            <button
-              type="button"
-              class="btn-secondary shrink-0 !px-4 !py-2 text-sm"
+            <input
+              ref="addressDetailRef"
+              v-model="shipping.addressDetail"
+              type="text"
+              class="input-field mt-2"
               :disabled="!!paymentInfo"
-              @click="findAddress"
-            >
-              주소 찾기
-            </button>
+              placeholder="상세주소 (동/호수 등)"
+            />
           </div>
-          <div
-            v-show="showPostcode"
-            ref="postcodeBox"
-            class="mt-2 h-[420px] w-full overflow-hidden rounded-lg border border-gray-200"
-          />
-          <input
-            :value="shipping.address"
-            type="text"
-            class="input-field mt-2"
-            placeholder="도로명/지번 주소 (주소 찾기 버튼으로 선택)"
-            readonly
-          />
-          <input
-            ref="addressDetailRef"
-            v-model="shipping.addressDetail"
-            type="text"
-            class="input-field mt-2"
-            :disabled="!!paymentInfo"
-            placeholder="상세주소 (동/호수 등)"
-          />
-        </div>
-        <div>
-          <label class="label-field" for="ship-memo">배송 메모 (선택)</label>
-          <input id="ship-memo" v-model="shipping.shippingMemo" type="text" class="input-field" :disabled="!!paymentInfo" placeholder="부재 시 문 앞에 놓아주세요" />
-        </div>
+          <div>
+            <label class="label-field" for="ship-memo">배송 메모 (선택)</label>
+            <input id="ship-memo" v-model="shipping.shippingMemo" type="text" class="input-field" :disabled="!!paymentInfo" placeholder="부재 시 문 앞에 놓아주세요" />
+          </div>
+        </template>
       </div>
 
       <div v-if="paymentInfo" class="card mt-4">

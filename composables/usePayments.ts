@@ -22,11 +22,39 @@ export const usePayments = () => {
     return { orderId: row.order_id as string, paymentId: row.payment_id as string, totalAmount: row.total_amount as number }
   }
 
+  // 결제 안 하고 이탈한 주문의 결제를 다시 이어가기 (기존 ready 결제 재사용)
+  const resumeOrderPayment = async (orderId: string) => {
+    const { data, error } = await supabase
+      .from('payments')
+      .select('*')
+      .eq('target_type', 'order')
+      .eq('target_id', orderId)
+      .eq('status', 'ready')
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .maybeSingle()
+    if (error) throw error
+    return data
+  }
+
   // 예약 건의 결제 레코드 생성 (금액은 서버에서 서비스 요금 기준으로 산정)
   const createReservationPayment = async (reservationId: string) => {
     const { data, error } = await supabase.rpc('create_reservation_payment', {
       p_reservation_id: reservationId
     })
+    if (error) throw error
+    return data
+  }
+
+  // 특정 주문/예약의 결제완료(부분환불 포함) 건 조회 — 취소/환불에 사용
+  const fetchPaidPayment = async (targetType: 'order' | 'reservation', targetId: string) => {
+    const { data, error } = await supabase
+      .from('payments')
+      .select('id, amount, status, refunded_amount, method, paid_at, cancel_reason')
+      .eq('target_type', targetType)
+      .eq('target_id', targetId)
+      .eq('status', 'paid')
+      .maybeSingle()
     if (error) throw error
     return data
   }
@@ -39,5 +67,11 @@ export const usePayments = () => {
     })
   }
 
-  return { createOrderPayment, createReservationPayment, confirmPayment }
+  return {
+    createOrderPayment,
+    resumeOrderPayment,
+    fetchPaidPayment,
+    createReservationPayment,
+    confirmPayment
+  }
 }

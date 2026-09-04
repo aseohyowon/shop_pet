@@ -4,9 +4,18 @@ definePageMeta({ layout: 'admin', middleware: 'admin' })
 const route = useRoute()
 const router = useRouter()
 const { fetchReservationById, updateReservationStatus } = useReservations()
+const { fetchPaidPayment } = usePayments()
+const { cancelPayment } = useRefunds()
 
 const reservation = ref<any | null>(null)
+const payment = ref<any | null>(null)
 const loading = ref(true)
+const errorMessage = ref('')
+
+const showRefund = ref(false)
+const refundReason = ref('')
+const refundAmount = ref(0)
+const refunding = ref(false)
 
 const typeLabel: Record<string, string> = { hotel: '호텔 숙박', daycare: '데이케어' }
 const statusLabel: Record<string, string> = {
@@ -23,9 +32,17 @@ const vaccStatusLabel = (no: number): string => {
   return s === 'admin' ? `관리자확인 ${no}` : s === 'member' ? `회원확인 ${no}` : '미접종'
 }
 
+const load = async () => {
+  reservation.value = await fetchReservationById(route.params.id as string)
+  if (reservation.value?.deposit_paid) {
+    payment.value = await fetchPaidPayment('reservation', reservation.value.id).catch(() => null)
+    refundAmount.value = payment.value ? payment.value.amount - payment.value.refunded_amount : 0
+  }
+}
+
 onMounted(async () => {
   try {
-    reservation.value = await fetchReservationById(route.params.id as string)
+    await load()
   } finally {
     loading.value = false
   }
@@ -34,6 +51,31 @@ onMounted(async () => {
 const handleAction = async (status: 'confirmed' | 'rejected') => {
   await updateReservationStatus(route.params.id as string, status)
   await router.push('/admin/reservations')
+}
+
+const doRefund = async () => {
+  if (!payment.value) return
+  refunding.value = true
+  errorMessage.value = ''
+  try {
+    await cancelPayment({
+      paymentId: payment.value.id,
+      reason: refundReason.value || '관리자 예약 취소',
+      cancelAmount: Math.max(0, Math.round(refundAmount.value))
+    })
+    showRefund.value = false
+    await load()
+  } catch (e: any) {
+    errorMessage.value = e?.data?.statusMessage ?? e?.message ?? '환불 처리에 실패했습니다.'
+  } finally {
+    refunding.value = false
+  }
+}
+
+const cancelUnpaid = async () => {
+  if (!confirm('이 예약을 취소하시겠어요?')) return
+  await updateReservationStatus(route.params.id as string, 'cancelled')
+  await load()
 }
 </script>
 
@@ -93,9 +135,67 @@ const handleAction = async (status: 'confirmed' | 'rejected') => {
         </div>
       </div>
 
-      <div v-if="reservation.status === 'pending'" class="mt-6 flex gap-3">
-        <button type="button" class="btn-primary" @click="handleAction('confirmed')">예약 승인</button>
-        <button type="button" class="btn-secondary" @click="handleAction('rejected')">예약 거절</button>
+      <!-- 결제 / 취소·환불 -->
+      <div class="card mt-6">
+        <p class="mb-3 font-semibold text-gray-900">결제 · 취소</p>
+        <dl v-if="payment" class="mb-4 grid grid-cols-2 gap-x-6 gap-y-2 text-sm">
+          <div><dt class="text-gray-400">결제 금액</dt><dd class="text-gray-800">{{ payment.amount.toLocaleString() }}원</dd></div>
+          <div><dt class="text-gray-400">결제 수단</dt><dd class="text-gray-800">{{ payment.method || '-' }}</dd></div>
+          <div v-if="payment.refunded_amount > 0" class="col-span-2">
+            <dt class="text-gray-400">환불됨</dt>
+            <dd class="font-semibold text-red-500">{{ payment.refunded_amount.toLocaleString() }}원</dd>
+          </div>
+        </dl>
+        <p v-else class="mb-4 text-sm text-gray-400">결제되지 않은 예약입니다.</p>
+
+        <div class="flex flex-wrap gap-3">
+          <template v-if="reservation.status === 'pending'">
+            <button type="button" class="btn-primary" @click="handleAction('confirmed')">예약 승인</button>
+            <button type="button" class="btn-secondary" @click="handleAction('rejected')">예약 거절</button>
+          </template>
+
+          <template v-if="reservation.status !== 'cancelled' && reservation.status !== 'rejected'">
+            <button
+              v-if="payment && payment.refunded_amount < payment.amount"
+              type="button"
+              class="btn-secondary !border-red-200 !text-red-500"
+              @click="showRefund = !showRefund"
+            >
+              예약 취소 + 환불
+            </button>
+            <button
+              v-else-if="!payment"
+              type="button"
+              class="btn-secondary !border-red-200 !text-red-500"
+              @click="cancelUnpaid"
+            >
+              예약 취소
+            </button>
+          </template>
+        </div>
+
+        <div v-if="showRefund && payment" class="mt-4 space-y-3 rounded-lg border border-gray-200 p-4">
+          <div>
+            <label class="label-field">환불 금액 (원)</label>
+            <input v-model.number="refundAmount" type="number" min="0" :max="payment.amount - payment.refunded_amount" class="input-field" />
+            <p class="mt-1 text-xs text-gray-400">
+              최대 {{ (payment.amount - payment.refunded_amount).toLocaleString() }}원.
+              환불 규정에 따라 일부만 돌려줄 수 있습니다.
+            </p>
+          </div>
+          <div>
+            <label class="label-field">사유</label>
+            <input v-model="refundReason" type="text" class="input-field" placeholder="예: 고객 요청" />
+          </div>
+          <div class="flex gap-2">
+            <button type="button" class="btn-secondary flex-1 !py-2 text-sm" @click="showRefund = false">닫기</button>
+            <button type="button" class="btn-primary flex-1 !py-2 text-sm" :disabled="refunding" @click="doRefund">
+              {{ refunding ? '처리 중...' : '취소 + 환불 실행' }}
+            </button>
+          </div>
+        </div>
+
+        <p v-if="errorMessage" class="mt-3 text-sm text-red-500">{{ errorMessage }}</p>
       </div>
     </template>
   </div>

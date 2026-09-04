@@ -222,10 +222,26 @@ export interface Database {
           toss_payment_key: string | null
           method: string | null
           paid_at: string | null
+          refunded_amount: number
+          refunded_at: string | null
+          cancel_reason: string | null
           created_at: string
         }
         Insert: { user_id: string; target_type: PaymentTargetType; target_id: string; amount: number; status?: PaymentStatus }
-        Update: { status?: PaymentStatus; toss_payment_key?: string | null; method?: string | null; paid_at?: string | null }
+        Update: {
+          status?: PaymentStatus
+          toss_payment_key?: string | null
+          method?: string | null
+          paid_at?: string | null
+          refunded_amount?: number
+          refunded_at?: string | null
+          cancel_reason?: string | null
+        }
+      }
+      refund_policy_tiers: {
+        Row: { id: string; days_before: number; refund_rate: number; created_at: string }
+        Insert: { days_before: number; refund_rate: number }
+        Update: { days_before?: number; refund_rate?: number }
       }
     }
     Functions: {
@@ -265,6 +281,10 @@ export interface Database {
         Args: { p_pet_id: string; p_no: number; p_status: 'member' | 'admin' | 'none' }
         Returns: Database['public']['Tables']['pets']['Row']
       }
+      restore_order_stock: {
+        Args: { p_order_id: string }
+        Returns: undefined
+      }
     }
   }
 }
@@ -280,3 +300,4 @@ export type CartItem = Database['public']['Tables']['cart_items']['Row']
 export type Order = Database['public']['Tables']['orders']['Row']
 export type OrderItem = Database['public']['Tables']['order_items']['Row']
 export type Payment = Database['public']['Tables']['payments']['Row']
+export type RefundTier = Database['public']['Tables']['refund_policy_tiers']['Row']

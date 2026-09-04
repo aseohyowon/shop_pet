@@ -5,14 +5,24 @@ definePageMeta({ layout: 'admin', middleware: 'admin' })
 
 const route = useRoute()
 const { fetchOrderByIdForAdmin, updateOrderStatus, updateOrderTracking } = useOrders()
+const { fetchPaidPayment } = usePayments()
+const { cancelPayment } = useRefunds()
 
 const order = ref<any | null>(null)
+const payment = ref<any | null>(null)
 const loading = ref(true)
 const errorMessage = ref('')
 
 const courier = ref('')
 const trackingNo = ref('')
 const savingTracking = ref(false)
+
+// 환불
+const showRefund = ref(false)
+const refundReason = ref('')
+const refundAmount = ref<number>(0)
+const refundRestoreStock = ref(true)
+const refunding = ref(false)
 
 const statusOptions: { value: OrderStatus; label: string }[] = [
   { value: 'pending', label: '결제 대기' },
@@ -31,6 +41,8 @@ const load = async () => {
     order.value = await fetchOrderByIdForAdmin(route.params.id as string)
     courier.value = order.value.tracking_courier ?? ''
     trackingNo.value = order.value.tracking_number ?? ''
+    payment.value = await fetchPaidPayment('order', order.value.id).catch(() => null)
+    refundAmount.value = payment.value ? payment.value.amount - payment.value.refunded_amount : 0
   } catch (e: any) {
     errorMessage.value = e?.message ?? '주문을 불러오지 못했습니다.'
   } finally {
@@ -38,6 +50,26 @@ const load = async () => {
   }
 }
 onMounted(load)
+
+const doRefund = async () => {
+  if (!payment.value) return
+  refunding.value = true
+  errorMessage.value = ''
+  try {
+    await cancelPayment({
+      paymentId: payment.value.id,
+      reason: refundReason.value || '관리자 환불',
+      cancelAmount: Math.max(0, Math.round(refundAmount.value)),
+      restoreStock: refundRestoreStock.value
+    })
+    showRefund.value = false
+    await load()
+  } catch (e: any) {
+    errorMessage.value = e?.data?.statusMessage ?? e?.message ?? '환불 처리에 실패했습니다.'
+  } finally {
+    refunding.value = false
+  }
+}
 
 const changeStatus = async (status: OrderStatus) => {
   await updateOrderStatus(order.value.id, status)
@@ -101,6 +133,49 @@ const saveTracking = async () => {
           <div v-if="order.shipping_memo" class="col-span-2"><dt class="text-gray-400">배송 메모</dt><dd class="text-gray-800">{{ order.shipping_memo }}</dd></div>
         </dl>
         <p v-else class="text-sm text-gray-400">배송지 정보가 없습니다.</p>
+      </div>
+
+      <!-- 결제 / 환불 -->
+      <div class="card">
+        <p class="mb-3 font-semibold text-gray-900">결제</p>
+        <dl v-if="payment" class="grid grid-cols-2 gap-x-6 gap-y-2 text-sm">
+          <div><dt class="text-gray-400">결제 금액</dt><dd class="text-gray-800">{{ payment.amount.toLocaleString() }}원</dd></div>
+          <div><dt class="text-gray-400">결제 수단</dt><dd class="text-gray-800">{{ payment.method || '-' }}</dd></div>
+          <div v-if="payment.refunded_amount > 0" class="col-span-2">
+            <dt class="text-gray-400">환불됨</dt>
+            <dd class="font-semibold text-red-500">{{ payment.refunded_amount.toLocaleString() }}원 <span v-if="payment.cancel_reason" class="font-normal text-gray-400">· {{ payment.cancel_reason }}</span></dd>
+          </div>
+        </dl>
+        <p v-else class="text-sm text-gray-400">
+          {{ order.status === 'pending' ? '아직 결제되지 않은 주문입니다.' : '결제 정보가 없습니다.' }}
+        </p>
+
+        <div v-if="payment && payment.refunded_amount < payment.amount && order.status !== 'cancelled'" class="mt-4">
+          <button v-if="!showRefund" type="button" class="btn-secondary !py-2 text-sm" @click="showRefund = true">
+            환불 처리
+          </button>
+          <div v-else class="space-y-3 rounded-lg border border-gray-200 p-4">
+            <div>
+              <label class="label-field">환불 금액 (원)</label>
+              <input v-model.number="refundAmount" type="number" min="0" :max="payment.amount - payment.refunded_amount" class="input-field" />
+              <p class="mt-1 text-xs text-gray-400">최대 {{ (payment.amount - payment.refunded_amount).toLocaleString() }}원</p>
+            </div>
+            <div>
+              <label class="label-field">사유</label>
+              <input v-model="refundReason" type="text" class="input-field" placeholder="예: 고객 변심, 품절 등" />
+            </div>
+            <label class="flex items-center gap-2 text-sm text-gray-700">
+              <input v-model="refundRestoreStock" type="checkbox" class="h-4 w-4 rounded text-brand-500" />
+              재고 복구 (반품 입고 시 체크)
+            </label>
+            <div class="flex gap-2">
+              <button type="button" class="btn-secondary flex-1 !py-2 text-sm" @click="showRefund = false">취소</button>
+              <button type="button" class="btn-primary flex-1 !py-2 text-sm" :disabled="refunding" @click="doRefund">
+                {{ refunding ? '처리 중...' : '환불 실행' }}
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="card">

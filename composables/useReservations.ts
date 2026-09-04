@@ -76,12 +76,19 @@ export const useReservations = () => {
     if (error) throw error
   }
 
+  // 고객: 결제 전 승인 대기 예약 취소 (RLS: pending → cancelled 만 허용)
+  const cancelMyPendingReservation = async (id: string) => {
+    const { error } = await supabase.from('reservations').update({ status: 'cancelled' }).eq('id', id)
+    if (error) throw error
+  }
+
   return {
     getAvailability,
     createReservation,
     fetchMyReservations,
     fetchAllReservations,
     fetchReservationById,
-    updateReservationStatus
+    updateReservationStatus,
+    cancelMyPendingReservation
   }
 }

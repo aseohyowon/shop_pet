@@ -5,6 +5,7 @@ definePageMeta({ layout: 'admin', middleware: 'admin' })
 
 const { fetchAllReservations, updateReservationStatus } = useReservations()
 const { fetchServiceSettings, updateServiceSetting } = useServiceSettings()
+const { fetchRefundTiers, replaceRefundTiers } = useRefunds()
 
 const reservations = ref<any[]>([])
 const loading = ref(true)
@@ -51,6 +52,48 @@ const savePricing = async (t: ReservationType) => {
 }
 
 onMounted(loadPricing)
+
+// ── 환불 규정 (예약 취소) ─────────────────────────
+const refundTiers = ref<{ days_before: number; refund_rate: number }[]>([])
+const refundLoading = ref(true)
+const refundSaving = ref(false)
+const refundMsg = ref<{ ok: boolean; text: string } | null>(null)
+
+const loadRefund = async () => {
+  try {
+    const t = await fetchRefundTiers()
+    refundTiers.value = t.map((x) => ({ days_before: x.days_before, refund_rate: x.refund_rate }))
+  } finally {
+    refundLoading.value = false
+  }
+}
+onMounted(loadRefund)
+
+const addTier = () => refundTiers.value.push({ days_before: 0, refund_rate: 0 })
+const removeTier = (i: number) => refundTiers.value.splice(i, 1)
+
+const saveRefund = async () => {
+  refundSaving.value = true
+  refundMsg.value = null
+  try {
+    const cleaned = refundTiers.value
+      .map((t) => ({
+        days_before: Math.max(0, Math.round(t.days_before)),
+        refund_rate: Math.min(100, Math.max(0, Math.round(t.refund_rate)))
+      }))
+      .sort((a, b) => b.days_before - a.days_before)
+    // days_before 중복 제거
+    const seen = new Set<number>()
+    const unique = cleaned.filter((t) => (seen.has(t.days_before) ? false : (seen.add(t.days_before), true)))
+    await replaceRefundTiers(unique)
+    refundTiers.value = unique
+    refundMsg.value = { ok: true, text: '환불 규정을 저장했습니다.' }
+  } catch (e: any) {
+    refundMsg.value = { ok: false, text: e?.message ?? '저장에 실패했습니다.' }
+  } finally {
+    refundSaving.value = false
+  }
+}
 
 const statusLabel: Record<string, string> = {
   pending: '승인 대기',
@@ -126,6 +169,37 @@ const handleAction = async (id: string, status: 'confirmed' | 'rejected') => {
       >
         {{ pricingMsg.text }}
       </p>
+    </section>
+
+    <!-- 환불 규정 (예약 취소) -->
+    <section class="card mb-6">
+      <p class="mb-1 font-semibold text-gray-900">환불 규정 (예약 취소)</p>
+      <p class="mb-4 text-sm text-gray-500">
+        고객이 예약을 취소할 때 <strong>이용일까지 남은 일수</strong>에 따라 환불 비율이 적용됩니다.
+        (위에서부터 조건을 확인하며, 해당되는 첫 줄의 비율을 적용)
+      </p>
+      <p v-if="refundLoading" class="text-sm text-gray-400">불러오는 중...</p>
+      <div v-else class="space-y-2">
+        <div v-for="(t, i) in refundTiers" :key="i" class="flex flex-wrap items-center gap-2 text-sm">
+          <span class="text-gray-500">이용</span>
+          <input v-model.number="t.days_before" type="number" min="0" class="input-field !w-20 !py-1.5" />
+          <span class="text-gray-500">일 전까지 취소 →</span>
+          <input v-model.number="t.refund_rate" type="number" min="0" max="100" class="input-field !w-20 !py-1.5" />
+          <span class="text-gray-500">% 환불</span>
+          <button type="button" class="ml-1 text-xs text-gray-400 hover:text-red-500" @click="removeTier(i)">삭제</button>
+        </div>
+        <button type="button" class="mt-1 text-sm font-medium text-brand-600 hover:underline" @click="addTier">+ 조건 추가</button>
+        <p class="mt-1 text-xs text-gray-400">
+          예: "이용 7일 전까지 → 100%", "이용 3일 전까지 → 50%", "이용 1일 전까지 → 0%".
+          어느 조건에도 안 맞으면(당일 등) 환불 없음.
+        </p>
+        <div class="pt-2">
+          <button type="button" class="btn-primary !py-2" :disabled="refundSaving" @click="saveRefund">
+            {{ refundSaving ? '저장 중...' : '환불 규정 저장' }}
+          </button>
+        </div>
+        <p v-if="refundMsg" class="text-sm" :class="refundMsg.ok ? 'text-green-600' : 'text-red-500'">{{ refundMsg.text }}</p>
+      </div>
     </section>
 
     <div class="mb-6 flex items-center justify-between">

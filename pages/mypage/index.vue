@@ -154,6 +154,13 @@ onMounted(async () => {
               {{ latestReservation.end_date }} {{ toHHMM(latestReservation.end_time) }}
             </p>
           </div>
+          <NuxtLink
+            v-if="!latestReservation.deposit_paid && latestReservation.status !== 'rejected' && latestReservation.status !== 'cancelled'"
+            :to="`/checkout/reservation?id=${latestReservation.id}`"
+            class="btn-warm shrink-0 !min-h-0 !px-4 !py-2 text-sm"
+          >
+            결제하기
+          </NuxtLink>
         </div>
         <p v-else class="rounded-xl border border-outline-variant/50 p-5 font-body-md text-sm text-on-surface-variant">예약 내역이 없습니다.</p>
       </section>
@@ -185,8 +192,15 @@ onMounted(async () => {
             </div>
             <div class="mt-2 flex items-end justify-between">
               <span class="font-headline-md text-base text-on-surface">{{ latestOrder.total_amount.toLocaleString() }}원</span>
+              <NuxtLink
+                v-if="latestOrder.status === 'pending'"
+                :to="`/checkout/order?resume=${latestOrder.id}`"
+                class="rounded-lg bg-primary px-3 py-1 font-label-sm text-label-sm text-on-primary hover:bg-primary-container"
+              >
+                결제하기
+              </NuxtLink>
               <a
-                v-if="latestOrder.tracking_number"
+                v-else-if="latestOrder.tracking_number"
                 :href="trackingUrl(latestOrder.tracking_courier, latestOrder.tracking_number)"
                 target="_blank"
                 rel="noopener"

@@ -16,6 +16,18 @@ export const useOrders = () => {
     return data ?? []
   }
 
+  const fetchMyOrderById = async (id: string) => {
+    if (!user.value) return null
+    const { data, error } = await supabase
+      .from('orders')
+      .select('*, order_items(*, products(name, price, image_url))')
+      .eq('id', id)
+      .eq('user_id', user.value.sub)
+      .maybeSingle()
+    if (error) throw error
+    return data
+  }
+
   const fetchAllOrdersForAdmin = async () => {
     const { data, error } = await supabase
       .from('orders')
@@ -57,6 +69,7 @@ export const useOrders = () => {
 
   return {
     fetchMyOrders,
+    fetchMyOrderById,
     fetchAllOrdersForAdmin,
     fetchOrderByIdForAdmin,
     updateOrderStatus,
