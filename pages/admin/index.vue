@@ -39,6 +39,9 @@ const todayRevenue = computed(() =>
 const lowStockProducts = computed(() =>
   products.value.filter((p) => p.is_active && p.stock <= LOW_STOCK).sort((a, b) => a.stock - b.stock)
 )
+const stockIssueOrders = computed(() =>
+  orders.value.filter((o) => o.stock_issue && o.status !== 'cancelled')
+)
 
 const stats = computed(() => [
   { label: '오늘 예약', value: `${todayReservations.value.length}건`, icon: 'calendar_month', to: '/admin/reservations', accent: false },
@@ -46,7 +49,8 @@ const stats = computed(() => [
   { label: '미처리 주문', value: `${unhandledOrderCount.value}건`, icon: 'inventory_2', to: '/admin/orders', accent: false },
   { label: '오늘 매출', value: `${todayRevenue.value.toLocaleString()}원`, icon: 'payments', to: '/admin/orders', accent: false },
   { label: '재고 부족 상품', value: `${lowStockProducts.value.length}건`, icon: 'warning', to: '/admin/products', accent: lowStockProducts.value.length > 0 },
-  { label: '미답변 문의', value: `${openInquiries.value}건`, icon: 'mark_chat_unread', to: '/admin/inquiries', accent: openInquiries.value > 0 }
+  { label: '미답변 문의', value: `${openInquiries.value}건`, icon: 'mark_chat_unread', to: '/admin/inquiries', accent: openInquiries.value > 0 },
+  { label: '재고 부족 주문', value: `${stockIssueOrders.value.length}건`, icon: 'production_quantity_limits', to: '/admin/orders', accent: stockIssueOrders.value.length > 0 }
 ])
 
 onMounted(async () => {

@@ -62,7 +62,14 @@ const handleStatusChange = async (id: string, status: OrderStatus) => {
         <tbody>
           <tr v-for="o in orders" :key="o.id" class="border-b border-gray-100 last:border-0">
             <td class="py-3 pr-4 font-medium text-gray-800">{{ o.profiles?.name }}</td>
-            <td class="py-3 pr-4 text-gray-600">{{ itemsSummary(o) }}</td>
+            <td class="py-3 pr-4 text-gray-600">
+              {{ itemsSummary(o) }}
+              <span
+                v-if="o.stock_issue"
+                class="ml-1 rounded bg-red-50 px-1.5 py-0.5 text-[11px] font-semibold text-red-600"
+                :title="o.stock_issue"
+              >재고 부족</span>
+            </td>
             <td class="py-3 pr-4 text-gray-600">{{ o.total_amount.toLocaleString() }}원</td>
             <td class="py-3 pr-4 text-xs">
               <span v-if="o.tracking_number" class="text-green-600">송장 등록</span>

@@ -159,6 +159,7 @@ export interface Database {
           status: OrderStatus
           total_amount: number
           points_used: number
+          stock_issue: string | null
           recipient_name: string | null
           recipient_phone: string | null
           shipping_address: string | null

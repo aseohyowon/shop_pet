@@ -102,6 +102,12 @@ const saveTracking = async () => {
     <p v-else-if="!order" class="py-8 text-center text-sm text-gray-400">주문을 찾을 수 없습니다.</p>
 
     <div v-else class="space-y-6">
+      <div v-if="order.stock_issue" class="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+        <p class="font-semibold">⚠️ 결제 후 재고 부족</p>
+        <p class="mt-1">{{ order.stock_issue }}</p>
+        <p class="mt-1 text-red-500">결제는 완료되었으나 재고가 모자랐습니다. 고객에게 연락해 부분 배송/환불을 조율하세요.</p>
+      </div>
+
       <div class="card">
         <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
           <div>

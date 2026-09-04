@@ -6,6 +6,7 @@ definePageMeta({ layout: 'admin', middleware: 'admin' })
 const { fetchAllReservations, updateReservationStatus } = useReservations()
 const { fetchServiceSettings, updateServiceSetting } = useServiceSettings()
 const { fetchRefundTiers, replaceRefundTiers } = useRefunds()
+const { fetchOverrides, setOverride, removeOverride } = useDailyCapacity()
 
 const reservations = ref<any[]>([])
 const loading = ref(true)
@@ -93,6 +94,52 @@ const saveRefund = async () => {
   } finally {
     refundSaving.value = false
   }
+}
+
+// ── 날짜별 정원 예외 (공휴일 마감/증원) ───────────
+const overrides = ref<import('~/composables/useDailyCapacity').CapacityOverride[]>([])
+const overrideLoading = ref(true)
+const newOv = reactive<{ date: string; type: ReservationType; max_capacity: number }>({
+  date: '',
+  type: 'hotel',
+  max_capacity: 0
+})
+const overrideSaving = ref(false)
+const overrideMsg = ref<{ ok: boolean; text: string } | null>(null)
+
+const loadOverrides = async () => {
+  overrideLoading.value = true
+  try {
+    overrides.value = await fetchOverrides()
+  } finally {
+    overrideLoading.value = false
+  }
+}
+onMounted(loadOverrides)
+
+const addOverride = async () => {
+  overrideMsg.value = null
+  if (!newOv.date) {
+    overrideMsg.value = { ok: false, text: '날짜를 선택해주세요.' }
+    return
+  }
+  overrideSaving.value = true
+  try {
+    await setOverride(newOv.date, newOv.type, newOv.max_capacity)
+    newOv.date = ''
+    newOv.max_capacity = 0
+    await loadOverrides()
+    overrideMsg.value = { ok: true, text: '저장했습니다.' }
+  } catch (e: any) {
+    overrideMsg.value = { ok: false, text: e?.message ?? '저장에 실패했습니다.' }
+  } finally {
+    overrideSaving.value = false
+  }
+}
+
+const deleteOverride = async (id: string) => {
+  await removeOverride(id)
+  await loadOverrides()
 }
 
 const statusLabel: Record<string, string> = {
@@ -202,6 +249,55 @@ const handleAction = async (id: string, status: 'confirmed' | 'rejected') => {
       </div>
     </section>
 
+    <!-- 날짜별 정원 (공휴일 마감/증원) -->
+    <section class="card mb-6">
+      <p class="mb-1 font-semibold text-gray-900">날짜별 정원 (공휴일 등)</p>
+      <p class="mb-4 text-sm text-gray-500">
+        특정 날짜만 정원을 다르게 지정합니다. <strong>0</strong>으로 두면 그날은 예약을 받지 않습니다(마감).
+        지정하지 않은 날은 위의 기본 정원이 적용됩니다.
+      </p>
+
+      <div class="flex flex-wrap items-end gap-2">
+        <div>
+          <label class="label-field">날짜</label>
+          <input v-model="newOv.date" type="date" class="input-field !py-1.5" />
+        </div>
+        <div>
+          <label class="label-field">서비스</label>
+          <select v-model="newOv.type" class="input-field !py-1.5">
+            <option value="hotel">호텔 숙박</option>
+            <option value="daycare">데이케어</option>
+          </select>
+        </div>
+        <div>
+          <label class="label-field">정원 (마리)</label>
+          <input v-model.number="newOv.max_capacity" type="number" min="0" class="input-field !w-24 !py-1.5" />
+        </div>
+        <button type="button" class="btn-primary !py-2" :disabled="overrideSaving" @click="addOverride">
+          {{ overrideSaving ? '저장 중...' : '추가' }}
+        </button>
+      </div>
+      <p v-if="overrideMsg" class="mt-2 text-sm" :class="overrideMsg.ok ? 'text-green-600' : 'text-red-500'">
+        {{ overrideMsg.text }}
+      </p>
+
+      <div class="mt-4">
+        <p v-if="overrideLoading" class="text-sm text-gray-400">불러오는 중...</p>
+        <p v-else-if="overrides.length === 0" class="text-sm text-gray-400">지정된 날짜가 없습니다.</p>
+        <ul v-else class="divide-y divide-gray-100 text-sm">
+          <li v-for="o in overrides" :key="o.id" class="flex items-center justify-between py-2">
+            <span class="text-gray-700">
+              {{ o.date }} · {{ typeLabel[o.type] }} · 정원
+              <strong :class="o.max_capacity === 0 ? 'text-red-500' : 'text-gray-900'">
+                {{ o.max_capacity === 0 ? '마감' : `${o.max_capacity}마리` }}
+              </strong>
+            </span>
+            <button type="button" class="text-xs text-gray-400 hover:text-red-500" @click="deleteOverride(o.id)">삭제</button>
+          </li>
+        </ul>
+      </div>
+    </section>
+
     <div class="mb-6 flex items-center justify-between">
       <h1 class="text-2xl font-bold text-gray-900">예약 관리</h1>
       <div class="flex gap-2 text-sm">
@@ -277,6 +373,13 @@ const handleAction = async (id: string, status: 'confirmed' | 'rejected') => {
                 <button type="button" class="mr-2 text-green-600 hover:underline" @click="handleAction(r.id, 'confirmed')">승인</button>
                 <button type="button" class="text-red-500 hover:underline" @click="handleAction(r.id, 'rejected')">거절</button>
               </template>
+              <NuxtLink
+                v-else-if="r.status === 'confirmed' || r.status === 'completed'"
+                :to="`/admin/reservations/${r.id}`"
+                class="text-red-500 hover:underline"
+              >
+                취소{{ r.deposit_paid ? ' · 환불' : '' }}
+              </NuxtLink>
               <span v-else class="text-gray-300">-</span>
             </td>
           </tr>
