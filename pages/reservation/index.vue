@@ -7,7 +7,7 @@ definePageMeta({ middleware: 'auth' })
 const router = useRouter()
 const { fetchMyPets, createPet } = usePets()
 const { createReservation } = useReservations()
-const { fetchServiceSettings, nights } = useServiceSettings()
+const { fetchServiceSettings, nights, hoursBetween } = useServiceSettings()
 const { isWarm } = useSiteTheme()
 
 const { data: serviceSettings } = useAsyncData('service-settings', fetchServiceSettings, { default: () => ({}) as any })
@@ -17,10 +17,19 @@ const dateRange = ref<{ start: string | null; end: string | null }>({ start: nul
 
 const isDaycare = computed(() => reservationType.value === 'daycare')
 
-// 데이케어(원데이)는 하루만: 서비스 전환 시 범위를 당일로 축소
+// 데이케어 유형: false = 종일, true = 시간제(이용 시간만큼 과금)
+const daycareHourly = ref(false)
+
+// 데이케어(원데이)는 하루만: 서비스 전환 시 범위를 당일로 축소 + 시간 기본값 조정
 watch(reservationType, () => {
-  if (isDaycare.value && dateRange.value.start) {
-    dateRange.value = { start: dateRange.value.start, end: dateRange.value.start }
+  if (isDaycare.value) {
+    if (dateRange.value.start) dateRange.value = { start: dateRange.value.start, end: dateRange.value.start }
+    startTime.value = '09:00'
+    endTime.value = '18:00'
+  } else {
+    daycareHourly.value = false
+    startTime.value = '09:00'
+    endTime.value = '21:00'
   }
 })
 
@@ -106,24 +115,45 @@ const dateSummary = computed(() => {
   return `${start} ~ ${end}`
 })
 
-// 예상 금액 (호텔: 박 수 × 1박 요금, 데이케어: 1일 요금)
-const priceUnits = computed(() => {
-  const { start, end } = dateRange.value
-  if (!start) return 0
-  if (isDaycare.value) return 1
-  return nights(start, end ?? start)
+// 이용 시간(시간제 데이케어용, 올림/최소 1)
+const daycareHours = computed(() => hoursBetween(startTime.value, endTime.value))
+const isHourlyDaycare = computed(() => isDaycare.value && daycareHourly.value)
+
+const serviceSummaryLabel = computed(() => {
+  if (!isDaycare.value) return '호텔 숙박'
+  return daycareHourly.value ? '데이케어 (시간제)' : '데이케어 (종일)'
+})
+
+// 예약금 비율 적용 전 총액
+const priceBase = computed(() => {
+  const s = serviceSettings.value?.[reservationType.value]
+  if (!s || !dateRange.value.start) return null
+  if (!isDaycare.value) return s.price * nights(dateRange.value.start, dateRange.value.end ?? dateRange.value.start)
+  if (isHourlyDaycare.value) {
+    return Math.min(daycareHours.value * (s.hourly_price ?? 4000), s.price) // 종일요금 상한
+  }
+  return s.price // 종일
 })
 const estimatedPrice = computed(() => {
   const s = serviceSettings.value?.[reservationType.value]
-  if (!s || !dateRange.value.start) return null
-  return Math.round(s.price * priceUnits.value * Number(s.deposit_rate ?? 1))
+  if (!s || priceBase.value == null) return null
+  return Math.round(priceBase.value * Number(s.deposit_rate ?? 1))
 })
 const priceBreakdown = computed(() => {
   const s = serviceSettings.value?.[reservationType.value]
-  if (!s || !dateRange.value.start) return ''
-  const unit = isDaycare.value ? '1일' : `${priceUnits.value}박`
+  if (!s || priceBase.value == null) return ''
   const rate = Number(s.deposit_rate ?? 1)
-  const base = `${s.price.toLocaleString()}원 × ${unit}`
+  let base: string
+  if (!isDaycare.value) {
+    base = `${s.price.toLocaleString()}원 × ${nights(dateRange.value.start!, dateRange.value.end ?? dateRange.value.start!)}박`
+  } else if (isHourlyDaycare.value) {
+    const capped = daycareHours.value * (s.hourly_price ?? 4000) >= s.price
+    base = capped
+      ? `시간제 ${daycareHours.value}시간 → 종일요금 적용`
+      : `${(s.hourly_price ?? 4000).toLocaleString()}원 × ${daycareHours.value}시간`
+  } else {
+    base = `${s.price.toLocaleString()}원 × 1일`
+  }
   return rate < 1 ? `${base} · 예약금 ${Math.round(rate * 100)}%` : base
 })
 
@@ -182,7 +212,8 @@ const handleSubmit = async () => {
       startTime: startTime.value,
       endTime: endTime.value,
       memo: memo.value,
-      termsAgreed: allAgreed.value
+      termsAgreed: allAgreed.value,
+      daycareHourly: isDaycare.value && daycareHourly.value
     })
 
     await router.push(`/checkout/reservation?id=${created.id}`)
@@ -227,6 +258,34 @@ const handleSubmit = async () => {
               <span class="mt-2 font-label-md text-label-md font-bold">{{ opt.label }}</span>
               <span class="font-label-sm text-label-sm opacity-70">{{ opt.desc }}</span>
             </button>
+          </div>
+
+          <!-- 데이케어 유형 -->
+          <div v-if="isDaycare" class="mt-5">
+            <p class="mb-2 font-label-md text-label-md text-on-surface-variant">이용 유형</p>
+            <div class="grid grid-cols-2 gap-3">
+              <button
+                type="button"
+                class="rounded-xl border-2 px-4 py-3 text-left transition-colors"
+                :class="!daycareHourly ? 'border-secondary bg-secondary-fixed/30 text-secondary' : 'border-surface-container-high text-on-surface-variant'"
+                @click="daycareHourly = false"
+              >
+                <span class="block font-label-md font-bold">종일</span>
+                <span class="font-label-sm text-label-sm opacity-70">09:00~18:00 · 산책 1회</span>
+              </button>
+              <button
+                type="button"
+                class="rounded-xl border-2 px-4 py-3 text-left transition-colors"
+                :class="daycareHourly ? 'border-secondary bg-secondary-fixed/30 text-secondary' : 'border-surface-container-high text-on-surface-variant'"
+                @click="daycareHourly = true"
+              >
+                <span class="block font-label-md font-bold">시간제</span>
+                <span class="font-label-sm text-label-sm opacity-70">이용 시간만큼 · 1시간 단위</span>
+              </button>
+            </div>
+            <p v-if="daycareHourly" class="mt-2 font-label-sm text-label-sm text-outline">
+              등원·하원 시간으로 요금이 계산됩니다 (1시간 미만은 1시간으로 올림, 종일요금 초과 시 종일요금 적용).
+            </p>
           </div>
         </section>
 
@@ -376,7 +435,7 @@ const handleSubmit = async () => {
           <ul class="mb-8 space-y-4">
             <li class="flex items-start justify-between">
               <span class="font-label-md text-label-md text-on-surface-variant">서비스</span>
-              <span class="text-right font-body-md font-semibold text-on-surface">{{ isDaycare ? '데이케어 (당일)' : '호텔 숙박' }}</span>
+              <span class="text-right font-body-md font-semibold text-on-surface">{{ serviceSummaryLabel }}</span>
             </li>
             <li class="flex items-start justify-between">
               <span class="font-label-md text-label-md text-on-surface-variant">날짜</span>
@@ -448,6 +507,33 @@ const handleSubmit = async () => {
             >
               ☀️ 데이케어<span class="ml-1 text-xs font-normal text-gray-400">당일</span>
             </button>
+          </div>
+
+          <div v-if="isDaycare" class="mt-4">
+            <p class="label-field mb-2">이용 유형</p>
+            <div class="grid grid-cols-2 gap-3">
+              <button
+                type="button"
+                class="rounded-lg border px-3 py-2.5 text-left text-sm transition"
+                :class="!daycareHourly ? 'border-brand-500 bg-brand-50 text-brand-600' : 'border-gray-200 text-gray-600'"
+                @click="daycareHourly = false"
+              >
+                <span class="block font-semibold">종일</span>
+                <span class="text-xs text-gray-400">09:00~18:00 · 산책 1회</span>
+              </button>
+              <button
+                type="button"
+                class="rounded-lg border px-3 py-2.5 text-left text-sm transition"
+                :class="daycareHourly ? 'border-brand-500 bg-brand-50 text-brand-600' : 'border-gray-200 text-gray-600'"
+                @click="daycareHourly = true"
+              >
+                <span class="block font-semibold">시간제</span>
+                <span class="text-xs text-gray-400">이용 시간만큼 · 1시간 단위</span>
+              </button>
+            </div>
+            <p v-if="daycareHourly" class="mt-2 text-xs text-gray-400">
+              등원·하원 시간으로 요금 계산 (1시간 미만은 올림, 종일요금 초과 시 종일요금 적용).
+            </p>
           </div>
         </div>
 
@@ -570,7 +656,7 @@ const handleSubmit = async () => {
         <div class="card sticky top-24 space-y-3">
           <p class="font-semibold text-gray-900">예약 요약</p>
           <div class="space-y-1 text-sm text-gray-500">
-            <p>서비스: {{ isDaycare ? '데이케어 (당일)' : '호텔 숙박' }}</p>
+            <p>서비스: {{ serviceSummaryLabel }}</p>
             <p>날짜: {{ dateSummary }}</p>
             <p>시간: {{ startTime }} ~ {{ endTime }}</p>
             <p>반려동물: {{ summaryPetLabel }}</p>

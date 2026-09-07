@@ -91,6 +91,7 @@ export interface Database {
           memo: string | null
           deposit_paid: boolean
           terms_agreed_at: string | null
+          daycare_hourly: boolean
           created_at: string
         }
         Insert: {
@@ -318,6 +319,7 @@ export interface Database {
           p_start_time?: string
           p_end_time?: string
           p_terms_agreed?: boolean
+          p_daycare_hourly?: boolean
         }
         Returns: Database['public']['Tables']['reservations']['Row']
       }

@@ -23,6 +23,7 @@ export const useReservations = () => {
     endTime: string
     memo: string
     termsAgreed: boolean
+    daycareHourly?: boolean
   }): Promise<Reservation> => {
     const { data, error } = await supabase.rpc('book_reservation', {
       p_pet_id: input.petId,
@@ -32,7 +33,8 @@ export const useReservations = () => {
       p_memo: input.memo || null,
       p_start_time: input.startTime,
       p_end_time: input.endTime,
-      p_terms_agreed: input.termsAgreed
+      p_terms_agreed: input.termsAgreed,
+      p_daycare_hourly: input.daycareHourly ?? false
     })
     if (error) throw error
     return data as Reservation

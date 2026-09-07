@@ -3,7 +3,8 @@ import type { ReservationType } from '~/types/database.types'
 export interface ServiceSetting {
   type: ReservationType
   default_capacity: number
-  price: number
+  price: number // 호텔=1박, 데이케어=종일 요금
+  hourly_price?: number // 데이케어 시간제(1시간) 요금
   deposit_rate: number
 }
 
@@ -15,7 +16,10 @@ export const useServiceSettings = () => {
   const fetchServiceSettings = async (): Promise<Record<ReservationType, ServiceSetting>> => {
     const [{ data, error }, { data: pricing }] = await Promise.all([
       supabase.from('service_settings').select('*'),
-      supabase.from('pricing_items').select('billing_key, price').in('billing_key', ['hotel_night', 'daycare_day'])
+      supabase
+        .from('pricing_items')
+        .select('billing_key, price')
+        .in('billing_key', ['hotel_night', 'daycare_day', 'daycare_hourly'])
     ])
     if (error) throw error
     const byKey: Record<string, number> = {}
@@ -24,7 +28,8 @@ export const useServiceSettings = () => {
     for (const row of (data ?? []) as ServiceSetting[]) {
       map[row.type] = {
         ...row,
-        price: row.type === 'hotel' ? (byKey.hotel_night ?? row.price) : (byKey.daycare_day ?? row.price)
+        price: row.type === 'hotel' ? (byKey.hotel_night ?? row.price) : (byKey.daycare_day ?? row.price),
+        hourly_price: row.type === 'daycare' ? (byKey.daycare_hourly ?? 4000) : undefined
       }
     }
     return map
@@ -45,5 +50,13 @@ export const useServiceSettings = () => {
     return Math.max(1, Math.round(d))
   }
 
-  return { fetchServiceSettings, updateServiceSetting, nights }
+  // 이용 시간(올림, 최소 1) — 데이케어 시간제 계산용. "HH:MM"
+  const hoursBetween = (startTime: string, endTime: string) => {
+    const [sh, sm] = startTime.split(':').map(Number)
+    const [eh, em] = endTime.split(':').map(Number)
+    const mins = eh * 60 + em - (sh * 60 + sm)
+    return Math.max(1, Math.ceil(mins / 60))
+  }
+
+  return { fetchServiceSettings, updateServiceSetting, nights, hoursBetween }
 }

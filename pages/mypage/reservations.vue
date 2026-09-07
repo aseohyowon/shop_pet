@@ -100,7 +100,9 @@ const handleCancel = async (r: any) => {
     <div v-else class="space-y-3">
       <div v-for="r in reservations" :key="r.id" class="card flex items-center justify-between gap-3">
         <div class="min-w-0">
-          <p class="font-semibold text-gray-900">{{ typeLabel[r.type] }} · {{ r.pets?.name }}</p>
+          <p class="font-semibold text-gray-900">
+            {{ typeLabel[r.type] }}<span v-if="r.type === 'daycare'"> ({{ r.daycare_hourly ? '시간제' : '종일' }})</span> · {{ r.pets?.name }}
+          </p>
           <p class="text-sm text-gray-400">
             {{ r.start_date }} {{ toHHMM(r.start_time) }} ~ {{ r.end_date }} {{ toHHMM(r.end_time) }}
           </p>

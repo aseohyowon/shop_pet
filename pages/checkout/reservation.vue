@@ -5,7 +5,7 @@ const route = useRoute()
 const router = useRouter()
 const { fetchReservationById } = useReservations()
 const { createReservationPayment } = usePayments()
-const { fetchServiceSettings, nights } = useServiceSettings()
+const { fetchServiceSettings, nights, hoursBetween } = useServiceSettings()
 const { fetchMyBalance } = usePoints()
 
 const reservation = ref<any | null>(null)
@@ -29,13 +29,27 @@ const units = computed(() => {
   return r.type === 'hotel' ? nights(r.start_date, r.end_date) : 1
 })
 
+const daycareHours = computed(() => {
+  const r = reservation.value
+  return r ? hoursBetween(toHHMM(r.start_time), toHHMM(r.end_time)) : 1
+})
+
+// 예약금 비율 적용 전 총액
+const priceBaseAmount = computed(() => {
+  const r = reservation.value
+  const s = r && settings.value?.[r.type]
+  if (!s) return 0
+  if (r.type === 'hotel') return s.price * units.value
+  if (r.daycare_hourly) return Math.min(daycareHours.value * (s.hourly_price ?? 4000), s.price)
+  return s.price
+})
+
 // 결제 레코드 생성 전 예상 금액 (서비스 요금 기준)
 const expectedAmount = computed(() => {
   const r = reservation.value
-  if (!r) return 0
-  const s = settings.value?.[r.type]
+  const s = r && settings.value?.[r.type]
   if (!s) return 0
-  return Math.round(s.price * units.value * Number(s.deposit_rate ?? 1))
+  return Math.round(priceBaseAmount.value * Number(s.deposit_rate ?? 1))
 })
 
 const baseAmount = computed(() => paymentInfo.value?.amount != null
@@ -61,9 +75,19 @@ const priceBreakdown = computed(() => {
   if (!r) return ''
   const s = settings.value?.[r.type]
   if (!s) return ''
-  const unitLabel = r.type === 'hotel' ? `${units.value}박` : '1일'
   const rateNote = s.deposit_rate < 1 ? ` · 예약금 ${Math.round(s.deposit_rate * 100)}%` : ''
-  return `${s.price.toLocaleString()}원 × ${unitLabel}${rateNote}`
+  let base: string
+  if (r.type === 'hotel') {
+    base = `${s.price.toLocaleString()}원 × ${units.value}박`
+  } else if (r.daycare_hourly) {
+    const capped = daycareHours.value * (s.hourly_price ?? 4000) >= s.price
+    base = capped
+      ? `시간제 ${daycareHours.value}시간 → 종일요금 적용`
+      : `${(s.hourly_price ?? 4000).toLocaleString()}원 × ${daycareHours.value}시간`
+  } else {
+    base = `${s.price.toLocaleString()}원 × 1일`
+  }
+  return `${base}${rateNote}`
 })
 
 onMounted(async () => {
@@ -153,7 +177,10 @@ const handlePay = async () => {
       <div class="card space-y-4">
         <div class="flex justify-between text-sm text-gray-500">
           <span>서비스</span>
-          <span>{{ typeLabel[reservation.type] }}</span>
+          <span>
+            {{ typeLabel[reservation.type] }}
+            <template v-if="reservation.type === 'daycare'">({{ reservation.daycare_hourly ? '시간제' : '종일' }})</template>
+          </span>
         </div>
         <div class="flex justify-between text-sm text-gray-500">
           <span>기간</span>

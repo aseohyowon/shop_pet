@@ -355,7 +355,9 @@ const handleAction = async (id: string, status: 'confirmed' | 'rejected') => {
               </NuxtLink>
             </td>
             <td class="py-3 pr-4 text-gray-600">{{ r.profiles?.name }}</td>
-            <td class="py-3 pr-4 text-gray-600">{{ typeLabel[r.type] }}</td>
+            <td class="py-3 pr-4 text-gray-600">
+              {{ typeLabel[r.type] }}<span v-if="r.type === 'daycare'" class="text-xs text-gray-400"> · {{ r.daycare_hourly ? '시간제' : '종일' }}</span>
+            </td>
             <td class="py-3 pr-4 text-gray-600">
               {{ r.start_date }} {{ toHHMM(r.start_time) }} ~ {{ r.end_date }} {{ toHHMM(r.end_time) }}
             </td>

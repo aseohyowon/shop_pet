@@ -92,7 +92,9 @@ const cancelUnpaid = async () => {
       <div class="grid gap-6 lg:grid-cols-2">
         <div class="card space-y-2">
           <p class="mb-2 font-semibold text-gray-900">예약 정보</p>
-          <p class="text-sm text-gray-600">서비스: {{ typeLabel[reservation.type] }}</p>
+          <p class="text-sm text-gray-600">
+            서비스: {{ typeLabel[reservation.type] }}<template v-if="reservation.type === 'daycare'"> ({{ reservation.daycare_hourly ? '시간제' : '종일' }})</template>
+          </p>
           <p class="text-sm text-gray-600">
             기간: {{ reservation.start_date }} {{ toHHMM(reservation.start_time) }} ~
             {{ reservation.end_date }} {{ toHHMM(reservation.end_time) }}
