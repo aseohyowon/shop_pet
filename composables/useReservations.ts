@@ -24,6 +24,7 @@ export const useReservations = () => {
     memo: string
     termsAgreed: boolean
     daycareHourly?: boolean
+    options?: { pricing_item_id: string; quantity: number }[]
   }): Promise<Reservation> => {
     const { data, error } = await supabase.rpc('book_reservation', {
       p_pet_id: input.petId,
@@ -34,7 +35,8 @@ export const useReservations = () => {
       p_start_time: input.startTime,
       p_end_time: input.endTime,
       p_terms_agreed: input.termsAgreed,
-      p_daycare_hourly: input.daycareHourly ?? false
+      p_daycare_hourly: input.daycareHourly ?? false,
+      p_options: input.options ?? []
     })
     if (error) throw error
     return data as Reservation
@@ -57,7 +59,7 @@ export const useReservations = () => {
   const fetchAllReservations = async () => {
     const { data, error } = await supabase
       .from('reservations')
-      .select('*, pets(id, name, breed, age, weight, vaccinations, rules_agreed_at, registration_no, notes), profiles(name, phone, email)')
+      .select('*, pets(id, name, breed, age, weight, vaccinations, rules_agreed_at, registration_no, notes), profiles(name, phone, email), reservation_options(name, unit_price, quantity)')
       .order('start_date', { ascending: false })
 
     if (error) throw error
@@ -67,7 +69,7 @@ export const useReservations = () => {
   const fetchReservationById = async (id: string) => {
     const { data, error } = await supabase
       .from('reservations')
-      .select('*, pets(id, name, breed, age, weight, vaccinations, rules_agreed_at, registration_no, notes), profiles(name, phone, email)')
+      .select('*, pets(id, name, breed, age, weight, vaccinations, rules_agreed_at, registration_no, notes), profiles(name, phone, email), reservation_options(name, unit_price, quantity)')
       .eq('id', id)
       .single()
 

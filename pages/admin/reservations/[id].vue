@@ -117,6 +117,10 @@ const cancelPaidZero = async () => {
           </p>
           <p class="text-sm text-gray-600">상태: {{ statusLabel[reservation.status] ?? reservation.status }}</p>
           <p class="text-sm text-gray-600">요청사항: {{ reservation.memo || '-' }}</p>
+          <p v-if="(reservation.reservation_options ?? []).length" class="text-sm text-gray-600">
+            추가 옵션:
+            {{ reservation.reservation_options.map((o) => `${o.name}${o.quantity > 1 ? ` ×${o.quantity}` : ''}`).join(', ') }}
+          </p>
           <p class="text-sm text-gray-600">
             약관 동의:
             <span :class="reservation.terms_agreed_at ? 'text-green-600' : 'text-red-500'">

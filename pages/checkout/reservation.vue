@@ -24,8 +24,18 @@ const pointsToUse = ref(0)
 // 정기권 (종일 데이케어만)
 const usablePasses = ref<any[]>([])
 const selectedPassId = ref<string>('')
+
+const reservationOptions = computed<any[]>(() => reservation.value?.reservation_options ?? [])
+const optionsTotal = computed(() =>
+  reservationOptions.value.reduce((s, o) => s + o.unit_price * o.quantity, 0)
+)
+
 const canUsePass = computed(
-  () => reservation.value?.type === 'daycare' && !reservation.value?.daycare_hourly && usablePasses.value.length > 0
+  () =>
+    reservation.value?.type === 'daycare' &&
+    !reservation.value?.daycare_hourly &&
+    optionsTotal.value === 0 &&
+    usablePasses.value.length > 0
 )
 
 const typeLabel: Record<string, string> = { hotel: '호텔 숙박', daycare: '데이케어' }
@@ -52,12 +62,12 @@ const priceBaseAmount = computed(() => {
   return s.price
 })
 
-// 결제 레코드 생성 전 예상 금액 (서비스 요금 기준)
+// 결제 레코드 생성 전 예상 금액 (서비스 요금 + 옵션)
 const expectedAmount = computed(() => {
   const r = reservation.value
   const s = r && settings.value?.[r.type]
   if (!s) return 0
-  return Math.round(priceBaseAmount.value * Number(s.deposit_rate ?? 1))
+  return Math.round(priceBaseAmount.value * Number(s.deposit_rate ?? 1)) + optionsTotal.value
 })
 
 const baseAmount = computed(() => paymentInfo.value?.amount != null
@@ -222,11 +232,15 @@ const payWithPass = async () => {
           <span>{{ reservation.pets?.name }} ({{ reservation.pets?.breed || '견종 미입력' }})</span>
         </div>
         <div class="flex justify-between border-t border-gray-100 pt-4 text-sm text-gray-500">
-          <span>예약 금액</span>
+          <span>{{ optionsTotal > 0 ? '서비스 금액' : '예약 금액' }}</span>
           <span class="text-right">
-            <span class="block">{{ baseAmount.toLocaleString() }}원</span>
+            <span class="block">{{ (baseAmount - optionsTotal).toLocaleString() }}원</span>
             <span v-if="priceBreakdown" class="block text-xs text-gray-400">{{ priceBreakdown }}</span>
           </span>
+        </div>
+        <div v-for="o in reservationOptions" :key="o.name" class="flex justify-between text-sm text-gray-500">
+          <span>{{ o.name }}{{ o.quantity > 1 ? ` ×${o.quantity}` : '' }}</span>
+          <span>{{ (o.unit_price * o.quantity).toLocaleString() }}원</span>
         </div>
         <div v-if="pointsToUse > 0" class="flex justify-between text-sm text-brand-600">
           <span>포인트 사용</span>

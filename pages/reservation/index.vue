@@ -8,9 +8,44 @@ const router = useRouter()
 const { fetchMyPets, createPet } = usePets()
 const { createReservation } = useReservations()
 const { fetchServiceSettings, nights, hoursBetween } = useServiceSettings()
+const { fetchOptionItems } = usePricing()
 const { isWarm } = useSiteTheme()
 
 const { data: serviceSettings } = useAsyncData('service-settings', fetchServiceSettings, { default: () => ({}) as any })
+const { data: optionItems } = useAsyncData('reservation-options', fetchOptionItems, { default: () => [] as any })
+
+// 추가 옵션 선택: pricing_item_id → quantity
+const optionQty = reactive<Record<string, number>>({})
+const walkItem = computed(() => (optionItems.value ?? []).find((i: any) => i.name.includes('산책')))
+const spaItems = computed(() => (optionItems.value ?? []).filter((i: any) => i.name.includes('스파')))
+const selectedSpaId = ref<string>('')
+
+const selectedOptions = computed(() => {
+  const out: { pricing_item_id: string; quantity: number }[] = []
+  if (walkItem.value && (optionQty[walkItem.value.id] ?? 0) > 0) {
+    out.push({ pricing_item_id: walkItem.value.id, quantity: optionQty[walkItem.value.id] })
+  }
+  if (selectedSpaId.value) out.push({ pricing_item_id: selectedSpaId.value, quantity: 1 })
+  return out
+})
+const optionsTotal = computed(() => {
+  let sum = 0
+  const items = optionItems.value ?? []
+  for (const o of selectedOptions.value) {
+    const it = items.find((i: any) => i.id === o.pricing_item_id)
+    if (it) sum += it.price * o.quantity
+  }
+  return sum
+})
+const optionsSummary = computed(() =>
+  selectedOptions.value
+    .map((o) => {
+      const it = (optionItems.value ?? []).find((i: any) => i.id === o.pricing_item_id)
+      return it ? `${it.name}${o.quantity > 1 ? ` ×${o.quantity}` : ''}` : ''
+    })
+    .filter(Boolean)
+    .join(', ')
+)
 
 const reservationType = ref<ReservationType>('hotel')
 const dateRange = ref<{ start: string | null; end: string | null }>({ start: null, end: null })
@@ -137,7 +172,7 @@ const priceBase = computed(() => {
 const estimatedPrice = computed(() => {
   const s = serviceSettings.value?.[reservationType.value]
   if (!s || priceBase.value == null) return null
-  return Math.round(priceBase.value * Number(s.deposit_rate ?? 1))
+  return Math.round(priceBase.value * Number(s.deposit_rate ?? 1)) + optionsTotal.value
 })
 const priceBreakdown = computed(() => {
   const s = serviceSettings.value?.[reservationType.value]
@@ -154,7 +189,8 @@ const priceBreakdown = computed(() => {
   } else {
     base = `${s.price.toLocaleString()}원 × 1일`
   }
-  return rate < 1 ? `${base} · 예약금 ${Math.round(rate * 100)}%` : base
+  const withRate = rate < 1 ? `${base} · 예약금 ${Math.round(rate * 100)}%` : base
+  return optionsTotal.value > 0 ? `${withRate} + 옵션 ${optionsTotal.value.toLocaleString()}원` : withRate
 })
 
 const handleSubmit = async () => {
@@ -213,7 +249,8 @@ const handleSubmit = async () => {
       endTime: endTime.value,
       memo: memo.value,
       termsAgreed: allAgreed.value,
-      daycareHourly: isDaycare.value && daycareHourly.value
+      daycareHourly: isDaycare.value && daycareHourly.value,
+      options: selectedOptions.value
     })
 
     await router.push(`/checkout/reservation?id=${created.id}`)
@@ -399,6 +436,35 @@ const handleSubmit = async () => {
           </div>
         </section>
 
+        <!-- 추가 옵션 -->
+        <section v-if="(optionItems ?? []).length" class="card-warm p-8">
+          <h2 class="mb-6 flex items-center gap-3 font-headline-md text-headline-md text-primary">
+            <span class="material-symbols-outlined rounded-full bg-secondary-container p-2 text-secondary">add_circle</span>
+            추가 옵션
+          </h2>
+          <div class="space-y-4">
+            <div v-if="walkItem" class="flex items-center justify-between">
+              <div>
+                <p class="font-label-md text-label-md text-on-surface">{{ walkItem.name }}</p>
+                <p class="font-label-sm text-label-sm text-on-surface-variant">{{ walkItem.price.toLocaleString() }}원 / 1회</p>
+              </div>
+              <div class="flex items-center gap-3">
+                <button type="button" class="h-9 w-9 rounded-full border border-outline-variant text-lg" @click="optionQty[walkItem.id] = Math.max(0, (optionQty[walkItem.id] ?? 0) - 1)">−</button>
+                <span class="w-6 text-center font-label-md">{{ optionQty[walkItem.id] ?? 0 }}</span>
+                <button type="button" class="h-9 w-9 rounded-full border border-outline-variant text-lg" @click="optionQty[walkItem.id] = Math.min(14, (optionQty[walkItem.id] ?? 0) + 1)">＋</button>
+              </div>
+            </div>
+            <div v-if="spaItems.length" class="space-y-2">
+              <label class="label-warm" for="w-spa">스파</label>
+              <select id="w-spa" v-model="selectedSpaId" class="input-warm h-12">
+                <option value="">선택 안 함</option>
+                <option v-for="s in spaItems" :key="s.id" :value="s.id">{{ s.name }} — {{ s.price.toLocaleString() }}원</option>
+              </select>
+              <p class="font-label-sm text-label-sm text-outline">체중 5kg 초과 스파는 현장 문의해주세요.</p>
+            </div>
+          </div>
+        </section>
+
         <!-- 약관 동의 -->
         <section class="card-warm p-8">
           <h2 class="mb-6 flex items-center gap-3 font-headline-md text-headline-md text-primary">
@@ -448,6 +514,10 @@ const handleSubmit = async () => {
             <li class="flex items-start justify-between">
               <span class="font-label-md text-label-md text-on-surface-variant">반려동물</span>
               <span class="text-right font-body-md font-semibold" :class="summaryPetLabel === '입력 전' ? 'text-outline' : 'text-on-surface'">{{ summaryPetLabel }}</span>
+            </li>
+            <li v-if="optionsSummary" class="flex items-start justify-between">
+              <span class="font-label-md text-label-md text-on-surface-variant">추가 옵션</span>
+              <span class="text-right font-body-md font-semibold text-on-surface">{{ optionsSummary }}</span>
             </li>
             <li class="flex items-start justify-between border-t border-outline-variant/30 pt-4">
               <span class="font-label-md text-label-md text-on-surface-variant">예상 금액</span>
@@ -625,6 +695,32 @@ const handleSubmit = async () => {
           </div>
         </div>
 
+        <!-- 추가 옵션 -->
+        <div v-if="(optionItems ?? []).length" class="card">
+          <p class="label-field mb-3">추가 옵션</p>
+          <div class="space-y-3">
+            <div v-if="walkItem" class="flex items-center justify-between">
+              <span class="text-sm">
+                <span class="font-medium text-gray-800">{{ walkItem.name }}</span>
+                <span class="ml-1 text-xs text-gray-400">{{ walkItem.price.toLocaleString() }}원 / 1회</span>
+              </span>
+              <span class="flex items-center gap-2">
+                <button type="button" class="h-8 w-8 rounded border border-gray-300" @click="optionQty[walkItem.id] = Math.max(0, (optionQty[walkItem.id] ?? 0) - 1)">−</button>
+                <span class="w-5 text-center text-sm">{{ optionQty[walkItem.id] ?? 0 }}</span>
+                <button type="button" class="h-8 w-8 rounded border border-gray-300" @click="optionQty[walkItem.id] = Math.min(14, (optionQty[walkItem.id] ?? 0) + 1)">＋</button>
+              </span>
+            </div>
+            <div v-if="spaItems.length">
+              <label class="label-field" for="spa">스파</label>
+              <select id="spa" v-model="selectedSpaId" class="input-field">
+                <option value="">선택 안 함</option>
+                <option v-for="s in spaItems" :key="s.id" :value="s.id">{{ s.name }} — {{ s.price.toLocaleString() }}원</option>
+              </select>
+              <p class="mt-1 text-xs text-gray-400">체중 5kg 초과 스파는 현장 문의해주세요.</p>
+            </div>
+          </div>
+        </div>
+
         <!-- 약관 동의 -->
         <div class="card">
           <p class="label-field mb-3">약관 동의</p>
@@ -660,6 +756,7 @@ const handleSubmit = async () => {
             <p>날짜: {{ dateSummary }}</p>
             <p>시간: {{ startTime }} ~ {{ endTime }}</p>
             <p>반려동물: {{ summaryPetLabel }}</p>
+            <p v-if="optionsSummary">추가 옵션: {{ optionsSummary }}</p>
           </div>
           <div class="flex items-baseline justify-between border-t border-gray-100 pt-3">
             <span class="text-sm text-gray-500">예상 금액</span>

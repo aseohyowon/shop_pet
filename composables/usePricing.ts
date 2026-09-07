@@ -66,6 +66,18 @@ export const usePricing = () => {
     if (error) throw error
   }
 
+  // 예약 추가 옵션 (추가 산책 / 스파)
+  const fetchOptionItems = async (): Promise<PricingItem[]> => {
+    const { data, error } = await supabase
+      .from('pricing_items')
+      .select('*')
+      .eq('is_option', true)
+      .eq('is_active', true)
+      .order('sort_order', { ascending: true })
+    if (error) throw error
+    return (data ?? []) as PricingItem[]
+  }
+
   // 예약 결제 기준가 (billing_key)
   const fetchReservationBasePrices = async (): Promise<Record<'hotel_night' | 'daycare_day', number>> => {
     const { data } = await supabase
@@ -93,6 +105,7 @@ export const usePricing = () => {
     createItem,
     updateItem,
     deleteItem,
+    fetchOptionItems,
     fetchReservationBasePrices,
     updateBasePrice
   }

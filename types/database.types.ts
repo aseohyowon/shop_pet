@@ -127,6 +127,7 @@ export interface Database {
           billing_key: string | null
           sort_order: number
           is_active: boolean
+          is_option: boolean
           created_at: string
         }
         Insert: {
@@ -138,6 +139,7 @@ export interface Database {
           billing_key?: string | null
           sort_order?: number
           is_active?: boolean
+          is_option?: boolean
         }
         Update: {
           category?: 'daycare' | 'daycare_pass' | 'hotel' | 'spa'
@@ -337,6 +339,19 @@ export interface Database {
         Insert: never
         Update: never
       }
+      reservation_options: {
+        Row: {
+          id: string
+          reservation_id: string
+          pricing_item_id: string | null
+          name: string
+          unit_price: number
+          quantity: number
+          created_at: string
+        }
+        Insert: never
+        Update: never
+      }
     }
     Functions: {
       book_reservation: {
@@ -350,6 +365,7 @@ export interface Database {
           p_end_time?: string
           p_terms_agreed?: boolean
           p_daycare_hourly?: boolean
+          p_options?: { pricing_item_id: string; quantity: number }[]
         }
         Returns: Database['public']['Tables']['reservations']['Row']
       }
@@ -436,3 +452,4 @@ export type PricingItem = Database['public']['Tables']['pricing_items']['Row']
 export type PricingCategory = PricingItem['category']
 export type DaycarePass = Database['public']['Tables']['daycare_passes']['Row']
 export type DaycarePassUsage = Database['public']['Tables']['daycare_pass_usages']['Row']
+export type ReservationOption = Database['public']['Tables']['reservation_options']['Row']
