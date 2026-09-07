@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { BUSINESS_INFO } from '~/utils/businessInfo'
+
 const serviceCards = [
   {
     icon: 'bed',
@@ -102,6 +104,21 @@ const serviceCards = [
             {{ s.cta }} <span class="material-symbols-outlined text-sm">arrow_forward</span>
           </NuxtLink>
         </div>
+      </div>
+    </section>
+
+    <!-- 오시는 길 -->
+    <section class="mx-auto max-w-container-max px-margin-mobile pb-16 md:px-margin-desktop md:pb-24">
+      <div class="grid grid-cols-1 gap-gutter overflow-hidden rounded-2xl border border-surface-container-highest bg-surface-container-lowest p-6 shadow-sm md:grid-cols-2 md:p-8">
+        <div class="flex flex-col justify-center">
+          <h2 class="mb-4 font-headline-md text-headline-lg-mobile text-primary md:text-headline-md">오시는 길</h2>
+          <p class="mb-1 font-body-md text-on-surface">{{ BUSINESS_INFO.name }}</p>
+          <p class="mb-1 font-body-md text-on-surface-variant">{{ BUSINESS_INFO.address }}</p>
+          <p class="font-body-md text-on-surface-variant">운영 시간 {{ BUSINESS_INFO.hours }}</p>
+          <p v-if="BUSINESS_INFO.phone" class="font-body-md text-on-surface-variant">대표전화 {{ BUSINESS_INFO.phone }}</p>
+          <NuxtLink to="/reservation" class="btn-warm mt-6 self-start">지금 예약하기</NuxtLink>
+        </div>
+        <CommonLocationMap height="h-64 md:h-72" />
       </div>
     </section>
   </div>

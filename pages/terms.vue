@@ -1,13 +1,22 @@
 <script setup lang="ts">
+import { BUSINESS_INFO } from '~/utils/businessInfo'
+
 useHead({ title: '이용약관 — 댕이를 부탁해' })
 </script>
 
 <template>
   <div class="container-page max-w-3xl py-12">
     <h1 class="mb-2 text-2xl font-bold text-gray-900">이용약관</h1>
-    <p class="mb-10 text-sm text-gray-400">
+    <p class="mb-4 text-sm text-gray-400">
       시행일: [시행일자 입력, 예: 2026년 O월 O일]
     </p>
+    <dl class="mb-10 grid grid-cols-[5rem_1fr] gap-y-1 rounded-lg border border-gray-200 bg-gray-50 p-4 text-sm text-gray-600">
+      <dt class="text-gray-400">상호</dt><dd>{{ BUSINESS_INFO.name }}</dd>
+      <dt class="text-gray-400">대표자</dt><dd>{{ BUSINESS_INFO.owner }}</dd>
+      <dt class="text-gray-400">소재지</dt><dd>{{ BUSINESS_INFO.address }}</dd>
+      <template v-if="BUSINESS_INFO.bizRegNo"><dt class="text-gray-400">사업자번호</dt><dd>{{ BUSINESS_INFO.bizRegNo }}</dd></template>
+      <template v-if="BUSINESS_INFO.onlineSalesNo"><dt class="text-gray-400">통신판매업</dt><dd>{{ BUSINESS_INFO.onlineSalesNo }}</dd></template>
+    </dl>
 
     <div class="space-y-10 text-sm leading-relaxed text-gray-700">
       <section>
@@ -15,8 +24,8 @@ useHead({ title: '이용약관 — 댕이를 부탁해' })
 
         <p class="mb-4 font-medium">제1조 (목적)</p>
         <p class="mb-6">
-          이 약관은 <strong>[상호명 입력, 예: 댕이를 부탁해]</strong>(이하 "회사")가 운영하는 인터넷 웹사이트
-          "[서비스명 입력]"(이하 "몰")에서 제공하는 반려동물 호텔·데이케어 예약 서비스 및 반려동물 용품 판매
+          이 약관은 <strong>댕이를 부탁해</strong>(이하 "회사")가 운영하는 인터넷 웹사이트
+          "댕이를 부탁해"(이하 "몰")에서 제공하는 반려동물 호텔·데이케어 예약 서비스 및 반려동물 용품 판매
           서비스(이하 "서비스")의 이용과 관련하여 회사와 이용자의 권리·의무 및 책임사항을 규정함을 목적으로 합니다.
         </p>
 

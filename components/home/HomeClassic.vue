@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { BUSINESS_INFO } from '~/utils/businessInfo'
+
 const { createInquiry } = useInquiries()
 const { contactEnabled } = useSiteTheme()
 
@@ -68,13 +70,12 @@ const sendContact = async () => {
       <div class="container-page grid gap-8 lg:grid-cols-2">
         <div>
           <h2 class="mb-4 text-2xl font-bold text-gray-900">오시는 길</h2>
-          <p class="mb-1 text-gray-600">서울특별시 ○○구 ○○로 123</p>
-          <p class="mb-1 text-gray-600">영업시간 매일 09:00 - 19:00 (연중무휴)</p>
-          <p class="text-gray-600">주차 가능 · 대중교통 ○○역 3번 출구 도보 5분</p>
+          <p class="mb-1 text-gray-600">{{ BUSINESS_INFO.name }}</p>
+          <p class="mb-1 text-gray-600">{{ BUSINESS_INFO.address }}</p>
+          <p class="mb-1 text-gray-600">영업시간 {{ BUSINESS_INFO.hours }}</p>
+          <p v-if="BUSINESS_INFO.phone" class="text-gray-600">대표전화 {{ BUSINESS_INFO.phone }}</p>
         </div>
-        <div class="flex h-64 items-center justify-center rounded-xl border border-dashed border-gray-300 bg-white text-sm text-gray-400">
-          지도가 표시될 영역
-        </div>
+        <CommonLocationMap height="h-64" />
       </div>
     </section>
 

@@ -1,18 +1,25 @@
 <script setup lang="ts">
+import { BUSINESS_INFO } from '~/utils/businessInfo'
+
 useHead({ title: '개인정보처리방침 — 댕이를 부탁해' })
 </script>
 
 <template>
   <div class="container-page max-w-3xl py-12">
     <h1 class="mb-2 text-2xl font-bold text-gray-900">개인정보처리방침</h1>
-    <p class="mb-10 text-sm text-gray-400">
+    <p class="mb-4 text-sm text-gray-400">
       시행일: [시행일자 입력, 예: 2026년 O월 O일]
     </p>
+    <dl class="mb-10 grid grid-cols-[5rem_1fr] gap-y-1 rounded-lg border border-gray-200 bg-gray-50 p-4 text-sm text-gray-600">
+      <dt class="text-gray-400">상호</dt><dd>{{ BUSINESS_INFO.name }}</dd>
+      <dt class="text-gray-400">대표자</dt><dd>{{ BUSINESS_INFO.owner }}</dd>
+      <dt class="text-gray-400">소재지</dt><dd>{{ BUSINESS_INFO.address }}</dd>
+    </dl>
 
     <div class="space-y-10 text-sm leading-relaxed text-gray-700">
       <section>
         <p>
-          <strong>[상호명 입력, 예: 댕이를 부탁해]</strong>(이하 "회사")는 이용자의 개인정보를 중요시하며,
+          <strong>{{ BUSINESS_INFO.name }}</strong>(이하 "회사")는 이용자의 개인정보를 중요시하며,
           「개인정보보호법」 등 관련 법령을 준수하고 있습니다. 회사는 개인정보처리방침을 통하여
           이용자가 제공하는 개인정보가 어떠한 목적과 방식으로 이용되고 있으며, 개인정보보호를 위해
           어떠한 조치가 취해지고 있는지 알려드립니다.
@@ -126,9 +133,9 @@ useHead({ title: '개인정보처리방침 — 댕이를 부탁해' })
           피해구제 등을 위하여 아래와 같이 개인정보 보호책임자를 지정하고 있습니다.
         </p>
         <ul class="list-disc space-y-1 pl-5">
-          <li>성명: [보호책임자 이름 입력]</li>
-          <li>연락처: [전화번호 입력]</li>
-          <li>이메일: [이메일 입력]</li>
+          <li>성명: {{ BUSINESS_INFO.owner }} (대표자)</li>
+          <li>연락처: {{ BUSINESS_INFO.phone || '[전화번호 입력]' }}</li>
+          <li>이메일: {{ BUSINESS_INFO.email || '[이메일 입력]' }}</li>
         </ul>
       </section>
 

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { BUSINESS_INFO } from '~/utils/businessInfo'
+
 const facilities = [
   {
     title: '럭셔리 스위트',
@@ -102,12 +104,8 @@ const facilities = [
     <!-- Location & Contact -->
     <section class="bg-surface-container-lowest px-margin-mobile py-stack-lg md:px-margin-desktop">
       <div class="mx-auto flex max-w-container-max flex-col overflow-hidden rounded-2xl border border-surface-container-highest bg-white shadow-sm md:flex-row">
-        <div class="relative h-[300px] bg-surface-container-low md:h-auto md:w-1/2">
-          <img
-            class="h-full w-full object-cover"
-            alt="댕이를 부탁해 위치 지도"
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuAAPGLGYc043jl0Xul6FAFt_JNh0sB9lo3LU0q2urkVyvwV9SMRDL5UZ3dNYoAryvxB2rBHTyiIy-uQlvlm8unAChFWVJp49jiy3fuyj5dzjPRiKfTi1-5ddd_WkMncxD8Hbt7c1Zfoiar3jguAtbR4QTL2xMePCoS4wfpgn2-Km7qyfqKSV8g8BdnGS2U5igXjGDne702gkGh0-oFnXVTSK6XhcgL89xGKt8LXX1-FInXKcxMJa3dlBw"
-          />
+        <div class="flex bg-surface-container-low p-4 md:w-1/2">
+          <CommonLocationMap :rounded="true" height="min-h-[300px] flex-1" class="w-full" />
         </div>
         <div class="p-8 md:w-1/2 md:p-12">
           <h2 class="mb-6 font-headline-lg text-headline-lg text-primary">오시는 길</h2>
@@ -118,16 +116,16 @@ const facilities = [
               </div>
               <div>
                 <h4 class="mb-1 font-label-md text-primary">주소</h4>
-                <p class="font-body-md text-on-surface-variant">서울특별시 ○○구 ○○로 123<br />댕이를 부탁해</p>
+                <p class="font-body-md text-on-surface-variant">{{ BUSINESS_INFO.address }}<br />{{ BUSINESS_INFO.name }}</p>
               </div>
             </li>
-            <li class="flex items-start gap-4">
+            <li v-if="BUSINESS_INFO.phone" class="flex items-start gap-4">
               <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-surface-container-high text-primary">
                 <span class="material-symbols-outlined">call</span>
               </div>
               <div>
                 <h4 class="mb-1 font-label-md text-primary">전화</h4>
-                <p class="font-body-md text-on-surface-variant">02-000-0000</p>
+                <p class="font-body-md text-on-surface-variant">{{ BUSINESS_INFO.phone }}</p>
               </div>
             </li>
             <li class="flex items-start gap-4">
@@ -136,7 +134,7 @@ const facilities = [
               </div>
               <div>
                 <h4 class="mb-1 font-label-md text-primary">운영 시간</h4>
-                <p class="font-body-md text-on-surface-variant">매일 09:00 - 19:00 (연중무휴)</p>
+                <p class="font-body-md text-on-surface-variant">{{ BUSINESS_INFO.hours }}</p>
               </div>
             </li>
           </ul>
