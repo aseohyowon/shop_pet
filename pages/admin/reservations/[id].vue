@@ -99,6 +99,12 @@ const cancelUnpaid = async () => {
           </p>
           <p class="text-sm text-gray-600">상태: {{ statusLabel[reservation.status] ?? reservation.status }}</p>
           <p class="text-sm text-gray-600">요청사항: {{ reservation.memo || '-' }}</p>
+          <p class="text-sm text-gray-600">
+            약관 동의:
+            <span :class="reservation.terms_agreed_at ? 'text-green-600' : 'text-red-500'">
+              {{ reservation.terms_agreed_at ? `완료 (${new Date(reservation.terms_agreed_at).toLocaleString('ko-KR')})` : '미동의' }}
+            </span>
+          </p>
           <p class="mb-2 mt-4 font-semibold text-gray-900">보호자 정보</p>
           <p class="text-sm text-gray-600">이름: {{ reservation.profiles?.name }}</p>
           <p class="text-sm text-gray-600">연락처: {{ reservation.profiles?.phone }}</p>

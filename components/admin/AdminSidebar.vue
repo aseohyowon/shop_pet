@@ -2,6 +2,7 @@
 const navLinks = [
   { label: '대시보드', to: '/admin', icon: 'dashboard' },
   { label: '예약 관리', to: '/admin/reservations', icon: 'calendar_month' },
+  { label: '가격 관리', to: '/admin/pricing', icon: 'payments' },
   { label: '상품 관리', to: '/admin/products', icon: 'inventory_2' },
   { label: '카테고리 관리', to: '/admin/categories', icon: 'sell' },
   { label: '주문 관리', to: '/admin/orders', icon: 'local_shipping' },

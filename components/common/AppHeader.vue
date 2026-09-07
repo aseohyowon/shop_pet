@@ -7,6 +7,7 @@ const { contactEnabled } = useSiteTheme()
 const navLinks = computed(() => [
   { label: '홈', to: '/' },
   { label: '예약', to: '/reservation' },
+  { label: '요금', to: '/pricing' },
   { label: '쇼핑몰', to: '/shop' },
   { label: '마이페이지', to: '/mypage' },
   ...(contactEnabled.value ? [{ label: '문의', to: '/contact' }] : [])

@@ -5,6 +5,7 @@ definePageMeta({ layout: 'admin', middleware: 'admin' })
 
 const { fetchAllReservations, updateReservationStatus } = useReservations()
 const { fetchServiceSettings, updateServiceSetting } = useServiceSettings()
+const { updateBasePrice } = usePricing()
 const { fetchRefundTiers, replaceRefundTiers } = useRefunds()
 const { fetchOverrides, setOverride, removeOverride } = useDailyCapacity()
 
@@ -39,11 +40,13 @@ const savePricing = async (t: ReservationType) => {
   savingType.value = t
   pricingMsg.value = null
   try {
-    await updateServiceSetting(t, {
-      price: Math.max(0, Math.round(pricing[t].price)),
-      default_capacity: Math.max(0, Math.round(pricing[t].default_capacity)),
-      deposit_rate: Math.min(1, Math.max(0.01, pricing[t].deposit_rate))
-    })
+    await Promise.all([
+      updateServiceSetting(t, {
+        default_capacity: Math.max(0, Math.round(pricing[t].default_capacity)),
+        deposit_rate: Math.min(1, Math.max(0.01, pricing[t].deposit_rate))
+      }),
+      updateBasePrice(t === 'hotel' ? 'hotel_night' : 'daycare_day', pricing[t].price)
+    ])
     pricingMsg.value = { ok: true, text: `${t === 'hotel' ? '호텔' : '데이케어'} 설정을 저장했습니다.` }
   } catch (e: any) {
     pricingMsg.value = { ok: false, text: e?.message ?? '저장에 실패했습니다.' }
@@ -175,7 +178,11 @@ const handleAction = async (id: string, status: 'confirmed' | 'rejected') => {
   <div>
     <!-- 요금 · 정원 설정 -->
     <section class="card mb-6">
-      <p class="mb-4 font-semibold text-gray-900">요금 · 정원 설정</p>
+      <p class="mb-1 font-semibold text-gray-900">요금 · 정원 설정</p>
+      <p class="mb-4 text-sm text-gray-500">
+        여기서 바꾸는 요금은 <strong>온라인 예약 결제 기준가</strong>(종일 데이케어 / 호텔 1박)입니다.
+        시간제·정기권·스파 등 전체 요금표는 <NuxtLink to="/admin/pricing" class="text-brand-600 underline">가격 관리</NuxtLink>에서 수정하세요.
+      </p>
       <p v-if="pricingLoading" class="text-sm text-gray-400">불러오는 중...</p>
       <div v-else class="grid gap-6 sm:grid-cols-2">
         <div

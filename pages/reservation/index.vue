@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Pet, ReservationType } from '~/types/database.types'
+import { RESERVATION_AGREEMENTS, type Agreement } from '~/utils/reservationAgreements'
 
 definePageMeta({ middleware: 'auth' })
 
@@ -78,6 +79,14 @@ const memo = ref('')
 const submitting = ref(false)
 const errorMessage = ref('')
 
+// 예약 시 약관 동의 (이용약관 / 개인정보 수집·이용 / 제3자 제공)
+const agreements = reactive<Record<Agreement['id'], boolean>>({ terms: false, privacy: false, thirdparty: false })
+const allAgreed = computed(() => RESERVATION_AGREEMENTS.every((a) => agreements[a.id]))
+const toggleAllAgreements = (v: boolean) => {
+  for (const a of RESERVATION_AGREEMENTS) agreements[a.id] = v
+}
+const activeAgreement = ref<Agreement | null>(null)
+
 onMounted(async () => {
   myPets.value = await fetchMyPets()
   if (myPets.value.length > 0) selectedPetId.value = myPets.value[0].id
@@ -142,6 +151,10 @@ const handleSubmit = async () => {
     errorMessage.value = '접종 현황 및 이용 규정 동의를 완료해주세요.'
     return
   }
+  if (!allAgreed.value) {
+    errorMessage.value = '이용약관 및 개인정보 관련 항목에 모두 동의해주세요.'
+    return
+  }
 
   submitting.value = true
   try {
@@ -168,7 +181,8 @@ const handleSubmit = async () => {
       endDate,
       startTime: startTime.value,
       endTime: endTime.value,
-      memo: memo.value
+      memo: memo.value,
+      termsAgreed: allAgreed.value
     })
 
     await router.push(`/checkout/reservation?id=${created.id}`)
@@ -322,6 +336,34 @@ const handleSubmit = async () => {
             <div class="space-y-2">
               <label class="label-warm" for="w-memo">요청사항</label>
               <textarea id="w-memo" v-model="memo" rows="2" class="input-warm resize-none" placeholder="전달하고 싶은 내용이 있다면 입력해주세요" />
+            </div>
+          </div>
+        </section>
+
+        <!-- 약관 동의 -->
+        <section class="card-warm p-8">
+          <h2 class="mb-6 flex items-center gap-3 font-headline-md text-headline-md text-primary">
+            <span class="material-symbols-outlined rounded-full bg-secondary-container p-2 text-secondary">verified_user</span>
+            약관 동의
+          </h2>
+          <label class="mb-3 flex cursor-pointer items-center gap-3 rounded-lg bg-secondary-fixed/20 px-4 py-3">
+            <input
+              type="checkbox"
+              class="h-5 w-5 rounded border-outline text-secondary"
+              :checked="allAgreed"
+              @change="toggleAllAgreements(($event.target as HTMLInputElement).checked)"
+            />
+            <span class="font-label-md text-label-md font-bold text-primary">아래 항목에 모두 동의합니다.</span>
+          </label>
+          <div class="space-y-1">
+            <div v-for="a in RESERVATION_AGREEMENTS" :key="a.id" class="flex items-center justify-between gap-3 px-4 py-2">
+              <label class="flex cursor-pointer items-center gap-3 font-body-md text-body-md text-on-surface-variant">
+                <input v-model="agreements[a.id]" type="checkbox" class="h-5 w-5 rounded border-outline text-secondary" />
+                <span>{{ a.label }}</span>
+              </label>
+              <button type="button" class="shrink-0 font-label-sm text-label-sm text-secondary underline" @click="activeAgreement = a">
+                전문 보기
+              </button>
             </div>
           </div>
         </section>
@@ -496,6 +538,31 @@ const handleSubmit = async () => {
             <textarea id="memo" v-model="memo" rows="2" class="input-field" placeholder="전달하고 싶은 내용이 있다면 입력해주세요" />
           </div>
         </div>
+
+        <!-- 약관 동의 -->
+        <div class="card">
+          <p class="label-field mb-3">약관 동의</p>
+          <label class="mb-2 flex cursor-pointer items-center gap-2.5 rounded-lg bg-brand-50 px-3 py-2.5">
+            <input
+              type="checkbox"
+              class="h-4 w-4 rounded border-gray-300 text-brand-500"
+              :checked="allAgreed"
+              @change="toggleAllAgreements(($event.target as HTMLInputElement).checked)"
+            />
+            <span class="text-sm font-semibold text-gray-900">아래 항목에 모두 동의합니다.</span>
+          </label>
+          <div class="divide-y divide-gray-100">
+            <div v-for="a in RESERVATION_AGREEMENTS" :key="a.id" class="flex items-center justify-between gap-3 py-2">
+              <label class="flex cursor-pointer items-center gap-2.5 text-sm text-gray-600">
+                <input v-model="agreements[a.id]" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-brand-500" />
+                <span>{{ a.label }}</span>
+              </label>
+              <button type="button" class="shrink-0 text-xs text-brand-600 underline" @click="activeAgreement = a">
+                전문 보기
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- 예약 요약 -->
@@ -594,6 +661,34 @@ const handleSubmit = async () => {
             <button type="button" class="btn-secondary flex-1" @click="showVaccineModal = false">취소</button>
             <button type="button" class="btn-primary flex-1" :disabled="!rulesDraft" @click="confirmVaccine">확인</button>
           </div>
+        </div>
+      </div>
+    </div>
+  </Teleport>
+
+  <!-- ══════════ 약관 전문 모달 ══════════ -->
+  <Teleport to="body">
+    <div
+      v-if="activeAgreement"
+      class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
+      @click.self="activeAgreement = null"
+    >
+      <div class="flex max-h-[88vh] w-full max-w-2xl flex-col overflow-hidden rounded-2xl bg-white shadow-xl">
+        <div class="flex items-start justify-between border-b border-gray-100 px-6 py-4">
+          <h3 class="text-lg font-bold text-gray-900">{{ activeAgreement.title }}</h3>
+          <button type="button" class="text-gray-400 hover:text-gray-600" @click="activeAgreement = null">✕</button>
+        </div>
+        <div class="flex-1 overflow-y-auto px-6 py-5">
+          <p class="whitespace-pre-line text-[13px] leading-relaxed text-gray-700">{{ activeAgreement.body }}</p>
+        </div>
+        <div class="border-t border-gray-100 px-6 py-4">
+          <button
+            type="button"
+            class="btn-primary w-full"
+            @click="agreements[activeAgreement.id] = true; activeAgreement = null"
+          >
+            확인하고 동의
+          </button>
         </div>
       </div>
     </div>

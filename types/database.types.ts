@@ -90,6 +90,7 @@ export interface Database {
           status: ReservationStatus
           memo: string | null
           deposit_paid: boolean
+          terms_agreed_at: string | null
           created_at: string
         }
         Insert: {
@@ -112,6 +113,40 @@ export interface Database {
         Row: { type: ReservationType; default_capacity: number; price: number; deposit_rate: number }
         Insert: { type: ReservationType; default_capacity: number; price?: number; deposit_rate?: number }
         Update: { default_capacity?: number; price?: number; deposit_rate?: number }
+      }
+      pricing_items: {
+        Row: {
+          id: string
+          category: 'daycare' | 'daycare_pass' | 'hotel' | 'spa'
+          name: string
+          price: number
+          unit: string | null
+          note: string | null
+          billing_key: string | null
+          sort_order: number
+          is_active: boolean
+          created_at: string
+        }
+        Insert: {
+          category: 'daycare' | 'daycare_pass' | 'hotel' | 'spa'
+          name: string
+          price?: number
+          unit?: string | null
+          note?: string | null
+          billing_key?: string | null
+          sort_order?: number
+          is_active?: boolean
+        }
+        Update: {
+          category?: 'daycare' | 'daycare_pass' | 'hotel' | 'spa'
+          name?: string
+          price?: number
+          unit?: string | null
+          note?: string | null
+          billing_key?: string | null
+          sort_order?: number
+          is_active?: boolean
+        }
       }
       daily_capacity: {
         Row: { id: string; date: string; type: ReservationType; max_capacity: number }
@@ -282,6 +317,7 @@ export interface Database {
           p_memo?: string | null
           p_start_time?: string
           p_end_time?: string
+          p_terms_agreed?: boolean
         }
         Returns: Database['public']['Tables']['reservations']['Row']
       }
@@ -342,3 +378,5 @@ export type OrderItem = Database['public']['Tables']['order_items']['Row']
 export type Payment = Database['public']['Tables']['payments']['Row']
 export type RefundTier = Database['public']['Tables']['refund_policy_tiers']['Row']
 export type PointTransaction = Database['public']['Tables']['point_transactions']['Row']
+export type PricingItem = Database['public']['Tables']['pricing_items']['Row']
+export type PricingCategory = PricingItem['category']
