@@ -77,6 +77,22 @@ const cancelUnpaid = async () => {
   await updateReservationStatus(route.params.id as string, 'cancelled')
   await load()
 }
+
+// 0원 결제(정기권/포인트 전액) 예약 취소 — 서버가 정기권 회차/포인트 복원 처리
+const cancelPaidZero = async () => {
+  if (!payment.value) return
+  if (!confirm('이 예약을 취소하시겠어요? (정기권/포인트는 복원됩니다)')) return
+  refunding.value = true
+  errorMessage.value = ''
+  try {
+    await cancelPayment({ paymentId: payment.value.id, reason: '관리자 예약 취소', cancelAmount: 0 })
+    await load()
+  } catch (e: any) {
+    errorMessage.value = e?.data?.statusMessage ?? e?.message ?? '취소에 실패했습니다.'
+  } finally {
+    refunding.value = false
+  }
+}
 </script>
 
 <template>
@@ -148,7 +164,7 @@ const cancelUnpaid = async () => {
       <div class="card mt-6">
         <p class="mb-3 font-semibold text-gray-900">결제 · 취소</p>
         <dl v-if="payment" class="mb-4 grid grid-cols-2 gap-x-6 gap-y-2 text-sm">
-          <div><dt class="text-gray-400">결제 금액</dt><dd class="text-gray-800">{{ payment.amount.toLocaleString() }}원</dd></div>
+          <div><dt class="text-gray-400">결제 금액</dt><dd class="text-gray-800">{{ payment.method === '정기권' ? '정기권 1회' : `${payment.amount.toLocaleString()}원` }}</dd></div>
           <div><dt class="text-gray-400">결제 수단</dt><dd class="text-gray-800">{{ payment.method || '-' }}</dd></div>
           <div v-if="payment.points_used > 0"><dt class="text-gray-400">포인트 사용</dt><dd class="text-brand-600">{{ payment.points_used.toLocaleString() }}P</dd></div>
           <div v-if="payment.refunded_amount > 0" class="col-span-2">
@@ -166,12 +182,21 @@ const cancelUnpaid = async () => {
 
           <template v-if="reservation.status !== 'cancelled' && reservation.status !== 'rejected'">
             <button
-              v-if="payment && payment.refunded_amount < payment.amount"
+              v-if="payment && payment.amount > 0 && payment.refunded_amount < payment.amount"
               type="button"
               class="btn-secondary !border-red-200 !text-red-500"
               @click="showRefund = !showRefund"
             >
               예약 취소 + 환불
+            </button>
+            <button
+              v-else-if="payment && payment.amount === 0"
+              type="button"
+              class="btn-secondary !border-red-200 !text-red-500"
+              :disabled="refunding"
+              @click="cancelPaidZero"
+            >
+              예약 취소{{ payment.method === '정기권' ? ' (정기권 복원)' : '' }}
             </button>
             <button
               v-else-if="!payment"

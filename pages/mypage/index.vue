@@ -74,6 +74,9 @@ onMounted(async () => {
           <NuxtLink to="/mypage/orders" class="flex items-center gap-3 rounded-lg px-4 py-3 font-medium text-on-surface-variant transition-colors hover:bg-surface-container hover:text-primary">
             <span class="material-symbols-outlined">shopping_bag</span> 주문 내역
           </NuxtLink>
+          <NuxtLink to="/mypage/passes" class="flex items-center gap-3 rounded-lg px-4 py-3 font-medium text-on-surface-variant transition-colors hover:bg-surface-container hover:text-primary">
+            <span class="material-symbols-outlined">confirmation_number</span> 정기권
+          </NuxtLink>
           <NuxtLink to="/mypage/points" class="flex items-center gap-3 rounded-lg px-4 py-3 font-medium text-on-surface-variant transition-colors hover:bg-surface-container hover:text-primary">
             <span class="material-symbols-outlined">savings</span> 포인트
           </NuxtLink>

@@ -84,6 +84,11 @@ export default defineEventHandler(async (event) => {
     if (finalizeError) {
       console.error('finalize_order failed after payment capture:', finalizeError.message)
     }
+  } else if (payment.target_type === 'pass') {
+    const { error: activateError } = await supabase.rpc('activate_pass', { p_pass_id: payment.target_id })
+    if (activateError) {
+      console.error('activate_pass failed:', activateError.message)
+    }
   } else {
     // 결제 완료 시 예약을 자동으로 확정 처리 (관리자 승인 단계 생략)
     await supabase

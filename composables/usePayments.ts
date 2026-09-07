@@ -1,3 +1,5 @@
+import type { PaymentTargetType } from '~/types/database.types'
+
 export const usePayments = () => {
   const supabase = useSupabaseClient()
 
@@ -56,8 +58,39 @@ export const usePayments = () => {
     return data
   }
 
-  // 특정 주문/예약의 결제완료(부분환불 포함) 건 조회 — 취소/환불에 사용
-  const fetchPaidPayment = async (targetType: 'order' | 'reservation', targetId: string) => {
+  // 정기권 구매 결제 레코드 생성
+  const createPassPayment = async (pricingItemId: string, pointsUsed = 0) => {
+    const { data, error } = await supabase.rpc('create_pass_payment', {
+      p_pricing_item_id: pricingItemId,
+      p_points_used: Math.max(0, Math.floor(pointsUsed || 0))
+    })
+    if (error) throw error
+    const row = Array.isArray(data) ? data[0] : data
+    return {
+      passId: row.pass_id as string,
+      paymentId: row.payment_id as string,
+      amount: row.amount as number,
+      payableAmount: row.payable_amount as number,
+      fullyPaid: row.fully_paid as boolean
+    }
+  }
+
+  const resumePassPayment = async (passId: string) => {
+    const { data, error } = await supabase
+      .from('payments')
+      .select('*')
+      .eq('target_type', 'pass')
+      .eq('target_id', passId)
+      .eq('status', 'ready')
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .maybeSingle()
+    if (error) throw error
+    return data
+  }
+
+  // 특정 주문/예약/정기권의 결제완료(부분환불 포함) 건 조회 — 취소/환불에 사용
+  const fetchPaidPayment = async (targetType: PaymentTargetType, targetId: string) => {
     const { data, error } = await supabase
       .from('payments')
       .select('id, amount, points_used, status, refunded_amount, method, paid_at, cancel_reason')
@@ -71,7 +104,7 @@ export const usePayments = () => {
 
   // 토스페이먼츠 successUrl에서 호출: 서버가 시크릿 키로 결제 승인 처리
   const confirmPayment = async (input: { paymentId: string; paymentKey: string; amount: number }) => {
-    return await $fetch<{ targetType: 'reservation' | 'order'; targetId: string }>('/api/payments/confirm', {
+    return await $fetch<{ targetType: PaymentTargetType; targetId: string }>('/api/payments/confirm', {
       method: 'POST',
       body: input
     })
@@ -82,6 +115,8 @@ export const usePayments = () => {
     resumeOrderPayment,
     fetchPaidPayment,
     createReservationPayment,
+    createPassPayment,
+    resumePassPayment,
     confirmPayment
   }
 }

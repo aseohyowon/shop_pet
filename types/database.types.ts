@@ -3,7 +3,7 @@
 export type ReservationType = 'hotel' | 'daycare'
 export type ReservationStatus = 'pending' | 'confirmed' | 'rejected' | 'cancelled' | 'completed'
 export type OrderStatus = 'pending' | 'paid' | 'preparing' | 'shipping' | 'completed' | 'cancelled'
-export type PaymentTargetType = 'reservation' | 'order'
+export type PaymentTargetType = 'reservation' | 'order' | 'pass'
 export type PaymentStatus = 'ready' | 'paid' | 'failed' | 'cancelled'
 
 // 고객용 화면 테마 (관리자가 /admin/settings 에서 선택)
@@ -92,6 +92,7 @@ export interface Database {
           deposit_paid: boolean
           terms_agreed_at: string | null
           daycare_hourly: boolean
+          daycare_pass_id: string | null
           created_at: string
         }
         Insert: {
@@ -307,6 +308,35 @@ export interface Database {
         Insert: never
         Update: never
       }
+      daycare_passes: {
+        Row: {
+          id: string
+          user_id: string
+          pricing_item_id: string | null
+          name: string
+          total_count: number
+          used_count: number
+          status: 'pending' | 'active' | 'void'
+          source: 'online' | 'admin'
+          memo: string | null
+          payment_id: string | null
+          created_by: string | null
+          created_at: string
+        }
+        Insert: never
+        Update: never
+      }
+      daycare_pass_usages: {
+        Row: {
+          id: string
+          pass_id: string
+          reservation_id: string
+          used_at: string
+          reverted_at: string | null
+        }
+        Insert: never
+        Update: never
+      }
     }
     Functions: {
       book_reservation: {
@@ -351,6 +381,28 @@ export interface Database {
         Args: { p_reservation_id: string; p_points_used?: number }
         Returns: Database['public']['Tables']['payments']['Row']
       }
+      create_pass_payment: {
+        Args: { p_pricing_item_id: string; p_points_used?: number }
+        Returns: {
+          pass_id: string
+          payment_id: string
+          amount: number
+          payable_amount: number
+          fully_paid: boolean
+        }[]
+      }
+      redeem_pass_for_reservation: {
+        Args: { p_reservation_id: string; p_pass_id: string }
+        Returns: Database['public']['Tables']['payments']['Row']
+      }
+      admin_grant_pass: {
+        Args: { p_user: string; p_pricing_item_id: string; p_memo?: string }
+        Returns: Database['public']['Tables']['daycare_passes']['Row']
+      }
+      admin_void_pass: {
+        Args: { p_pass_id: string }
+        Returns: undefined
+      }
       admin_adjust_points: {
         Args: { p_user: string; p_amount: number; p_memo?: string }
         Returns: number
@@ -382,3 +434,5 @@ export type RefundTier = Database['public']['Tables']['refund_policy_tiers']['Ro
 export type PointTransaction = Database['public']['Tables']['point_transactions']['Row']
 export type PricingItem = Database['public']['Tables']['pricing_items']['Row']
 export type PricingCategory = PricingItem['category']
+export type DaycarePass = Database['public']['Tables']['daycare_passes']['Row']
+export type DaycarePassUsage = Database['public']['Tables']['daycare_pass_usages']['Row']

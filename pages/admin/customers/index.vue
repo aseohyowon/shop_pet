@@ -7,6 +7,9 @@ definePageMeta({ layout: 'admin', middleware: 'admin' })
 const { fetchCustomers, fetchCustomerDetail } = useCustomers()
 const { setVaccineStatus } = usePets()
 const { adminAdjust } = usePoints()
+const { fetchCustomerPasses, fetchPassProducts, grantPass, voidPass } = usePasses()
+
+const passProducts = ref<any[]>([])
 
 const customers = ref<Profile[]>([])
 const loading = ref(true)
@@ -51,11 +54,46 @@ const toggle = async (id: string) => {
     detailLoading.value = id
     try {
       details[id] = await fetchCustomerDetail(id)
+      passRow(id).passes = await fetchCustomerPasses(id)
+      if (!passProducts.value.length) passProducts.value = await fetchPassProducts()
+      if (passProducts.value.length) passRow(id).productId = passProducts.value[0].id
     } finally {
       detailLoading.value = null
     }
   }
 }
+
+// 정기권 (현장결제 지급 / 무효화)
+const passDraft = reactive<Record<string, { passes: any[]; productId: string; memo: string; busy: boolean; msg: string }>>({})
+const passRow = (id: string) => (passDraft[id] ??= { passes: [], productId: '', memo: '', busy: false, msg: '' })
+
+const doGrantPass = async (customerId: string) => {
+  const row = passRow(customerId)
+  if (!row.productId) {
+    row.msg = '정기권 종류를 선택하세요.'
+    return
+  }
+  row.busy = true
+  row.msg = ''
+  try {
+    await grantPass(customerId, row.productId, row.memo || undefined)
+    row.passes = await fetchCustomerPasses(customerId)
+    row.memo = ''
+    row.msg = '지급 완료'
+  } catch (e: any) {
+    row.msg = e?.message ?? '지급에 실패했습니다.'
+  } finally {
+    row.busy = false
+  }
+}
+
+const doVoidPass = async (customerId: string, passId: string) => {
+  if (!confirm('이 정기권을 무효화할까요? (되돌릴 수 없음)')) return
+  await voidPass(passId)
+  passRow(customerId).passes = await fetchCustomerPasses(customerId)
+}
+
+const passStatusLabel: Record<string, string> = { pending: '결제 대기', active: '사용 가능', void: '무효' }
 
 const orderSummary = (o: any) => {
   const items = o.order_items ?? []
@@ -204,6 +242,59 @@ const changeVaccine = async (customerId: string, petId: string, no: number, stat
                 </button>
               </div>
               <p v-if="pointRow(c.id).msg" class="mt-2 font-body-md text-xs text-on-surface-variant">{{ pointRow(c.id).msg }}</p>
+            </section>
+
+            <!-- 정기권 -->
+            <section class="rounded-xl border border-outline-variant/50 bg-surface-container-lowest p-4">
+              <h3 class="mb-3 font-label-md text-label-md text-primary">데이케어 정기권</h3>
+              <div v-if="passRow(c.id).passes.length" class="mb-3 space-y-1.5">
+                <div
+                  v-for="p in passRow(c.id).passes"
+                  :key="p.id"
+                  class="flex items-center justify-between gap-2 font-body-md text-sm"
+                >
+                  <span class="text-on-surface">
+                    {{ p.name }}
+                    <span class="text-on-surface-variant">· {{ p.remaining }}/{{ p.total_count }}회</span>
+                    <span class="ml-1 text-xs text-outline">({{ p.source === 'admin' ? '현장' : '온라인' }} · {{ passStatusLabel[p.status] }})</span>
+                  </span>
+                  <button
+                    v-if="p.status !== 'void'"
+                    type="button"
+                    class="shrink-0 text-xs text-outline hover:text-red-500"
+                    @click="doVoidPass(c.id, p.id)"
+                  >
+                    무효화
+                  </button>
+                </div>
+              </div>
+              <p v-else class="mb-3 font-body-md text-sm text-on-surface-variant">보유한 정기권이 없습니다.</p>
+
+              <div class="flex flex-wrap items-center gap-2">
+                <select
+                  v-model="passRow(c.id).productId"
+                  class="rounded-lg border border-outline-variant/60 bg-surface px-3 py-2 font-body-md text-sm"
+                >
+                  <option v-for="prod in passProducts" :key="prod.id" :value="prod.id">
+                    {{ prod.name }} ({{ prod.price.toLocaleString() }}원)
+                  </option>
+                </select>
+                <input
+                  v-model="passRow(c.id).memo"
+                  type="text"
+                  placeholder="메모 (영수증번호 등, 선택)"
+                  class="min-w-[8rem] flex-1 rounded-lg border border-outline-variant/60 bg-surface px-3 py-2 font-body-md text-sm"
+                />
+                <button
+                  type="button"
+                  class="shrink-0 rounded-lg bg-primary px-4 py-2 font-label-sm text-label-sm text-on-primary disabled:opacity-50"
+                  :disabled="passRow(c.id).busy"
+                  @click="doGrantPass(c.id)"
+                >
+                  {{ passRow(c.id).busy ? '처리 중' : '현장결제 지급' }}
+                </button>
+              </div>
+              <p v-if="passRow(c.id).msg" class="mt-2 font-body-md text-xs text-on-surface-variant">{{ passRow(c.id).msg }}</p>
             </section>
 
             <!-- 반려동물 + 접종 현황 -->

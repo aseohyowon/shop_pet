@@ -21,7 +21,12 @@ onMounted(async () => {
 
   try {
     const result = await confirmPayment({ paymentId, paymentKey, amount })
-    const destination = result.targetType === 'order' ? '/mypage/orders?paid=1' : '/mypage/reservations?paid=1'
+    const destination =
+      result.targetType === 'order'
+        ? '/mypage/orders?paid=1'
+        : result.targetType === 'pass'
+          ? '/mypage/passes?paid=1'
+          : '/mypage/reservations?paid=1'
     await router.replace(destination)
   } catch (e: any) {
     status.value = 'error'

@@ -7,6 +7,7 @@ const { fetchReservationById } = useReservations()
 const { createReservationPayment } = usePayments()
 const { fetchServiceSettings, nights, hoursBetween } = useServiceSettings()
 const { fetchMyBalance } = usePoints()
+const { fetchUsablePasses, redeemPass } = usePasses()
 
 const reservation = ref<any | null>(null)
 const settings = ref<Record<string, any>>({})
@@ -19,6 +20,13 @@ const submitting = ref(false)
 // 포인트
 const pointBalance = ref(0)
 const pointsToUse = ref(0)
+
+// 정기권 (종일 데이케어만)
+const usablePasses = ref<any[]>([])
+const selectedPassId = ref<string>('')
+const canUsePass = computed(
+  () => reservation.value?.type === 'daycare' && !reservation.value?.daycare_hourly && usablePasses.value.length > 0
+)
 
 const typeLabel: Record<string, string> = { hotel: '호텔 숙박', daycare: '데이케어' }
 const toHHMM = (t: string) => t?.slice(0, 5)
@@ -98,14 +106,19 @@ onMounted(async () => {
   }
 
   try {
-    const [resv, svc, bal] = await Promise.all([
+    const [resv, svc, bal, passes] = await Promise.all([
       fetchReservationById(id),
       fetchServiceSettings().catch(() => ({})),
-      fetchMyBalance().catch(() => 0)
+      fetchMyBalance().catch(() => 0),
+      fetchUsablePasses().catch(() => [])
     ])
     reservation.value = resv
     settings.value = svc
     pointBalance.value = bal
+    if (resv?.type === 'daycare' && !resv?.daycare_hourly) {
+      usablePasses.value = passes
+      if (passes.length) selectedPassId.value = passes[0].id
+    }
   } catch (e: any) {
     errorMessage.value = e?.message ?? '결제 준비에 실패했습니다.'
   } finally {
@@ -150,6 +163,21 @@ const handlePay = async () => {
     await widgetRef.value.requestPayment()
   } catch (e: any) {
     errorMessage.value = e?.message ?? '결제 요청 중 오류가 발생했습니다.'
+  } finally {
+    submitting.value = false
+  }
+}
+
+// 정기권으로 예약 확정
+const payWithPass = async () => {
+  if (!selectedPassId.value) return
+  errorMessage.value = ''
+  submitting.value = true
+  try {
+    await redeemPass(route.query.id as string, selectedPassId.value)
+    await router.replace('/mypage/reservations?paid=1')
+  } catch (e: any) {
+    errorMessage.value = e?.data?.message ?? e?.message ?? '정기권 사용에 실패했습니다.'
   } finally {
     submitting.value = false
   }
@@ -208,6 +236,32 @@ const handlePay = async () => {
           <span>최종 결제금액</span>
           <span>{{ payable.toLocaleString() }}원</span>
         </div>
+      </div>
+
+      <!-- 정기권 사용 (종일 데이케어) -->
+      <div v-if="canUsePass && !paymentInfo" class="card mt-4 space-y-3 border-brand-200">
+        <p class="font-semibold text-gray-900">정기권으로 이용</p>
+        <label
+          v-for="p in usablePasses"
+          :key="p.id"
+          class="flex cursor-pointer items-center justify-between gap-3 rounded-lg border px-3 py-2.5"
+          :class="selectedPassId === p.id ? 'border-brand-500 bg-brand-50' : 'border-gray-200'"
+        >
+          <span class="flex items-center gap-2.5 text-sm">
+            <input v-model="selectedPassId" type="radio" :value="p.id" class="text-brand-500" />
+            <span class="font-medium text-gray-800">{{ p.name }}</span>
+          </span>
+          <span class="text-xs font-semibold text-brand-600">{{ p.remaining }}/{{ p.total_count }}회 남음</span>
+        </label>
+        <button
+          type="button"
+          class="btn-primary w-full !py-2.5"
+          :disabled="submitting || !selectedPassId"
+          @click="payWithPass"
+        >
+          {{ submitting ? '처리 중...' : '정기권으로 예약 확정하기 (1회 차감)' }}
+        </button>
+        <p class="text-center text-xs text-gray-400">— 또는 아래에서 결제 —</p>
       </div>
 
       <!-- 포인트 사용 -->

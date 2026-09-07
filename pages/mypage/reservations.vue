@@ -61,15 +61,21 @@ const handleCancel = async (r: any) => {
   try {
     const payment = await fetchPaidPayment('reservation', r.id)
     if (!payment) throw new Error('결제 정보를 찾을 수 없습니다. 고객센터로 문의해주세요.')
-    const refund = reservationRefund(r.start_date, payment.amount, tiers.value)
-    const pointLine = payment.points_used > 0
-      ? `사용 포인트 ${payment.points_used.toLocaleString()}P 는 전액 복원됩니다.\n`
-      : ''
-    const msg =
-      `이용일까지 ${refund.daysUntil}일 남음 · 환불 규정 ${refund.rate}%\n` +
-      `환불 예정 금액: ${refund.amount.toLocaleString()}원 (결제 ${payment.amount.toLocaleString()}원)\n` +
-      pointLine +
-      `\n예약을 취소하시겠어요?`
+
+    let msg: string
+    if (payment.method === '정기권') {
+      msg = '정기권으로 예약한 건입니다. 취소하면 정기권 1회가 복원됩니다.\n\n예약을 취소하시겠어요?'
+    } else {
+      const refund = reservationRefund(r.start_date, payment.amount, tiers.value)
+      const pointLine = payment.points_used > 0
+        ? `사용 포인트 ${payment.points_used.toLocaleString()}P 는 전액 복원됩니다.\n`
+        : ''
+      msg =
+        `이용일까지 ${refund.daysUntil}일 남음 · 환불 규정 ${refund.rate}%\n` +
+        `환불 예정 금액: ${refund.amount.toLocaleString()}원 (결제 ${payment.amount.toLocaleString()}원)\n` +
+        pointLine +
+        `\n예약을 취소하시겠어요?`
+    }
     if (!confirm(msg)) {
       cancelling.value = null
       return

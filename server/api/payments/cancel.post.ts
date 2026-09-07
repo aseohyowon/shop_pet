@@ -54,6 +54,22 @@ export default defineEventHandler(async (event) => {
       }
       refundAmount = payment.amount // 배송 전 전액 환불
     }
+  } else if (payment.target_type === 'pass') {
+    const { data: pass } = await supabase.from('daycare_passes').select('*').eq('id', payment.target_id).single()
+    if (!pass) throw createError({ statusCode: 404, statusMessage: '정기권을 찾을 수 없습니다.' })
+    restoreStock = false
+
+    if (isAdmin) {
+      refundAmount = Math.min(body.cancelAmount ?? payment.amount, payment.amount)
+    } else {
+      if (pass.status !== 'active' || pass.used_count > 0) {
+        throw createError({
+          statusCode: 400,
+          statusMessage: '이미 사용했거나 사용할 수 없는 정기권은 환불할 수 없습니다. 고객센터로 문의해주세요.'
+        })
+      }
+      refundAmount = payment.amount
+    }
   } else {
     // reservation
     const { data: resv } = await supabase.from('reservations').select('*').eq('id', payment.target_id).single()
@@ -125,8 +141,12 @@ export default defineEventHandler(async (event) => {
       await supabase.rpc('restore_order_stock', { p_order_id: payment.target_id })
     }
     await supabase.from('orders').update({ status: 'cancelled' }).eq('id', payment.target_id)
+  } else if (payment.target_type === 'pass') {
+    await supabase.from('daycare_passes').update({ status: 'void' }).eq('id', payment.target_id)
   } else {
     await supabase.from('reservations').update({ status: 'cancelled' }).eq('id', payment.target_id)
+    // 정기권으로 예약했던 건이면 회차 복원
+    await supabase.rpc('restore_pass_for_reservation', { p_reservation_id: payment.target_id })
   }
 
   // 사용 포인트 복원 + 적립 포인트 회수

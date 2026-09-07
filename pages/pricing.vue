@@ -34,6 +34,13 @@ const won = (n: number) => `${n.toLocaleString()}원`
             <div class="shrink-0 text-right">
               <p class="font-headline-md text-lg text-primary">{{ won(item.price) }}</p>
               <p v-if="item.unit" class="font-label-sm text-label-sm text-on-surface-variant">/ {{ item.unit }}</p>
+              <NuxtLink
+                v-if="g.key === 'daycare_pass'"
+                :to="`/checkout/pass?item=${item.id}`"
+                class="mt-1 inline-block rounded-lg bg-secondary px-3 py-1 font-label-sm text-label-sm text-on-secondary"
+              >
+                구매하기
+              </NuxtLink>
             </div>
           </li>
         </ul>
@@ -70,6 +77,13 @@ const won = (n: number) => `${n.toLocaleString()}원`
             <div class="shrink-0 text-right">
               <p class="text-sm font-bold text-brand-600">{{ won(item.price) }}</p>
               <p v-if="item.unit" class="text-xs text-gray-400">/ {{ item.unit }}</p>
+              <NuxtLink
+                v-if="g.key === 'daycare_pass'"
+                :to="`/checkout/pass?item=${item.id}`"
+                class="mt-1 inline-block rounded-md bg-brand-500 px-2.5 py-1 text-xs font-semibold text-white"
+              >
+                구매하기
+              </NuxtLink>
             </div>
           </li>
         </ul>
