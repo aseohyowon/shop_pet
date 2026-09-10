@@ -104,3 +104,129 @@
     @apply px-4 py-3 font-body-md text-sm text-on-surface;
   }
 }
+
+/* ── 모션 (Lenis / 페이지 전환 / 커스텀 커서) ───────────────── */
+html.lenis-on,
+html.lenis-on body {
+  height: auto;
+}
+html.lenis-on.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+/* 페이지 전환 */
+.page-enter-active,
+.page-leave-active {
+  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.page-enter-from {
+  opacity: 0;
+  transform: translateY(14px);
+}
+.page-leave-to {
+  opacity: 0;
+  transform: translateY(-8px);
+}
+
+/* 커스텀 커서 */
+@media (pointer: fine) {
+  html.has-cursor,
+  html.has-cursor * {
+    cursor: none !important;
+  }
+}
+.cursor-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+}
+.cursor-dot,
+.cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  border-radius: 9999px;
+  will-change: transform;
+  margin-left: -4px;
+  margin-top: -4px;
+}
+.cursor-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--cursor-color, #442a10);
+  transition: width 0.2s, height 0.2s, opacity 0.2s;
+}
+.cursor-dot.is-hover {
+  opacity: 0;
+}
+.cursor-ring {
+  width: 34px;
+  height: 34px;
+  margin-left: -17px;
+  margin-top: -17px;
+  border: 1.5px solid var(--cursor-color, #442a10);
+  transition: width 0.28s cubic-bezier(0.16, 1, 0.3, 1), height 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 0.28s, border-color 0.28s, opacity 0.2s;
+}
+.cursor-ring.is-hover {
+  width: 56px;
+  height: 56px;
+  margin-left: -28px;
+  margin-top: -28px;
+  background: color-mix(in srgb, var(--cursor-color, #442a10) 12%, transparent);
+}
+.cursor-ring.is-down {
+  width: 22px;
+  height: 22px;
+  margin-left: -11px;
+  margin-top: -11px;
+}
+:root {
+  --cursor-color: #442a10;
+}
+
+/* 스크롤 진행 표시줄 */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  z-index: 60;
+  background: linear-gradient(90deg, #442a10, #864e5a);
+  transform-origin: 0 50%;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-enter-active,
+  .page-leave-active {
+    transition: none;
+  }
+  .page-enter-from,
+  .page-leave-to {
+    transform: none;
+  }
+  [data-motion] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* 인트로 화면 스크롤 잠금 */
+html.intro-lock,
+html.intro-lock body {
+  overflow: hidden !important;
+  height: 100% !important;
+}
+
+

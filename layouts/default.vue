@@ -7,6 +7,9 @@ const { isWarm } = useSiteTheme()
     class="flex min-h-screen flex-col"
     :class="isWarm ? 'bg-background font-body-md text-on-background' : ''"
   >
+    <CommonScrollProgress />
+    <CommonAppCursor />
+
     <CommonAppHeaderWarm v-if="isWarm" />
     <CommonAppHeader v-else />
 

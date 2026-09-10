@@ -3,7 +3,7 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
 
-  modules: ['@nuxtjs/tailwindcss', '@nuxtjs/supabase'],
+  modules: ['@nuxtjs/tailwindcss', '@nuxtjs/supabase', '@vueuse/motion/nuxt'],
 
   // Cloudflare Workers 배포용 (wrangler.jsonc + .output/server/index.mjs)
   nitro: {
@@ -22,7 +22,13 @@ export default defineNuxtConfig({
   },
 
   app: {
+    pageTransition: { name: 'page', mode: 'out-in' },
     head: {
+      htmlAttrs: { lang: 'ko' },
+      script: [
+        // JS 활성 시에만 모션 초기상태(숨김)를 적용해 no-JS FOUC 방지
+        { innerHTML: 'document.documentElement.classList.add("js-motion")', tagPosition: 'head' }
+      ],
       title: '댕이를 부탁해 — 애견호텔 & 데이케어',
       meta: [
         { name: 'description', content: '반려동물 호텔/데이케어 예약과 용품 쇼핑을 한 곳에서, 댕이를 부탁해.' }

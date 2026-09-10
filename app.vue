@@ -8,4 +8,5 @@ await callOnce('site-theme', load)
   <NuxtLayout>
     <NuxtPage />
   </NuxtLayout>
+  <CommonIntroScreen />
 </template>
